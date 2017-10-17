@@ -149,23 +149,28 @@ double cuartil(int cuartil, int *vec, size_t n)
 	double d;	// parte decimal
 	double q=0;	// cuartil
 
-	quicksort(vec, n);
-
-	if(cuartil == 2)
+	if(n > 0)
 	{
-		if(n%2) //impar
-			q = (double) vec[n/2];
-		else    //par
-			q = (double) (vec[n/2 - 1] + vec[n/2]) / 2.0;
-	}
-	else if(cuartil == 1 || cuartil == 3)
-	{
-		i = (int)     cuartil * (n+1) / 4;
-		d = (double) (cuartil * (n+1) % 4) / 4.0;
-		q = vec[i-1] + d * (vec[i] - vec[i-1]);
-	}
+		quicksort(vec, n);
 
-	return q;
+		if(cuartil == 2)
+		{
+			if(n%2) //impar
+				q = (double) vec[n/2];
+			else    //par
+				q = (double) (vec[n/2 - 1] + vec[n/2]) / 2.0;
+		}
+		else if(cuartil == 1 || cuartil == 3)
+		{
+			i = (int)     cuartil * (n+1) / 4;
+			d = (double) (cuartil * (n+1) % 4) / 4.0;
+			q = vec[i-1] + d * (vec[i] - vec[i-1]);
+		}
+
+		return q;
+	}
+	else
+		return vec[0];
 }
 #if 0
 double dEstandar(int *vec, size_t tam)
