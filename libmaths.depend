@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1507898476 source:/home/feer/Documentos/lib_maths/libmaths.c
+	"libmaths.h"
+
+1507895440 /home/feer/Documentos/lib_maths/libmaths.h
+	<sys/types.h>
+
