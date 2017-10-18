@@ -1,13 +1,38 @@
 #include "libmaths.h"
 
-/*	Agregar pow() y sqrt() EN C
-	y a modo didÃ¡ctico, una func promediar(n1,n2,...) indefinidos
-	funcion operar(n1, OPERACION, n2) con puntero a funcion (o en el orden q quieras)
+/*	Agregar una func promediar(n1,n2,...) indefinidos
+	agregar funcion operar(n1, OPERACION, n2) con puntero a funcion (o en el orden q quieras)
 */
+
+double sumar(double a, double b)
+{
+	return (a+b);
+}
+
+double restar(double a, double b)
+{
+	return (a-b);
+}
+
+double multiplicar(double a, double b)
+{
+	return (a*b);
+}
+
+double dividir(double a, double b)
+{
+	if(b != 0.0)
+		return (a/b);
+	else
+	{
+		perror("Error, división por cero\n");
+		return(0);
+	}
+}
 
 double areaCirculo(double radio)
 {
-    return (PI * radio * radio);
+	return (M_PI * radio * radio);
 }
 
 int max(int a, int b)
@@ -100,7 +125,6 @@ unsigned long int fibonacci(int num)
 			an1 = an;
 		}
 	}
-
 	return an;
 }
 
@@ -172,22 +196,25 @@ double cuartil(int cuartil, int *vec, size_t n)
 	else
 		return vec[0];
 }
-#if 0
-double dEstandar(int *vec, size_t tam)
+
+double dEstandar(int *vec, size_t n)
 {
-	int i;
+	unsigned int i;
 	double promedio, sumatoria = 0.0;
 
-//	calculo el promedio o media aritmÃ©tica (xÌ„)
+	// calculo el promedio o media aritmÃ©tica (xÌ„)
 	promedio = prom(vec, n);
 //	printf("\nMedia aritmÃ©tica (xÌ„): %lf \n", promedio);
 
-	for(i=0; i<tam; i++)
-		sumatoria += pow(vec[i] - promedio, 2); // calculo la sumatoria de los cuadrados de la diferencia entre cada elemento del vector y el promedio de ellos ( sum (Xi - Xprom ) ^ 2 )
+	// calculo la sumatoria de los cuadrados de la diferencia entre
+	// cada elemento del vector y el promedio de ellos ( sum [(Xi - Xprom ) ^ 2] )
+	for(i=0; i<n; i++)
+		sumatoria += pow(vec[i] - promedio, 2);
 
-	return sqrt(sumatoria / (tam - 1)); // retorno la raiz de la inversa de la cantidad de elementos menos uno, por la sumatoria calculada. Esto es, la desviacion estandar del vector.
+	// retorno la raiz de la inversa de la cantidad de elementos menos uno,
+	// por la sumatoria calculada. Esto es, la desviacion estandar del vector.
+	return sqrt(sumatoria / (n - 1));
 }
-#endif
 
 int prodEscalar(int *vec1, int *vec2, size_t tamV1, size_t tamV2)
 {
@@ -234,39 +261,117 @@ int buscaBin(int *v, int tam, int D)
 		else		return -1;
 }
 
-#if 1
-double pow(double a, double b)
+
+double ipow(double b, double e)
 {
-  // calculate approximation with fraction of the exponent
-  int e = (int) b;
-  union {
-    double d;
-    int x[2];
-  } u = { a };
-  u.x[1] = (int)((b - e) * (u.x[1] - 1072632447) + 1072632447);
-  u.x[0] = 0;
-
-  // exponentiation by squaring with the exponent's integer part
-  // double r = u.d makes everything much slower, not sure why
-  double r = 1.0;
-  while (e) {
-    if (e & 1) {
-      r *= a;
-    }
-    a *= a;
-    e >>= 1;
-  }
-
-  return r * u.d;
+	if (e < 0) return 1/ipow_aux(b, (int) -e);
+	else return ipow_aux(b, (int) e);
 }
-#else
-double pow(double a, double b) {
-  union {
-    double d;
-    int x[2];
-  } u = { a };
-  u.x[1] = (int)(b * (u.x[1] - 1072632447) + 1072632447);
-  u.x[0] = 0;
-  return u.d;
+
+double ipow_aux(double b, int e)
+{
+	if (e == 0)
+		return 1;
+	else
+	{
+		double x = ipow_aux(b, e/2);
+		if (e%2)
+			return x*x*b;
+		else
+			return x*x;
+	}
 }
-#endif
+/*
+double ipow(double x,int i)
+{
+	double r = 1.0;
+
+	if(x == 0 && i == 0)
+		return 0;
+	else if(i == 0)
+		return 1;
+	else if(i < 0)
+	{
+		i *= -1;
+		for(;i>0;i--) r *= x;
+		return 1.0 / r;
+	}
+
+	for(;i>0;i--) r *= x;
+	return r;
+}
+*/
+double pow(double b, double ex)
+{
+	double result;
+	double PolyExp[GRADMACLAURINSERIES + 1];
+
+	MacLaurinExp(PolyExp, GRADMACLAURINSERIES);
+	ex *= ln(b);
+	if (ex > 0)
+		result = pow_aux((int)ex);
+	else
+		result = 1.0 / pow_aux((int)-ex);
+
+	result *= evalPoly(PolyExp, ex - (int)ex);
+	return result;
+}
+
+double *MacLaurinExp(double *Poly, int grad) // grad = lenght Poly - 1
+{
+	int i;
+	Poly[0] = 1.0;
+	for (i = 1; i <= grad; ++i)
+		Poly[i] = (double) Poly[i-1]/i;
+	return Poly;
+}
+
+double evalPoly(double *Poly, double x)
+{
+	int i;
+	double result = 0;
+	for (i = GRADMACLAURINSERIES; i >= 0; --i)
+		result = result*x + Poly[i];
+	return result;
+}
+
+double pow_aux(int ex)
+{
+	if (ex == 0)
+		return 1;
+	else
+		return M_E*pow_aux(ex-1);
+}
+
+double sqrt(double x)
+{
+	return pow(x, 0.5);
+}
+
+double rootOf(double x, double n)
+{
+	return pow(x, 1.0/n);
+}
+
+double logarithm(int b,double n)
+{
+	double val = 0;
+	int i,accurate = 10,reps=0;
+	while(n != 1 && accurate>=0) {
+		for(i=0;n>=b;i++) n /= b;
+			n = ipow(n,10);
+			val = 10*(val+i);
+			accurate--; reps++;
+	}
+	return (double) val/ipow(10,reps);
+}
+
+double ln(double num)
+{
+	return logarithm(10, num) / logarithm(10, M_E);
+}
+
+double log(double num)
+{
+	return logarithm(10, num);
+}
