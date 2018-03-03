@@ -101,8 +101,8 @@ unsigned long int factorial(int num)
 
 	while(num > 1)
 	{
-			factorial *= num;
-			num--;
+		factorial *= num;
+		num--;
 	}
 	return factorial;
 }
@@ -357,11 +357,13 @@ double logarithm(int b,double n)
 {
 	double val = 0;
 	int i,accurate = 10,reps=0;
-	while(n != 1 && accurate>=0) {
-		for(i=0;n>=b;i++) n /= b;
-			n = ipow(n,10);
-			val = 10*(val+i);
-			accurate--; reps++;
+	while(n != 1 && accurate>=0)
+	{
+		for(i=0;n>=b;i++)
+			n /= b;
+		n = ipow(n,10);
+		val = 10*(val+i);
+		accurate--; reps++;
 	}
 	return (double) val/ipow(10,reps);
 }
