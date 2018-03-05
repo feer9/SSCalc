@@ -1,7 +1,9 @@
 
 # archivos compilados #
 #######################
-*.so* 
+*.so
+*.so.*
+*.o
 
 # archivos de carpeta #
 #######################
