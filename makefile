@@ -1,4 +1,4 @@
-CC=gcc
+CC=g++
 CFLAGS=-Wall -ggdb -fPIC
 LDFLAGS=-fPIC -shared
 NOMBRE_LIB=libmaths.so.1.0.0
