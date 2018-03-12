@@ -1,0 +1,10 @@
+
+# archivos compilados #
+#######################
+*.so
+*.so.*
+*.o
+
+# archivos de carpeta #
+#######################
+.directory
