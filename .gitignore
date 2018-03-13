@@ -1,10 +1,11 @@
-
 # archivos compilados #
 #######################
 *.so
 *.so.*
 *.o
+*.exe
 
 # archivos de carpeta #
 #######################
 .directory
+Thumbs.db
