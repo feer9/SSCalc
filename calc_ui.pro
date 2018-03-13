@@ -36,14 +36,15 @@ FORMS += \
 RESOURCES += \
     recursos.qrc
 
+#$$(HOME)
+#$$(PWD)
 
+unix:LIBS += -L$$(PWD)/libmaths/ -lmaths
 
-unix:LIBS += -L$$(HOME)/git/libmaths/ -lmaths
+unix:INCLUDEPATH += $$(PWD)/libmaths
+unix:DEPENDPATH += $$(PWD)/libmaths
 
-unix:INCLUDEPATH += $$(HOME)/git/libmaths
-unix:DEPENDPATH += $$(HOME)/git/libmaths
+unix:LIBS += -L$$(PWD)/libcalc/ -lcalc
 
-unix:LIBS += -L$$(HOME)/git/libcalc/ -lcalc
-
-unix:INCLUDEPATH += $$(HOME)/git/libcalc
-unix:DEPENDPATH += $$(HOME)/git/libcalc
+unix:INCLUDEPATH += $$(PWD)/libcalc
+unix:DEPENDPATH += $$(PWD)/libcalc
