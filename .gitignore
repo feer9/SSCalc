@@ -9,3 +9,7 @@
 #######################
 .directory
 Thumbs.db
+
+# archivos de qt de usuario #
+#############################
+*.pro.user
