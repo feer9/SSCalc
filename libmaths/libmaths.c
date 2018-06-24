@@ -301,6 +301,9 @@ double ipow(double x,int i)
 	return r;
 }
 */
+// TODO: siendo que esta berga no funca con 0.algo ^ algoReal
+// podria invertir ese 0.algo (b = 1/b), hacer las cuentas,
+// e invertir de nuevo el resultado, TADAAAAA
 double pow(double b, double ex)
 {
 	double result;
