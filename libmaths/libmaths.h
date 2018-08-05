@@ -22,7 +22,7 @@
 # define M_SQRT2	1.41421356237309504880	/* sqrt(2)		*/
 # define M_SQRT1_2	0.70710678118654752440	/* 1/sqrt(2)	*/
 
-#define GRADMACLAURINSERIES 20
+#define GRADMACLAURINSERIES 30
 
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 
@@ -53,12 +53,13 @@ double ipow_aux(double b, int e);
 double pow_aux(int ex);
 double pow(double b, double ex);
 double *MacLaurinExp(double *Poly, int grad);
-double evalPoly(double *Poly, double x);
+double evalPoly(const double *Poly, double x);
 double sqrt(double x);
-double rootOf(double x, double n);
+double root(double x, double n);
 double log(double num);
 double ln(double num);
-double logarithm(int b,double n);
+double logarithm(int b, double n);
+double logarithm_aux(int b, double n);
 
 
 

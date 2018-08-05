@@ -1,6 +1,7 @@
 #include "libmaths.h"
 
-/*	Agregar una func promediar(n1,n2,...) indefinidos
+/*	TODO:
+	Agregar una func promediar(n1,n2,...) indefinidos
 	agregar funcion operar(n1, OPERACION, n2) con puntero a funcion (o en el orden q quieras)
 */
 
@@ -104,26 +105,23 @@ unsigned long int factorial(int num)
 		factorial *= num;
 		num--;
 	}
+
 	return factorial;
 }
 
 unsigned long int fibonacci(int num)
 {
-	unsigned long int an, an1 = 1, an2 = 1;
+	unsigned long int an = 1, an1 = 1, an2 = 1;
 	int i;
 
 	if(num <= 0)
 		an = 0;
-	else if(num < 3)
-		an = 1;
-	else
+
+	for(i=3; i<=num; i++)
 	{
-		for(i=3; i<=num; i++)
-		{
-			an = an1 + an2;
-			an2 = an1;
-			an1 = an;
-		}
+		an = an1 + an2;
+		an2 = an1;
+		an1 = an;
 	}
 	return an;
 }
@@ -281,43 +279,26 @@ double ipow_aux(double b, int e)
 			return x*x;
 	}
 }
-/*
-double ipow(double x,int i)
-{
-	double r = 1.0;
 
-	if(x == 0 && i == 0)
-		return 0;
-	else if(i == 0)
-		return 1;
-	else if(i < 0)
-	{
-		i *= -1;
-		for(;i>0;i--) r *= x;
-		return 1.0 / r;
-	}
-
-	for(;i>0;i--) r *= x;
-	return r;
-}
-*/
-// TODO: siendo que esta berga no funca con 0.algo ^ algoReal
-// podria invertir ese 0.algo (b = 1/b), hacer las cuentas,
-// e invertir de nuevo el resultado, TADAAAAA
 double pow(double b, double ex)
 {
 	double result;
-	double PolyExp[GRADMACLAURINSERIES + 1];
+	static double PolyExp[GRADMACLAURINSERIES + 1];
+	static char polyInit = 0;
 
-	MacLaurinExp(PolyExp, GRADMACLAURINSERIES);
+	if(!polyInit)
+	{
+		polyInit = 1; printf("inited\n");
+		MacLaurinExp(PolyExp, GRADMACLAURINSERIES);
+	}
 	ex *= ln(b);
+
 	if (ex > 0)
 		result = pow_aux((int)ex);
 	else
 		result = 1.0 / pow_aux((int)-ex);
 
-	result *= evalPoly(PolyExp, ex - (int)ex);
-	return result;
+	return result * evalPoly(PolyExp, ex - (int)ex);
 }
 
 double *MacLaurinExp(double *Poly, int grad) // grad = lenght Poly - 1
@@ -329,7 +310,7 @@ double *MacLaurinExp(double *Poly, int grad) // grad = lenght Poly - 1
 	return Poly;
 }
 
-double evalPoly(double *Poly, double x)
+double evalPoly(const double *Poly, double x)
 {
 	int i;
 	double result = 0;
@@ -351,15 +332,26 @@ double sqrt(double x)
 	return pow(x, 0.5);
 }
 
-double rootOf(double x, double n)
+double root(double x, double n)
 {
 	return pow(x, 1.0/n);
 }
 
-double logarithm(int b,double n)
+double logarithm(int b, double n)
+{
+	if (b <= 1 || n <=0)
+		return 0;
+	else if (n < 1)
+		return -logarithm_aux(b, 1.0 / n);
+	else
+		return logarithm_aux(b, n);
+}
+
+double logarithm_aux(int b, double n)
 {
 	double val = 0;
-	int i,accurate = 10,reps=0;
+	int i,accurate = 30,reps=0;
+
 	while(n != 1 && accurate>=0)
 	{
 		for(i=0;n>=b;i++)
@@ -373,7 +365,7 @@ double logarithm(int b,double n)
 
 double ln(double num)
 {
-	return logarithm(10, num) / logarithm(10, M_E);
+	return logarithm(10, num) / M_LOG10E;
 }
 
 double log(double num)
