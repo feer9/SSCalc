@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "../../libmaths/src/libmaths.h"
+#include "../../libmaths/src/maths.h"
 #include "manejo_nodos.h"
 #include "nodo.h"
 

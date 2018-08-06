@@ -11,20 +11,20 @@ all: build
 
 build: ../$(LIBNAME)
 
-../$(LIBNAME): ./obj ./obj/libmaths.o
-	$(CC) -Wl,-soname,$(SONAME) $(LDFLAGS) -o $@ ./obj/libmaths.o
+../$(LIBNAME): ./obj ./obj/maths.o
+	$(CC) -Wl,-soname,$(SONAME) $(LDFLAGS) -o $@ ./obj/maths.o
 #	sudo ldconfig -vn ../
-	ln -sf $(LIBNAME) ../libmaths.so.1.0
-	ln -sf libmaths.so.1.0 ../libmaths.so
+	ln -sf $(LIBNAME) ../$(SONAME)
+	ln -sf $(SONAME) ../$(LIB)
 
-./obj/libmaths.o: ./src/libmaths.c ./src/libmaths.h
+./obj/maths.o: ./src/maths.c ./src/maths.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./obj:
 	mkdir obj
 
-debug: ./src/libmaths.c ./src/debug.c ./src/libmaths.h
-	gcc -Wall ./src/libmaths.c ./src/debug.c -o $@
+debug: ./src/maths.c ./src/debug.c ./src/maths.h
+	gcc -Wall ./src/maths.c ./src/debug.c -o $@
 
 install: ../$(LIBNAME)
 	install -c ../$(LIBNAME) ~/.local/lib

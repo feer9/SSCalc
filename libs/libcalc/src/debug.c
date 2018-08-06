@@ -1,4 +1,4 @@
-#include "libcalc.h"
+#include "calc.h"
 
 int main()
 {

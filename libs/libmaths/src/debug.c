@@ -1,4 +1,4 @@
-#include "libmaths.h"
+#include "maths.h"
 
 int main()
 {

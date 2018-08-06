@@ -1,4 +1,4 @@
-#include "libmaths.h"
+#include "maths.h"
 
 /*	TODO:
 	Agregar una func promediar(n1,n2,...) indefinidos

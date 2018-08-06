@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "infija_a_postfija.h"
-#include "libcalc.h"
+#include "calc.h"
 
 #define _DEBUG_ 0
 #define _DBGPRNT_ENABLE_ 1
