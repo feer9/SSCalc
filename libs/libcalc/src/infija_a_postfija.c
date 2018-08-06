@@ -1,4 +1,4 @@
-#include "../inc/infija_a_postfija.h"
+#include "infija_a_postfija.h"
 
 
 // Función que verifica una expresión matemática.

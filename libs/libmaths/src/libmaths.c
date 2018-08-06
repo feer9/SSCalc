@@ -286,9 +286,11 @@ double pow(double b, double ex)
 	static double PolyExp[GRADMACLAURINSERIES + 1];
 	static char polyInit = 0;
 
+	if(b<0 && ex-(int)ex != 0.0)
+		return 0.0;
 	if(!polyInit)
 	{
-		polyInit = 1; printf("inited\n");
+		polyInit = 1;
 		MacLaurinExp(PolyExp, GRADMACLAURINSERIES);
 	}
 	ex *= ln(b);

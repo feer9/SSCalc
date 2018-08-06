@@ -1,4 +1,4 @@
-#include "../inc/manejo_nodos.h"
+#include "manejo_nodos.h"
 
 void apilar(char contenido, char c, nodo** P)
 {

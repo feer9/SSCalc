@@ -1,13 +1,5 @@
-/*
- *known issues:
- * la implementacion de pow en la libreria da cualquier cosa para bases de 0,algo
- * aparte esta aceptando bases negativas con exponente real, cosa que da resultados imaginarios
- *
- *
- */ 
-
 #include <stdio.h>
-#include "inc/infija_a_postfija.h"
+#include "infija_a_postfija.h"
 #include "libcalc.h"
 
 #define _DEBUG_ 0
@@ -17,25 +9,16 @@
 #define DECIMAL_DIGITS 13
 
 
- //int argc, char* argv[]);
-
 enum errores{E_NO,E_SINTAXIS,E_MATH};
 int m_error = E_NO;
 
 
-void consoleCalc()  //int argc, char* argv[])
+void consoleCalc()
 {
 	char input[256];
 	double res = 0.0;
 
-//	if (argc == 2 && strlen(input) > 2) // argumento de entrada
-//	{
-//		strcpy(input, argv[1]);
-//	}
-//	else
-//	{
-		scanf("%s",input);
-//	}
+	scanf("%s",input);
 
 	while(strcmp(input, "quit") && strcmp(input, "exit"))
 	{

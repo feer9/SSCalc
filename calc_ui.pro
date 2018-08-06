@@ -39,12 +39,7 @@ RESOURCES += \
 #$$(HOME)
 #$$(PWD)
 
-unix:LIBS += -L$$(PWD)/libmaths/ -lmaths
+unix:LIBS += -L$$(PWD)/libs/ -lmaths -lcalc
 
-unix:INCLUDEPATH += $$(PWD)/libmaths
-unix:DEPENDPATH += $$(PWD)/libmaths
-
-unix:LIBS += -L$$(PWD)/libcalc/ -lcalc
-
-unix:INCLUDEPATH += $$(PWD)/libcalc
-unix:DEPENDPATH += $$(PWD)/libcalc
+unix:INCLUDEPATH += $$(PWD)/libs
+unix:DEPENDPATH += $$(PWD)/libs
