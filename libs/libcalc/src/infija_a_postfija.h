@@ -2,9 +2,10 @@
 #define INFIJA_A_POSTFIJA_H
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
+#include "../../libstring/src/my_string.h"
+#include "../../libstd/src/std.h"
 #include "../../libmaths/src/maths.h"
 #include "manejo_nodos.h"
 #include "nodo.h"

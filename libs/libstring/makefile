@@ -2,21 +2,27 @@ CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
 LDFLAGS:=-fPIC -shared
 SOURCEDIR:=./src
-SOURCES:=./src/string.c
-HEADERS:= ./src/string.h
+SOURCES:=./src/my_string.c
+HEADERS:= ./src/my_string.h
 OBJECTSDIR:=./obj
-OBJECTS:=./obj/string.o
+OBJECTS:=./obj/my_string.o
 LIBNAME:=libstring.so.1.0.0
 SONAME:=libstring.so.1.0
 LIB:=libstring.so
 
+
+all: build
+
+build: ../$(LIBNAME)
+	
+.PHONY: all build install clean
 
 ../$(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
 	$(CC) -Wl,-soname,$(SONAME) $(LDFLAGS) -o $@ $(OBJECTS)
 	ln -sf $(LIBNAME) ../$(SONAME)
 	ln -sf $(SONAME) ../$(LIB)
 
-./obj/string.o: ./src/string.c ./src/string.h
+./obj/my_string.o: ./src/my_string.c ./src/my_string.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./src/%.c:
@@ -33,6 +39,10 @@ install: ../$(LIBNAME)
 	ln -sf $(LIBNAME) ~/.local/lib/$(SONAME)
 	ln -sf $(SONAME) ~/.local/lib/$(LIB)
 
+uninstall:
+	rm -rf ~/.local/lib/$(LIBNAME) ~/.local/lib/$(SONAME) \
+	~/.local/lib/$(LIB)
+
 clean:
-	rm -f ./obj/*.o *~ core $(EXECUTABLE)
+	rm -f ./obj/*.o *~ core
 	rmdir ./obj

@@ -1,18 +1,23 @@
+LIB:=libmaths.so
+SONAME:=$(LIB).1.0
+LIBNAME:=$(SONAME).0
+
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
-LDFLAGS:=-fPIC -shared
-LIBNAME:=libmaths.so.1.0.0
-SONAME:=libmaths.so.1.0
-LIB:=libmaths.so
+LDFLAGS:=-shared -Wl,-soname,$(SONAME)
 
-.PHONY: all build install clean
+OBJ:=./obj/maths.o
+OBJDIR:=./obj
+
 
 all: build
 
 build: ../$(LIBNAME)
+	
+.PHONY: all build install clean
 
-../$(LIBNAME): ./obj ./obj/maths.o
-	$(CC) -Wl,-soname,$(SONAME) $(LDFLAGS) -o $@ ./obj/maths.o
+../$(LIBNAME): $(OBJDIR) $(OBJ)
+	$(CC) $(LDFLAGS) -o $@ $(OBJ)
 #	sudo ldconfig -vn ../
 	ln -sf $(LIBNAME) ../$(SONAME)
 	ln -sf $(SONAME) ../$(LIB)
@@ -31,5 +36,9 @@ install: ../$(LIBNAME)
 	ln -sf $(LIBNAME) ~/.local/lib/$(SONAME)
 	ln -sf $(SONAME) ~/.local/lib/$(LIB)
 
+uninstall:
+	rm -rf ~/.local/lib/$(LIBNAME) ~/.local/lib/$(SONAME) \
+	~/.local/lib/$(LIB)
+
 clean:
-	rm -rf ./obj/*.o ./obj core libmaths.so* debug
+	rm -rf ./obj/*.o ./obj core debug

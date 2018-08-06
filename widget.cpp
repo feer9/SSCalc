@@ -1,7 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
-#include <libcalc.h>
-//#include <libmaths.h>
+#include <calc.h>
+#include <maths.h>
 
 
 Widget::Widget(QWidget *parent) :

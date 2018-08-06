@@ -4,12 +4,15 @@
 *.so.*
 *.o
 *.exe
+debug
 
 # archivos de carpeta #
 #######################
 .directory
 Thumbs.db
 
-# archivos de qt de usuario #
-#############################
+# archivos de qt innecesarios #
+###############################
 *.pro.user
+Makefile
+.qmake.stash

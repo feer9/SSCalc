@@ -10,6 +10,12 @@ LIBNAME:=libstd.so.1.0.0
 SONAME:=libstd.so.1.0
 LIB:=libstd.so
 
+all: build
+
+build: ../$(LIBNAME)
+
+.PHONY: all build install uninstall clean
+
 ../$(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
 	$(CC) -Wl,-soname,$(SONAME) $(LDFLAGS) -o $@ $(OBJECTS)
 	ln -sf $(LIBNAME) ../$(SONAME)
@@ -32,6 +38,10 @@ install: ../$(LIBNAME)
 	ln -sf $(LIBNAME) ~/.local/lib/$(SONAME)
 	ln -sf $(SONAME) ~/.local/lib/$(LIB)
 
+uninstall:
+	rm -rf ~/.local/lib/$(LIBNAME) ~/.local/lib/$(SONAME) \
+	~/.local/lib/$(LIB)
+
 clean:
-	rm -f ./obj/*.o *~ core $(EXECUTABLE)
+	rm -f ./obj/*.o *~ core
 	rmdir ./obj

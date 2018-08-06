@@ -1,5 +1,5 @@
-#ifndef LIBMATHS_H_INCLUDED
-#define LIBMATHS_H_INCLUDED
+#ifndef _MY_MATHS_H
+#define _MY_MATHS_H
 
 #include <stdio.h>
 //#include <stdlib.h>
@@ -63,4 +63,4 @@ double logarithm_aux(int b, double n);
 
 
 
-#endif // LIBMATHS_H_INCLUDED
+#endif

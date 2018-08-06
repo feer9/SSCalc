@@ -36,10 +36,15 @@ FORMS += \
 RESOURCES += \
     recursos.qrc
 
-#$$(HOME)
-#$$(PWD)
+#$$HOME tu /home/usuario
+#$$PWD  carpeta en que se encuentra este archivo
 
-unix:LIBS += -L$$(PWD)/libs/ -lmaths -lcalc
+unix:INCLUDEPATH += $$PWD/libs
+unix:DEPENDPATH += $$PWD/libs
 
-unix:INCLUDEPATH += $$(PWD)/libs
-unix:DEPENDPATH += $$(PWD)/libs
+unix:INCLUDEPATH += $$PWD/libs/libcalc/src
+unix:INCLUDEPATH += $$PWD/libs/libmaths/src
+unix:INCLUDEPATH += $$PWD/libs/libstd/src
+unix:INCLUDEPATH += $$PWD/libs/libstring/src
+
+unix:LIBS += -L$$PWD/libs/ -lmaths -lcalc -lstring -lstd
