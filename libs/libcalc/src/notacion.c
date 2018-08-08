@@ -1,20 +1,22 @@
-#include "infija_a_postfija.h"
+#include "notacion.h"
 
 
 // Función que verifica una expresión matemática.
 // Devuelve 0 si está todo bien
-int check_expr(const char* str)
+void checkExpr(const char* str, int *errorFlag)
 {
-	int c, i = 0;
+	int c;
+	int i = 0;
 	int ops_consec = 0;
 	int cuenta = 0;
 	int tama;
+	int error = 0;
 
-	tama = strlen(str);
+	tama = (int) strlen(str);
 	c = esOp(str[i]);
 	if(c >= 3 && c <= 5)
-		return -1;
-	while(i < tama && cuenta >= 0)
+		error = 1;
+	else while(i < tama && cuenta >= 0)
 	{
 		if (c >= 1 && c <=5)
 			ops_consec++;
@@ -22,12 +24,12 @@ int check_expr(const char* str)
 			ops_consec = 0;
 
 		if(ops_consec > 1 && (c != 1 && c != 2)) // despues de un operador, solo puede haber un + o un -
-			return -1;
+			{error = 1; break;}
 		if(ops_consec > 2)
-			return -1;
+			{error = 1; break;}
 
-		if (!c && !esNum(*(str + i))) // no es operador y ni operando
-			return -1;
+		if ( !c && !esNum(str[i]) ) // no es operador y ni operando
+			{error = 1; break;}
 
 		if (c == 6) // (
 			cuenta++;
@@ -35,14 +37,15 @@ int check_expr(const char* str)
 			cuenta--;
 
 		i++;
-		c = esOp(*(str + i));
+		c = esOp(str[i]);
 	}
 
-	return cuenta + ops_consec;
+	if(error || (cuenta + ops_consec))
+		*errorFlag = E_SINTAXIS;
 }
 
 
-nodo* infijaAPostfija(const char* inf)
+nodo* infijaAPostfija(const char* inf, double ans)
 {
 	unsigned int i=0, k;
 	int op; // OP actual
@@ -198,8 +201,8 @@ nodo* infijaAPostfija(const char* inf)
 
 int esNum(char c)
 {
-	if ((c >= 48 && c <= 57) || c == 46 || c == 44)
-		return 1; // será un numero (ascii 48 a 57) o un punto o coma (ascii 46 y 44 resp.)
+	if ((c >= '0' && c <= '9') || c == '.' || c == ',')
+		return 1; // es numero (o coma)
 	else
 		return 0; // no es numero
 }
@@ -220,7 +223,7 @@ int esOp(char c)
 	}
 }
 
-double resolver_postfija(nodo** Cola)
+double resolverPostfija(nodo** Cola, int *errorFlag)
 {
 	nodo* Pila = NULL;
 	nodo* aux1 = NULL;
@@ -236,7 +239,7 @@ double resolver_postfija(nodo** Cola)
 			op = sacar(Cola);
 			aux2 = sacar(&Pila);
 			aux1 = sacar(&Pila);
-			res = resolver(aux1, aux2, &op);
+			res = resolver(aux1, aux2, &op, errorFlag);
 			pasarAPila(&res, &Pila);
 		}
 		else
@@ -250,14 +253,14 @@ double resolver_postfija(nodo** Cola)
 	return resu;
 }
 
-nodo* resolver(nodo* n1, nodo* n2, nodo** op)
+nodo* resolver(nodo* n1, nodo* n2, nodo** op, int *errorFlag)
 {
-	double (*fResolver[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
+	double (*fResolver[])(double, double, int*) = {sumar, restar, multiplicar, dividir, pow};
 
 	if(n1 == NULL || n2 == NULL || op == NULL)
 		return NULL;
 
-	(*op)->numero = (*fResolver[esOp((*op)->operador) - 1]) (n1->numero,n2->numero);
+	(*op)->numero = (*fResolver[esOp((*op)->operador) - 1]) (n1->numero,n2->numero, errorFlag);
 	(*op)->contenido = NUMERO;
 
 	eliminar(&n1);

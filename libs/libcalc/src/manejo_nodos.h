@@ -1,8 +1,8 @@
-#ifndef MANEJO_NODOS_H
-#define MANEJO_NODOS_H
+#ifndef _MANEJO_NODOS_H
+#define _MANEJO_NODOS_H
 
 
-#include "infija_a_postfija.h"
+#include "notacion.h"
 #include "nodo.h"
 
 
@@ -15,4 +15,4 @@ void pasarAPila(nodo** cola, nodo** pila);
 void eliminar(nodo**);
 
 
-#endif // MANEJO_NODOS_H
+#endif

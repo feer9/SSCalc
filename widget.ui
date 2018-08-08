@@ -31,6 +31,10 @@
   <property name="windowTitle">
    <string extracomment="que miras?">Calculadora</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="recursos.qrc">
+    <normaloff>:/img/Surprised_Patrick.png</normaloff>:/img/Surprised_Patrick.png</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0" colspan="3">
     <widget class="QTextEdit" name="output_textEdit">
@@ -447,6 +451,8 @@
   <tabstop>pushButton_Mem</tabstop>
   <tabstop>output_textEdit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>

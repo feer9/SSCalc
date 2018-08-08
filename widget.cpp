@@ -70,7 +70,7 @@ void Widget::buttonRemove()
 		ui->input_lineEdit->clear();
 		buffIn.clear();
 	}
-	else if(!QString::compare(clickedButton->text(), "DEL"))
+    else if(!QString::compare(clickedButton->text(), "DEL"))
 	{
 		ui->input_lineEdit->backspace();
 		int cursor = ui->input_lineEdit->cursorPosition();
@@ -81,7 +81,7 @@ void Widget::buttonRemove()
 
 void Widget::on_pushButton_igual_clicked()
 {
-	ui->output_textEdit->insertPlainText( QString::number(ANS = resolverExpresion(buffIn.toLocal8Bit()))); //, 'f', 10) );
+    ui->output_textEdit->insertPlainText( QString::number(ANS = resolverExpresion(buffIn.toLocal8Bit())));
 	// para el manejo de ANS voy a tener que modificar la libreria para que resolverExpresion tome como parametro un double, ANS
 	// en la expresion, se le va a pasar la letra A, la cual va a reemplazar por el valor de ese parametro
 	ui->output_textEdit->insertPlainText(QString('\n'));

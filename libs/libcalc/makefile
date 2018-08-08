@@ -1,8 +1,8 @@
 # compiler
 CC:=g++
 
-OBJS:=./obj/infija_a_postfija.o ./obj/manejo_nodos.o ./obj/calc.o
-HEADERS:=../libmaths/src/maths.h ./src/calc.h ./src/infija_a_postfija.h ./src/manejo_nodos.h ./src/nodo.h
+OBJS:=./obj/notacion.o ./obj/manejo_nodos.o ./obj/calc.o
+HEADERS:=../libmaths/src/maths.h ./src/calc.h ./src/notacion.h ./src/manejo_nodos.h ./src/nodo.h
 LIB:=libcalc.so
 SONAME:=libcalc.so.1.0
 LIBNAME:=libcalc.so.1.0.0
@@ -28,7 +28,7 @@ build: ../$(LIBNAME)
 ./obj/calc.o: ./src/calc.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./obj/infija_a_postfija.o: ./src/infija_a_postfija.c
+./obj/notacion.o: ./src/notacion.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./obj/manejo_nodos.o: ./src/manejo_nodos.c

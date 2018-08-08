@@ -5,37 +5,6 @@
 	agregar funcion operar(n1, OPERACION, n2) con puntero a funcion (o en el orden q quieras)
 */
 
-double sumar(double a, double b)
-{
-	return (a+b);
-}
-
-double restar(double a, double b)
-{
-	return (a-b);
-}
-
-double multiplicar(double a, double b)
-{
-	return (a*b);
-}
-
-double dividir(double a, double b)
-{
-	if(b != 0.0)
-		return (a/b);
-	else
-	{
-		perror("Error, división por cero\n");
-		return(0);
-	}
-}
-
-double areaCirculo(double radio)
-{
-	return (M_PI * radio * radio);
-}
-
 int max(int a, int b)
 {
 	return (a > b ? a:b);
@@ -68,7 +37,7 @@ int mayor(int* v, size_t n)
 // devuelve la posicion del menor
 int menor(int* v, size_t n)
 {
-	unsigned int i;
+	size_t i;
 	int num_menor = v[0];
 	int men = 0;
 	for(i=1; i<n; i++)
@@ -91,6 +60,11 @@ double prom(int* vec, size_t n)
 		suma += vec[i];
 
 	return (suma / (double) n);
+}
+
+double areaCirculo(double radio)
+{
+	return (M_PI * radio * radio);
 }
 
 unsigned long int factorial(int num)
@@ -207,7 +181,7 @@ double dEstandar(int *vec, size_t n)
 	// calculo la sumatoria de los cuadrados de la diferencia entre
 	// cada elemento del vector y el promedio de ellos ( sum [(Xi - Xprom ) ^ 2] )
 	for(i=0; i<n; i++)
-		sumatoria += pow(vec[i] - promedio, 2);
+		sumatoria += pow(vec[i] - promedio, 2, (int*)0);
 
 	// retorno la raiz de la inversa de la cantidad de elementos menos uno,
 	// por la sumatoria calculada. Esto es, la desviacion estandar del vector.
@@ -251,43 +225,59 @@ int buscaBin(int *v, int tam, int D)
 	int pivote = (der + izq) / 2;
 	while(*(v + pivote) != D && (izq <= der))
 	{
-		if(*(v + pivote) < D) 	izq = pivote + 1;
-			else		der = pivote - 1;
+		if(*(v + pivote) < D)
+			izq = pivote + 1;
+		else
+			der = pivote - 1;
 		pivote = (izq + der) / 2;
 	}
-	if(*(v + pivote) == D) 	return pivote;
-		else		return -1;
+	if(*(v + pivote) == D)
+		return pivote;
+	else
+		return -1;
 }
 
-
-double ipow(double b, double e)
+double sumar(double a, double b, int *errorFlag)
 {
-	if (e < 0) return 1/ipow_aux(b, (int) -e);
-	else return ipow_aux(b, (int) e);
+	return (a+b);
 }
 
-double ipow_aux(double b, int e)
+double restar(double a, double b, int *errorFlag)
 {
-	if (e == 0)
-		return 1;
+	return (a-b);
+}
+
+double multiplicar(double a, double b, int *errorFlag)
+{
+	return (a*b);
+}
+
+double dividir(double a, double b, int *errorFlag)
+{
+	if(b != 0.0)
+		return (a/b);
 	else
 	{
-		double x = ipow_aux(b, e/2);
-		if (e%2)
-			return x*x*b;
-		else
-			return x*x;
+		*errorFlag = E_MATH;
+		return 0.0;
 	}
 }
 
-double pow(double b, double ex)
+double pow(double b, double ex, int *errorFlag)
 {
 	double result;
 	static double PolyExp[GRADMACLAURINSERIES + 1];
 	static char polyInit = 0;
 
-	if(b<0 && ex-(int)ex != 0.0)
+	if(ex - (int)ex == 0.0) // exponente entero
+		return ipow(b, ex);
+
+	else if(b<0) // exp real y base negativa
+	{
+		*errorFlag = E_MATH;
 		return 0.0;
+	}
+
 	if(!polyInit)
 	{
 		polyInit = 1;
@@ -329,14 +319,34 @@ double pow_aux(int ex)
 		return M_E*pow_aux(ex-1);
 }
 
+double ipow(double b, double e)
+{
+	if (e < 0) return 1/ipow_aux(b, (int) -e);
+	else return ipow_aux(b, (int) e);
+}
+
+double ipow_aux(double b, int e)
+{
+	if (e == 0)
+		return 1;
+	else
+	{
+		double x = ipow_aux(b, e/2);
+		if (e%2)
+			return x*x*b;
+		else
+			return x*x;
+	}
+}
+
 double sqrt(double x)
 {
-	return pow(x, 0.5);
+	return pow(x, 0.5, (int*)0);
 }
 
 double root(double x, double n)
 {
-	return pow(x, 1.0/n);
+	return pow(x, 1.0/n, (int*)0);
 }
 
 double logarithm(int b, double n)
