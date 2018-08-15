@@ -14,11 +14,11 @@
 
 
 
-void checkExpr(const char *, int*);
+int checkExpr(const char*);
+int checkMath(double n1, char op, double n2);
 nodo* infijaAPostfija(const char*, double);
 int esNum(char);
 int esOp(char);
-//int esOp_(char);
 double resolverPostfija(nodo**, int*);
 nodo* resolver(nodo* n1, nodo* n2, nodo** op, int *errorFlag);
 void mostrar(nodo*);

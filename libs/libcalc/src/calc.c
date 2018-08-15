@@ -41,11 +41,14 @@ void consoleCalc()
 double resolverExpresion(const char* expr, double ans, int* errorFlag)
 {
 	nodo* COLA = NULL;
-	checkExpr(expr, errorFlag);
-	if(*errorFlag)
+	
+	if(checkExpr(expr))
+	{
+		*errorFlag = E_SINTAXIS;
 		return 0.0;
+	}
 
 	COLA = infijaAPostfija(expr, ans);
-	DBGPRNT
+	DBGPRNT;
 	return resolverPostfija(&COLA, errorFlag);
 }

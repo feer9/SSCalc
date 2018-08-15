@@ -3,20 +3,19 @@
 
 // Función que verifica una expresión matemática.
 // Devuelve 0 si está todo bien
-void checkExpr(const char* str, int *errorFlag)
+int checkExpr(const char* str)
 {
 	int c;
 	int i = 0;
 	int ops_consec = 0;
-	int cuenta = 0;
+	int parentesis = 0;
 	int tama;
-	int error = 0;
 
 	tama = (int) strlen(str);
 	c = esOp(str[i]);
 	if(c >= 3 && c <= 5)
-		error = 1;
-	else while(i < tama && cuenta >= 0)
+		return 1;
+	else while(i < tama && parentesis >= 0)
 	{
 		if (c >= 1 && c <=5)
 			ops_consec++;
@@ -24,26 +23,24 @@ void checkExpr(const char* str, int *errorFlag)
 			ops_consec = 0;
 
 		if(ops_consec > 1 && (c != 1 && c != 2)) // despues de un operador, solo puede haber un + o un -
-			{error = 1; break;}
+			return 1;
 		if(ops_consec > 2)
-			{error = 1; break;}
+			return 1;
 
 		if ( !c && !esNum(str[i]) ) // no es operador y ni operando
-			{error = 1; break;}
+			return 1;
 
-		if (c == 6) // (
-			cuenta++;
+		if (c == 6)      // (
+			parentesis++;
 		else if (c == 7) // )
-			cuenta--;
+			parentesis--;
 
 		i++;
 		c = esOp(str[i]);
 	}
 
-	if(error || (cuenta + ops_consec))
-		*errorFlag = E_SINTAXIS;
+	return parentesis + ops_consec;
 }
-
 
 nodo* infijaAPostfija(const char* inf, double ans)
 {
@@ -246,30 +243,55 @@ double resolverPostfija(nodo** Cola, int *errorFlag)
 		{
 			pasarAPila(Cola, &Pila);
 		}
+		if(*errorFlag != E_NO)
+			break;
 	}
 	if(Pila != NULL)
 		resu = Pila->numero;
 	vaciar(&Pila);
+	vaciar(Cola);
 	return resu;
 }
 
 nodo* resolver(nodo* n1, nodo* n2, nodo** op, int *errorFlag)
 {
-	double (*fResolver[])(double, double, int*) = {sumar, restar, multiplicar, dividir, pow};
+	double (*fResolver[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
 
 	if(n1 == NULL || n2 == NULL || op == NULL)
 		return NULL;
 
-	(*op)->numero = (*fResolver[esOp((*op)->operador) - 1]) (n1->numero,n2->numero, errorFlag);
-	(*op)->contenido = NUMERO;
-
+	if(checkMath(n1->numero, (*op)->operador, n2->numero))
+		*errorFlag = E_MATH;
+	else
+	{
+		(*op)->numero = (*fResolver[esOp((*op)->operador) - 1]) (n1->numero,n2->numero);
+		(*op)->contenido = NUMERO;
+	}
 	eliminar(&n1);
 	eliminar(&n2);
 
-//	free(n1);
-//	free(n2);
-
 	return *op;
+}
+
+int checkMath(double n1, char op, double n2)
+{
+	switch (op)
+	{
+	case '/':
+		if(n2 == 0.0)
+			return 1;
+		break;
+	case '^':
+	// exp real y base negativa, resultado imaginario
+	// 0^0 no definido
+		if(((n2 - (int)n2 != 0.0) && (n1 < 0)) || \
+			(n1 == 0.0 && n2 == 0.0) )				
+			return 1;
+		break;
+	default:
+		break;
+	}
+	return 0;
 }
 
 void mostrar(nodo* N)
@@ -287,22 +309,3 @@ void mostrar(nodo* N)
 	puts("");
 	return;
 }
-
-/*
-int esOp_(char c)
-{
-	switch(c)
-	{
-		case '+': return SUMA;
-		case '-': if (!esNum(*(c+1))) return RESTA;
-					else return 0;
-		case '*': return MULTIPLICACION;
-		case '/': return DIVISION;
-		case '^': return POTENCIA;
-		case '(': return PARENTESIS_A;
-		case ')': return PARENTESIS_C;
-		case ' ': return ESPACIO;
-		default : return 0;
-	}
-}
-*/

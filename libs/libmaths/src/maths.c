@@ -181,7 +181,7 @@ double dEstandar(int *vec, size_t n)
 	// calculo la sumatoria de los cuadrados de la diferencia entre
 	// cada elemento del vector y el promedio de ellos ( sum [(Xi - Xprom ) ^ 2] )
 	for(i=0; i<n; i++)
-		sumatoria += pow(vec[i] - promedio, 2, (int*)0);
+		sumatoria += pow(vec[i] - promedio, 2);
 
 	// retorno la raiz de la inversa de la cantidad de elementos menos uno,
 	// por la sumatoria calculada. Esto es, la desviacion estandar del vector.
@@ -237,33 +237,27 @@ int buscaBin(int *v, int tam, int D)
 		return -1;
 }
 
-double sumar(double a, double b, int *errorFlag)
+double sumar(double a, double b)
 {
 	return (a+b);
 }
 
-double restar(double a, double b, int *errorFlag)
+double restar(double a, double b)
 {
 	return (a-b);
 }
 
-double multiplicar(double a, double b, int *errorFlag)
+double multiplicar(double a, double b)
 {
 	return (a*b);
 }
 
-double dividir(double a, double b, int *errorFlag)
+double dividir(double a, double b)
 {
-	if(b != 0.0)
-		return (a/b);
-	else
-	{
-		*errorFlag = E_MATH;
-		return 0.0;
-	}
+	return (a/b);
 }
 
-double pow(double b, double ex, int *errorFlag)
+double pow(double b, double ex)
 {
 	double result;
 	static double PolyExp[GRADMACLAURINSERIES + 1];
@@ -271,12 +265,6 @@ double pow(double b, double ex, int *errorFlag)
 
 	if(ex - (int)ex == 0.0) // exponente entero
 		return ipow(b, ex);
-
-	else if(b<0) // exp real y base negativa
-	{
-		*errorFlag = E_MATH;
-		return 0.0;
-	}
 
 	if(!polyInit)
 	{
@@ -290,7 +278,9 @@ double pow(double b, double ex, int *errorFlag)
 	else
 		result = 1.0 / pow_aux((int)-ex);
 
-	return result * evalPoly(PolyExp, ex - (int)ex);
+	result *= evalPoly(PolyExp, ex - (int)ex);
+
+	return result;
 }
 
 double *MacLaurinExp(double *Poly, int grad) // grad = lenght Poly - 1
@@ -341,12 +331,12 @@ double ipow_aux(double b, int e)
 
 double sqrt(double x)
 {
-	return pow(x, 0.5, (int*)0);
+	return pow(x, 0.5);
 }
 
 double root(double x, double n)
 {
-	return pow(x, 1.0/n, (int*)0);
+	return pow(x, 1.0/n);
 }
 
 double logarithm(int b, double n)
