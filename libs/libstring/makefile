@@ -6,9 +6,11 @@ SOURCES:=./src/my_string.c
 HEADERS:= ./src/my_string.h
 OBJECTSDIR:=./obj
 OBJECTS:=./obj/my_string.o
-LIBNAME:=libstring.so.1.0.0
-SONAME:=libstring.so.1.0
 LIB:=libstring.so
+LIBVER:=.0.4
+LIBSUBVER:=.0
+SONAME:=$(LIB)$(LIBVER)
+LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 
 
 all: build

@@ -341,10 +341,10 @@ double root(double x, double n)
 
 double logarithm(int b, double n)
 {
-	if (b <= 1 || n <=0)
+	if (b <= 1 || n <= 0)
 		return 0;
 	else if (n < 1)
-		return -logarithm_aux(b, 1.0 / n);
+		return -logarithm_aux(b, 1.0/n);
 	else
 		return logarithm_aux(b, n);
 }

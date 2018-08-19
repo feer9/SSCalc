@@ -1,6 +1,8 @@
 LIB:=libmaths.so
-SONAME:=$(LIB).1.0
-LIBNAME:=$(SONAME).0
+LIBVER:=.0.7
+LIBSUBVER:=.0
+SONAME:=$(LIB)$(LIBVER)
+LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC

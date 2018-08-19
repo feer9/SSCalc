@@ -4,8 +4,10 @@ CC:=g++
 OBJS:=./obj/notacion.o ./obj/manejo_nodos.o ./obj/calc.o
 HEADERS:=../libmaths/src/maths.h ./src/calc.h ./src/notacion.h ./src/manejo_nodos.h ./src/nodo.h
 LIB:=libcalc.so
-SONAME:=libcalc.so.1.0
-LIBNAME:=libcalc.so.1.0.0
+LIBVER:=.0.9
+LIBSUBVER:=.0
+SONAME:=$(LIB)$(LIBVER)
+LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 
 # compiler flags
 CFLAGS:=-Wall -ggdb -fPIC -I..

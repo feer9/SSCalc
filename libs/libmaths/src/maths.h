@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 //#include <stdlib.h>
-#include <sys/types.h>
-//#include <stddef.h>
+//#include <sys/types.h>
+#include <stddef.h>
 //#include <stdint.h>
 
 /* Some useful constants.									*/
@@ -28,8 +28,8 @@
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 #endif
 
-#ifndef ERRORES_MATH
-#define ERRORES_MATH
+#ifndef _ERRORES_MATH
+#define _ERRORES_MATH
 enum errores {E_NO, E_SINTAXIS, E_MATH};
 #endif
 

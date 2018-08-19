@@ -42,7 +42,7 @@ double resolverExpresion(const char* expr, double ans, int* errorFlag)
 {
 	nodo* COLA = NULL;
 	
-	if(checkExpr(expr))
+	if(checkSintax(expr))
 	{
 		*errorFlag = E_SINTAXIS;
 		return 0.0;

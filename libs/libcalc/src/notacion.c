@@ -3,7 +3,7 @@
 
 // Función que verifica una expresión matemática.
 // Devuelve 0 si está todo bien
-int checkExpr(const char* str)
+int checkSintax(const char* str)
 {
 	int c;
 	int i = 0;
@@ -285,7 +285,7 @@ int checkMath(double n1, char op, double n2)
 	// exp real y base negativa, resultado imaginario
 	// 0^0 no definido
 		if(((n2 - (int)n2 != 0.0) && (n1 < 0)) || \
-			(n1 == 0.0 && n2 == 0.0) )				
+			(n1 == 0.0 && n2 == 0.0) )
 			return 1;
 		break;
 	default:

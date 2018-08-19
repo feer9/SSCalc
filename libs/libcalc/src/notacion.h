@@ -13,8 +13,7 @@
 
 
 
-
-int checkExpr(const char*);
+int checkSintax(const char*);
 int checkMath(double n1, char op, double n2);
 nodo* infijaAPostfija(const char*, double);
 int esNum(char);

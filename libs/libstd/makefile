@@ -6,9 +6,11 @@ SOURCES:=./src/std.c
 HEADERS:= ./src/std.h
 OBJECTSDIR:=./obj
 OBJECTS:=./obj/std.o
-LIBNAME:=libstd.so.1.0.0
-SONAME:=libstd.so.1.0
 LIB:=libstd.so
+LIBVER:=.0.1
+LIBSUBVER:=.0
+SONAME:=$(LIB)$(LIBVER)
+LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 
 all: build
 
