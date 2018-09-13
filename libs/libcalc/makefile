@@ -8,6 +8,7 @@ LIBVER:=.0.9
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
+INSTALL_DIR:=~/.local/lib
 
 # compiler flags
 CFLAGS:=-Wall -ggdb -fPIC -I..
@@ -17,15 +18,15 @@ LDFLAGS:=-shared -Wl,-soname,$(SONAME)
 
 all: build
 
-build: ../$(LIBNAME)
+build: $(LIBNAME)
 
 .PHONY: all build install clean
 
-../$(LIBNAME): ./obj  $(OBJS) $(HEADERS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) -L.. -lmaths
-	# importante que "-L.. -lmaths" esté a la derecha
-	ln -sf $(LIBNAME) ../$(SONAME)
-	ln -sf $(SONAME) ../$(LIB)
+	# importante que "-L. -lmaths" esté a la derecha
+$(LIBNAME): ./obj  $(OBJS) $(HEADERS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) -L../libmaths -lmaths
+	ln -sf $(LIBNAME) $(SONAME)
+	ln -sf $(SONAME) $(LIB)
 
 ./obj/calc.o: ./src/calc.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -42,18 +43,21 @@ build: ../$(LIBNAME)
 ./obj:
 	mkdir $@
 
+#-L. -Wl,-rpath=..
 debug: ./obj ./obj/debug.o $(OBJS) $(HEADERS)
-	$(CC) -L.. -Wl,-rpath=.. -Wall $(OBJS) ./obj/debug.o -o debug -lmaths -lstring
+	$(CC) -Wall $(OBJS) ./obj/debug.o -o debug -L../libmaths -lmaths -L../libstring -lstring -Wl,-rpath=$(INSTALL_DIR)
 
-install: ../$(LIBNAME)
-	install -c ../$(LIBNAME) ~/.local/lib
-	ln -sf $(LIBNAME) ~/.local/lib/$(SONAME)
-	ln -sf $(SONAME) ~/.local/lib/$(LIB)
+install: $(LIBNAME)
+	install -c $(LIBNAME) $(INSTALL_DIR)
+	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
+	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
 
 uninstall:
-	rm -rf ~/.local/lib/$(LIBNAME) ~/.local/lib/$(SONAME) \
-	~/.local/lib/$(LIB)
+	rm -rf $(INSTALL_DIR)/$(LIB)*
 
 clean:
 	$(RM) *.o ./obj/*.o core debug
 	rmdir ./obj
+
+clean_build:
+	rm -f $(LIB)*

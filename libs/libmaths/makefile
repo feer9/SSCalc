@@ -3,6 +3,7 @@ LIBVER:=.0.7
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
+INSTALL_DIR:=~/.local/lib
 
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
@@ -14,15 +15,15 @@ OBJDIR:=./obj
 
 all: build
 
-build: ../$(LIBNAME)
+build: $(LIBNAME)
 	
 .PHONY: all build install clean
 
-../$(LIBNAME): $(OBJDIR) $(OBJ)
+#	sudo ldconfig -vn .
+$(LIBNAME): $(OBJDIR) $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $(OBJ)
-#	sudo ldconfig -vn ../
-	ln -sf $(LIBNAME) ../$(SONAME)
-	ln -sf $(SONAME) ../$(LIB)
+	ln -sf $(LIBNAME) $(SONAME)
+	ln -sf $(SONAME) $(LIB)
 
 ./obj/maths.o: ./src/maths.c ./src/maths.h
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -33,14 +34,16 @@ build: ../$(LIBNAME)
 debug: ./src/maths.c ./src/debug.c ./src/maths.h
 	gcc -Wall ./src/maths.c ./src/debug.c -o $@
 
-install: ../$(LIBNAME)
-	install -c ../$(LIBNAME) ~/.local/lib
-	ln -sf $(LIBNAME) ~/.local/lib/$(SONAME)
-	ln -sf $(SONAME) ~/.local/lib/$(LIB)
+install: $(LIBNAME)
+	install -c $(LIBNAME) $(INSTALL_DIR)
+	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
+	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
 
 uninstall:
-	rm -rf ~/.local/lib/$(LIBNAME) ~/.local/lib/$(SONAME) \
-	~/.local/lib/$(LIB)
+	rm -rf $(INSTALL_DIR)/$(LIB)*
 
 clean:
 	rm -rf ./obj/*.o ./obj core debug
+
+clean_build:
+	rm -f $(LIB)*

@@ -19,7 +19,7 @@ void consoleCalc()
 
 	scanf("%s",input);
 
-	while(strcmp(input, "quit") && strcmp(input, "exit"))
+	while(strcmp(input, "q") && strcmp(input, "quit"))
 	{
 		res = resolverExpresion(input, ans, &errorFlag);
 		if(errorFlag == E_SINTAXIS)
@@ -28,7 +28,7 @@ void consoleCalc()
 			printf("error matematico\n");
 		else
 		{
-			printf("= %.15lf\n", res);
+			printf("= %.10g\n", res);
 			ans = res;
 		}
 

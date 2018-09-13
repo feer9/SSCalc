@@ -7,8 +7,8 @@ TODO: {
 
 Para poder linkear correctamente las librerias:
 
-1) agregar "${HOME}/.local/lib" a /etc/ld.so.conf.d/libc.conf
-2) hacer "make install" en cada subdirectorio de la carpeta libs
+1) agregar "/home/<usuario>/.local/lib" a /etc/ld.so.conf.d/libc.conf
+2) hacer "make install" en el directorio libs
 3) actualizar las librerias del sistema con "sudo ldconfig"
 
 info de librerías dinámicas:

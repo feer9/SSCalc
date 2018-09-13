@@ -11,18 +11,18 @@ LIBVER:=.0.4
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
-
+INSTALL_DIR:=~/.local/lib
 
 all: build
 
-build: ../$(LIBNAME)
-	
+build: $(LIBNAME)
+
 .PHONY: all build install clean
 
-../$(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
+$(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
 	$(CC) -Wl,-soname,$(SONAME) $(LDFLAGS) -o $@ $(OBJECTS)
-	ln -sf $(LIBNAME) ../$(SONAME)
-	ln -sf $(SONAME) ../$(LIB)
+	ln -sf $(LIBNAME) $(SONAME)
+	ln -sf $(SONAME) $(LIB)
 
 ./obj/my_string.o: ./src/my_string.c ./src/my_string.h
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -36,15 +36,18 @@ $(SOURCEDIR):
 $(OBJECTSDIR): $(SOURCEDIR)
 	mkdir -p $@
 
-install: ../$(LIBNAME)
-	install -c ../$(LIBNAME) ~/.local/lib
-	ln -sf $(LIBNAME) ~/.local/lib/$(SONAME)
-	ln -sf $(SONAME) ~/.local/lib/$(LIB)
+install: $(LIBNAME)
+	mkdir -p $(INSTALL_DIR)
+	install -c $(LIBNAME) $(INSTALL_DIR)
+	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
+	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
 
 uninstall:
-	rm -rf ~/.local/lib/$(LIBNAME) ~/.local/lib/$(SONAME) \
-	~/.local/lib/$(LIB)
+	rm -rf $(INSTALL_DIR)/$(LIB)*
 
 clean:
 	rm -f ./obj/*.o *~ core
 	rmdir ./obj
+
+clean_build:
+	rm -f $(LIB)*
