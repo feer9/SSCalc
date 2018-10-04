@@ -13,6 +13,6 @@ Thumbs.db
 
 # archivos de qt innecesarios #
 ###############################
-*.pro.user
-Makefile
-.qmake.stash
+./*.pro.user
+./Makefile
+./.qmake.stash
