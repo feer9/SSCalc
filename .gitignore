@@ -5,6 +5,7 @@
 *.o
 *.exe
 debug
+calc
 
 # archivos de carpeta #
 #######################

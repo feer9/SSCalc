@@ -1,6 +1,6 @@
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
-LDFLAGS:=-fPIC -shared
+LDFLAGS:=-shared
 SOURCEDIR:=./src
 SOURCES:=./src/my_string.c
 HEADERS:= ./src/my_string.h
@@ -11,7 +11,7 @@ LIBVER:=.0.4
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
-INSTALL_DIR:=~/.local/lib
+INSTALL_DIR:=${HOME}/.local/lib
 
 all: build
 

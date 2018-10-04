@@ -3,7 +3,7 @@ LIBVER:=.0.7
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
-INSTALL_DIR:=~/.local/lib
+INSTALL_DIR:=${HOME}/.local/lib
 
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
@@ -38,6 +38,7 @@ install: $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
+	sudo ldconfig
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*

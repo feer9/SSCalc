@@ -8,23 +8,23 @@ LIBVER:=.0.9
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
-INSTALL_DIR:=~/.local/lib
+INSTALL_DIR:=${HOME}/.local/lib
 
 # compiler flags
-CFLAGS:=-Wall -ggdb -fPIC -I..
+CFLAGS:=-Wall -ggdb -fPIC
 # linker flags
-LDFLAGS:=-shared -Wl,-soname,$(SONAME)
+LDFLAGS:=-Wall -Wl,-soname,$(SONAME) -L${HOME}/.local/lib
 
 
 all: build
 
 build: $(LIBNAME)
 
-.PHONY: all build install clean
+.PHONY: all build install build_console clean
 
 	# importante que "-L. -lmaths" esté a la derecha
 $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) -L../libmaths -lmaths
+	$(CC) -shared $(LDFLAGS) -o $@ $(OBJS) -lmaths
 	ln -sf $(LIBNAME) $(SONAME)
 	ln -sf $(SONAME) $(LIB)
 
@@ -37,27 +37,36 @@ $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
 ./obj/manejo_nodos.o: ./src/manejo_nodos.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./obj/debug.o: ./src/debug.c
+./obj/console.o: ./src/console.c
 	$(CC) -Wall -c $< -o $@
 
 ./obj:
 	mkdir $@
 
 #-L. -Wl,-rpath=..
-debug: ./obj ./obj/debug.o $(OBJS) $(HEADERS)
-	$(CC) -Wall $(OBJS) ./obj/debug.o -o debug -L../libmaths -lmaths -L../libstring -lstring -Wl,-rpath=$(INSTALL_DIR)
+build_console: ./obj ./obj/console.o $(OBJS) $(HEADERS)
+	$(CC) $(LDFLAGS) $(OBJS) ./obj/console.o -o calc -lmaths -lstring
 
 install: $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
+	sudo ldconfig
+
+install_console: build_console
+	mkdir -p ~/.local/bin
+	install calc ~/.local/bin
+	sudo ldconfig
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*
 
+uninstall_console:
+	rm ~/.local/bin/calc
+
 clean:
-	$(RM) *.o ./obj/*.o core debug
+	$(RM) *.o ./obj/*.o core
 	rmdir ./obj
 
 clean_build:
-	rm -f $(LIB)*
+	rm -f $(LIB)* calc

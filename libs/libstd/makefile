@@ -1,6 +1,6 @@
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
-LDFLAGS:=-fPIC -shared
+LDFLAGS:=-shared
 SOURCEDIR:=./src
 SOURCES:=./src/std.c
 HEADERS:= ./src/std.h
@@ -11,7 +11,7 @@ LIBVER:=.0.1
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
-INSTALL_DIR:=~/.local/lib
+INSTALL_DIR:=${HOME}/.local/lib
 
 all: build
 
@@ -40,6 +40,7 @@ install: $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
+	sudo ldconfig
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*
