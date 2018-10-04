@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../libstring/src/my_string.h"
 #include "../../libstd/src/std.h"
 #include "../../libmaths/src/maths.h"
 #include "calc.h"

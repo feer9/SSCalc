@@ -7,7 +7,7 @@ HEADERS:= ./src/std.h
 OBJECTSDIR:=./obj
 OBJECTS:=./obj/std.o
 LIB:=libstd.so
-LIBVER:=.0.1
+LIBVER:=.0.2
 LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
@@ -37,6 +37,7 @@ $(OBJECTSDIR): $(SOURCEDIR)
 	mkdir -p $@
 
 install: $(LIBNAME)
+	mkdir -p $(INSTALL_DIR)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
