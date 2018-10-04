@@ -8,6 +8,9 @@ install:
 	make -C libmaths install
 	make -C libcalc install
 
+install_console:
+	make -C libcalc install_console
+
 clean:
 	make -C libstd clean
 	make -C libmaths clean

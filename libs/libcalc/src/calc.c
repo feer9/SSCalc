@@ -17,6 +17,7 @@ void consoleCalc()
 	double ans = 0.0;
 	int errorFlag = E_NO;
 
+	puts("Scientific Calc v0.9");
 	scanf("%s",input);
 
 	while(strcmp(input, "q") && strcmp(input, "quit"))

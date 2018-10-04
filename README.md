@@ -7,9 +7,12 @@ TODO: {
 
 Para poder linkear correctamente las librerias:
 
-1) agregar "/home/<usuario>/.local/lib" a /etc/ld.so.conf.d/libc.conf
-2) hacer "make install" en el directorio libs
-3) actualizar las librerias del sistema con "sudo ldconfig"
+1) agregar "${HOME}/.local/lib" a /etc/ld.so.conf
+2) hacer "# make install" en el directorio libs
 
-info de librerías dinámicas:
+version de consola casi terminada
+compilar con   # make install_console
+para ejecutar: $ calc
+
+cualquier problema con las librerias dinámicas, info en:
 https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html
