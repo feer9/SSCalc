@@ -2,7 +2,7 @@
 
 // recibe un vector de numeros
 // devuelve la posicion del mayor
-int mayor(size_t n, double* v)
+int mayor(size_t n, int* v)
 {
 	size_t i;
 	int num_mayor = v[0];
@@ -20,7 +20,7 @@ int mayor(size_t n, double* v)
 
 // recibe un vector de numeros
 // devuelve la posicion del menor
-int menor(size_t n, double* v)
+int menor(size_t n, int* v)
 {
 	size_t i;
 	int num_menor = v[0];
@@ -41,26 +41,26 @@ int menor(size_t n, double* v)
 double promediar (size_t n, ...)
 {
 	va_list args;
-	double sum = 0;
+	long int sum = 0;
 
 	va_start(args, n);
 
 	for(int i=0; i<(int)n; i++)
-		sum += va_arg(args, double);
+		sum += va_arg(args, int);
 	
 	va_end(args);
 	
-	return sum / n;
+	return (double) sum / n;
 }
 
-double promediarVector(size_t n, double* vec)
+double promediarVector(size_t n, int* vec)
 {
-	double sum = 0;
+	long int sum = 0;
 
 	for(int i=0; i<(int)n; i++)
 		sum += vec[i];
 
-	return sum / n;
+	return (double) sum / n;
 }
 
 unsigned long int factorial(int num)
@@ -97,7 +97,7 @@ unsigned long int fibonacci(int num)
 }
 
 
-void quicksort(int *ve, size_t n)
+void quicksort(size_t n, int *ve)
 {
 	qs(ve, 0, (int)n-1);
 }
@@ -130,12 +130,12 @@ void swap(int *a, int *b)
 	*b = aux;
 }
 
-double mediana(int *vec, size_t n)
+double mediana(size_t n, int *vec)
 {
-	return cuartil(2, vec, n);
+	return cuartil(2, n, vec);
 }
 
-double cuartil(int cuartil, int *vec, size_t n)
+double cuartil(int cuartil, size_t n, int *vec)
 {
 	int i;		// parte entera
 	double d;	// parte decimal
@@ -143,7 +143,7 @@ double cuartil(int cuartil, int *vec, size_t n)
 
 	if(n > 0)
 	{
-		quicksort(vec, n);
+		quicksort(n, vec);
 
 		if(cuartil == 2)
 		{
@@ -165,13 +165,13 @@ double cuartil(int cuartil, int *vec, size_t n)
 		return vec[0];
 }
 
-double dEstandar(int *vec, size_t n)
+double dEstandar(size_t n, int *vec)
 {
 	unsigned int i;
 	double promedio, sumatoria = 0.0;
 
 	// calculo el promedio o media aritmÃ©tica (xÌ„)
-	promedio = prom(vec, n);
+	promedio = promediarVector(n, vec);
 //	printf("\nMedia aritmÃ©tica (xÌ„): %lf \n", promedio);
 
 	// calculo la sumatoria de los cuadrados de la diferencia entre
@@ -184,7 +184,7 @@ double dEstandar(int *vec, size_t n)
 	return sqrt(sumatoria / (n - 1));
 }
 
-int prodEscalar(int *vec1, int *vec2, size_t tamV1, size_t tamV2)
+int prodEscalar(size_t tamV1, int *vec1, size_t tamV2, int *vec2)
 {
 	unsigned int ciclo = 0;
 	int res = 0;
