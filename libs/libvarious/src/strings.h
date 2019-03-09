@@ -1,11 +1,7 @@
-#ifndef _MY_STDLIB_H
-#define _MY_STDLIB_H
+#ifndef _STRINGS_H
+#define _STRINGS_H
 
-#include "../../libmaths/src/maths.h"
 #include <stddef.h>
-
-int atoi(const char *s);
-double atof(const char *s);
 
 size_t strlen(const char *s);
 int strcmp(const char *s1, const char *s2);
@@ -17,4 +13,4 @@ char *strncpy(char *dest, const char *src, size_t n);
 char *index(const char *s, int c);
 char *rindex(const char *s, int c);
 
-#endif
+#endif // _STRINGS_H

@@ -1,10 +1,10 @@
 build:
-	make -C libstd
+	make -C libvarious
 	make -C libmaths
 	make -C libcalc 
 
 install:
-	make -C libstd install
+	make -C libvarious install
 	make -C libmaths install
 	make -C libcalc install
 
@@ -12,11 +12,11 @@ install_console:
 	make -C libcalc install_console
 
 clean:
-	make -C libstd clean
+	make -C libvarious clean
 	make -C libmaths clean
 	make -C libcalc clean
 
 clean_build:
-	make -C libstd clean_build
+	make -C libvarious clean_build
 	make -C libmaths clean_build
 	make -C libcalc clean_build

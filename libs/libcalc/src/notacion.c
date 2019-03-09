@@ -54,9 +54,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 	nodo* n_aux = NULL;
 	const size_t tama = strlen(inf); // tamaño de la expresion
 
-	while(inf[i] == ' ') {
-        i++;
-	}
+	while(inf[i] == ' ') i++;
 
 	// compruebo si la expresion empieza con un negativo
 	op = esOp(inf[i]);
@@ -66,12 +64,14 @@ nodo* infijaAPostfija(const char* inf, double ans)
 		acolarNumero(0.0, &COLA);
 		apilar(OPERADOR, '-', &PILA);
 		i++;
+		while(inf[i] == ' ') i++;
 		op = esOp(inf[i]);
 	}
 	else if (op == SUMA)
 	// si algun boludo puso un + adelante del primer numero
 	{
 		i++;
+		while(inf[i] == ' ') i++;
 		op = esOp(inf[i]);
 	}
 
@@ -164,21 +164,21 @@ nodo* infijaAPostfija(const char* inf, double ans)
 			i--;
 			break;
 
-		default:
-			while(inf[i] == ' ') {
-				i++;
-			}
+		case ESPACIO: default:
 			break;
 
 		} // switch
 
 		i++;
+		while(inf[i] == ' ') i++;
+
 		// si lo que sigue a algo que no sea un numero, es un signo menos, se le aplica al siguiente numero
 		op = esOp(inf[i]);
 		if ((caso != NUMERO && caso != PARENTESIS_C) && \
 				(op == SUMA || op == RESTA))
 		{
 			i++;
+			while( inf[i] == ' ' ) i++;
 			if (op == RESTA)
 				negativo = SI;
 			op = esOp(inf[i]);

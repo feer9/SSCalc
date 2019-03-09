@@ -1,14 +1,13 @@
 CC:=g++
 CFLAGS:=-Wall -ggdb -fPIC
 LDFLAGS:=-shared
-SOURCEDIR:=./src
-SOURCES:=./src/std.c
-HEADERS:= ./src/std.h
-OBJECTSDIR:=./obj
-OBJECTS:=./obj/std.o
-LIB:=libstd.so
+SOURCEDIR:=src
+SOURCES:=src/std.c src/strings.c src/various.c
+OBJECTSDIR:=obj
+OBJECTS:=obj/std.o obj/strings.o obj/various.o
+LIB:=libvarious.so
 LIBVER:=.0.2
-LIBSUBVER:=.0
+LIBSUBVER:=.1
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
@@ -24,10 +23,10 @@ $(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
 	ln -sf $(LIBNAME) $(SONAME)
 	ln -sf $(SONAME) $(LIB)
 
-./obj/std.o: ./src/std.c ./src/std.h
+obj/%.o: src/%.c src/%.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./src/%.c:
+src/%.c:
 	$(error No existe el archivo $@)
 
 $(SOURCEDIR):

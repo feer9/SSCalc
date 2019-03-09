@@ -13,7 +13,7 @@ INSTALL_DIR:=${HOME}/.local/lib
 # compiler flags
 CFLAGS:=-Wall -ggdb -fPIC
 # linker flags
-LDFLAGS:=-Wall -Wl,-soname,$(SONAME) -L${HOME}/.local/lib -L../libmaths -L../libstd
+LDFLAGS:=-Wall -Wl,-soname,$(SONAME) -L${HOME}/.local/lib -L../libmaths -L../libvarious
 
 
 all: build
@@ -45,7 +45,7 @@ $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
 
 #-L. -Wl,-rpath=..
 build_console: ./obj ./obj/console.o $(OBJS) $(HEADERS)
-	$(CC) $(LDFLAGS) $(OBJS) ./obj/console.o -o calc -lmaths -lstd
+	$(CC) $(LDFLAGS) $(OBJS) ./obj/console.o -o calc -lmaths -lvarious
 
 install: $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)

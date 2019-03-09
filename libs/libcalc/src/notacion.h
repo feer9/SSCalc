@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../libstd/src/std.h"
+#include "../../libvarious/src/various.h"
 #include "../../libmaths/src/maths.h"
 #include "calc.h"
 #include "manejo_nodos.h"

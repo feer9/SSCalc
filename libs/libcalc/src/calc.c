@@ -3,7 +3,7 @@
 #include "calc.h"
 
 #define _DEBUG_ 1
-#define _DBGPRNT_ENABLE_ 0
+#define _DBGPRNT_ENABLE_ 1
 #define DBGPRNT {if(_DEBUG_ && _DBGPRNT_ENABLE_) mostrar(COLA);}
 
 #define DECIMAL_DIGITS 15
@@ -18,15 +18,15 @@ void consoleCalc()
 	int errorFlag = E_NO;
 
 	puts("Scientific Calc v0.9");
-	scanf("%s",input);
+	while( getLine("> ", input, sizeof input) != INPUT_OK);
 
 	while(strcmp(input, "q") && strcmp(input, "quit"))
 	{
 		res = resolverExpresion(input, ans, &errorFlag);
 		if(errorFlag == E_SINTAXIS)
-			printf("error de sintaxis\n");
+			puts("error de sintaxis");
 		else if(errorFlag == E_MATH)
-			printf("error matematico\n");
+			puts("error matematico");
 		else
 		{
 			printf("= %.10g\n", res);
@@ -35,7 +35,7 @@ void consoleCalc()
 
 		errorFlag = 0;
 
-		scanf("%s",input);
+		while( getLine("> ", input, sizeof input) != INPUT_OK);
 	}
 }
 
