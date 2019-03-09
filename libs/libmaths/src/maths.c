@@ -1,70 +1,66 @@
 #include "maths.h"
 
-/*	TODO:
-	Agregar una func promediar(n1,n2,...) indefinidos
-	agregar funcion operar(n1, OPERACION, n2) con puntero a funcion (o en el orden q quieras)
-*/
-
-int max(int a, int b)
-{
-	return (a > b ? a:b);
-}
-
-int min(int a, int b)
-{
-	return (a < b ? a:b);
-}
-
 // recibe un vector de numeros
 // devuelve la posicion del mayor
-int mayor(int* v, size_t n)
+int mayor(size_t n, double* v)
 {
-	unsigned int i;
+	size_t i;
 	int num_mayor = v[0];
-	int may = 0;
+	int pos_mayor = 0;
 	for(i=1; i<n; i++)
 	{
 		if(v[i] > num_mayor)
 		{
 			num_mayor = v[i];
-			may = (int) i;
+			pos_mayor = (int) i;
 		}
 	}
-	return may;
+	return pos_mayor;
 }
 
 // recibe un vector de numeros
 // devuelve la posicion del menor
-int menor(int* v, size_t n)
+int menor(size_t n, double* v)
 {
 	size_t i;
 	int num_menor = v[0];
-	int men = 0;
+	int pos_menor = 0;
 	for(i=1; i<n; i++)
 	{
 		if(v[i] < num_menor)
 		{
 			num_menor = v[i];
-			men = (int) i;
+			pos_menor = (int) i;
 		}
 	}
-	return men;
+	return pos_menor;
 }
 
-double prom(int* vec, size_t n)
+// Recibe como primer argumento el número de argumentos
+// seguido por numeros a promediar
+double promediar (size_t n, ...)
 {
-	int unsigned i;
-	double suma = 0;
+	va_list args;
+	double sum = 0;
 
-	for(i=0; i<n; i++)
-		suma += vec[i];
+	va_start(args, n);
 
-	return (suma / (double) n);
+	for(int i=0; i<(int)n; i++)
+		sum += va_arg(args, double);
+	
+	va_end(args);
+	
+	return sum / n;
 }
 
-double areaCirculo(double radio)
+double promediarVector(size_t n, double* vec)
 {
-	return (M_PI * radio * radio);
+	double sum = 0;
+
+	for(int i=0; i<(int)n; i++)
+		sum += vec[i];
+
+	return sum / n;
 }
 
 unsigned long int factorial(int num)
@@ -373,4 +369,9 @@ double ln(double num)
 double log(double num)
 {
 	return logarithm(10, num);
+}
+
+double operar(double n1, double n2, double (*p_operacion) (double,double) )
+{
+	return p_operacion ( n1 , n2 );
 }

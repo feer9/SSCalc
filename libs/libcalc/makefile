@@ -20,7 +20,7 @@ all: build
 
 build: $(LIBNAME)
 
-.PHONY: all build install build_console clean
+.PHONY: all build install build_console install_console uninstall uninstall_console clean clean_build
 
 	# importante que "-L. -lmaths" esté a la derecha
 $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
@@ -28,26 +28,26 @@ $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
 	ln -sf $(LIBNAME) $(SONAME)
 	ln -sf $(SONAME) $(LIB)
 
-./obj/calc.o: ./src/calc.c
+obj/calc.o: src/calc.c src/calc.h src/notacion.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./obj/notacion.o: ./src/notacion.c
+obj/notacion.o: src/notacion.c src/notacion.h src/calc.h src/manejo_nodos.h src/nodo.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./obj/manejo_nodos.o: ./src/manejo_nodos.c
+obj/manejo_nodos.o: src/manejo_nodos.c src/manejo_nodos.h src/notacion.h src/nodo.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./obj/console.o: ./src/console.c
+obj/console.o: src/console.c src/calc.h
 	$(CC) -Wall -c $< -o $@
 
-./obj:
+obj:
 	mkdir $@
 
 #-L. -Wl,-rpath=..
 build_console: ./obj ./obj/console.o $(OBJS) $(HEADERS)
 	$(CC) $(LDFLAGS) $(OBJS) ./obj/console.o -o calc -lmaths -lvarious
 
-install: $(LIBNAME)
+install: $(OBJS) $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)

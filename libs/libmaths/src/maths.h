@@ -6,6 +6,7 @@
 //#include <sys/types.h>
 #include <stddef.h>
 //#include <stdint.h>
+#include <stdarg.h>
 
 /* Some useful constants.									*/
 #define M_E			2.7182818284590452354	/* e			*/
@@ -33,40 +34,42 @@
 enum errores {E_NO, E_SINTAXIS, E_MATH};
 #endif
 
-double				areaCirculo	(double radio);
-int					max			(int a, int b);
-int					min			(int a, int b);
-int					mayor		(int *v, size_t n);
-int					menor		(int *v, size_t n);
-double				prom		(int *v, size_t n);
-unsigned long int	factorial	(int num);
-unsigned long int	fibonacci	(int num);
-void				swap		(int *a, int *b);
-void				quicksort	(int *ve, size_t n);
-void				qs			(int *v, int ext_izq, int ext_der);
-void				burbujeo	(int *v, int max);
-int					busqueda	(int *v, int M, int D);
-int					buscaBin	(int *v, int tam, int D);
-double				cuartil		(int cuartil, int *vec, size_t n);
-double				mediana		(int *vec, size_t n);
-double				dEstandar	(int *vec, size_t n);
-int					prodEscalar	(int *vec1, int *vec2, size_t tamV1, size_t tamV2);
-double				sumar		(double a, double b);
-double				restar		(double a, double b);
-double				multiplicar	(double a, double b);
-double				dividir		(double a, double b);
-double				pow			(double b, double ex);
-double				pow_aux		(int ex);
-double				ipow		(double b, double e);
-double				ipow_aux	(double b, int e);
-double				*MacLaurinExp(double *Poly, int grad);
-double				evalPoly	(const double *Poly, double x);
-double				sqrt		(double x);
-double				root		(double x, double n);
-double				log			(double num);
-double				ln			(double num);
-double				logarithm	(int b, double n);
-double				logarithm_aux(int b, double n);
+#define max(a,b) (a>b ? a:b)
+#define min(a,b) (a<b ? a:b)
 
+int					mayor			(size_t n, double *v);
+int					menor			(size_t n, double *v);
+double				promediar		(size_t n, ...);
+double				promediarVector	(size_t n, double *v);
+unsigned long int	factorial		(int num);
+unsigned long int	fibonacci		(int num);
+void				swap			(int *a, int *b);
+void				quicksort		(int *ve, size_t n);
+void				qs				(int *v, int ext_izq, int ext_der);
+void				burbujeo		(int *v, int max);
+int					busqueda		(int *v, int M, int D);
+int					buscaBin		(int *v, int tam, int D);
+double				cuartil			(int cuartil, int *vec, size_t n);
+double				mediana			(int *vec, size_t n);
+double				dEstandar		(int *vec, size_t n);
+int					prodEscalar		(int *vec1, int *vec2, size_t tamV1, size_t tamV2);
+double				sumar			(double a, double b);
+double				restar			(double a, double b);
+double				multiplicar		(double a, double b);
+double				dividir			(double a, double b);
+double				pow				(double b, double ex);
+double				pow_aux			(int ex);
+double				ipow			(double b, double e);
+double				ipow_aux		(double b, int e);
+double				*MacLaurinExp	(double *Poly, int grad);
+double				evalPoly		(const double *Poly, double x);
+double				sqrt			(double x);
+double				root			(double x, double n);
+double				log				(double num);
+double				ln				(double num);
+double				logarithm		(int b, double n);
+double				logarithm_aux	(int b, double n);
+double 				operar \
+			(double n1, double n2, double (*p_operacion) (double,double) )
 
 #endif
