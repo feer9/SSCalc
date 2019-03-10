@@ -12,7 +12,7 @@ int checkSintax(const char* str)
 	int tama;
 
 	tama = (int) strlen(str);
-	c = esOp(str[i]);
+	c = esOperacion(str[i]);
 	if(c >= 3 && c <= 5)
 		return 1;
 	else while(i < tama && parentesis >= 0)
@@ -27,7 +27,7 @@ int checkSintax(const char* str)
 		if(ops_consec > 2)
 			return 1;
 
-		if ( !c && !esNum(str[i]) ) // no es operador y ni operando
+		if ( !c && !esNumero(str[i]) ) // no es operador y ni operando
 			return 1;
 
 		if (c == 6)      // (
@@ -36,7 +36,7 @@ int checkSintax(const char* str)
 			parentesis--;
 
 		i++;
-		c = esOp(str[i]);
+		c = esOperacion(str[i]);
 	}
 
 	return parentesis + ops_consec;
@@ -57,7 +57,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 	while(inf[i] == ' ') i++;
 
 	// compruebo si la expresion empieza con un negativo
-	op = esOp(inf[i]);
+	op = esOperacion(inf[i]);
 	if(op == RESTA)
 	{
 //		negativo = SI;   no sirve por ejemplo si pongo -2^2 la caga
@@ -65,14 +65,14 @@ nodo* infijaAPostfija(const char* inf, double ans)
 		apilar(OPERADOR, '-', &PILA);
 		i++;
 		while(inf[i] == ' ') i++;
-		op = esOp(inf[i]);
+		op = esOperacion(inf[i]);
 	}
 	else if (op == SUMA)
 	// si algun boludo puso un + adelante del primer numero
 	{
 		i++;
 		while(inf[i] == ' ') i++;
-		op = esOp(inf[i]);
+		op = esOperacion(inf[i]);
 	}
 
 
@@ -80,7 +80,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 	{
 		if(!op)
 		{
-			if(esNum(inf[i]))
+			if(esNumero(inf[i]))
 				caso=NUMERO;
 		}
 		else
@@ -122,14 +122,14 @@ nodo* infijaAPostfija(const char* inf, double ans)
 
 			if(PILA != NULL && PILA->contenido == OPERADOR)
 			{
-				primer_elem = esOp(PILA->operador);
+				primer_elem = esOperacion(PILA->operador);
 
 				while (PILA != NULL && ( primer_elem >= tipoDeOp && primer_elem <= POTENCIA ))
 				{	// los mando a la cola
 					n_aux = sacar(&PILA);
 					pasarACola(&n_aux, &COLA);
 					if(PILA != NULL && PILA->contenido == OPERADOR)
-						primer_elem = esOp(PILA->operador);
+						primer_elem = esOperacion(PILA->operador);
 				}
 			}
 			// luego copio la OP actual a la pila
@@ -156,7 +156,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 				k++;
 				i++;
 			}
-			while (esNum(inf[i]));
+			while (esNumero(inf[i]));
 			aux[k] = '\0';
 			// lo agrego a la cola
 			acolarNumero(atof(aux), &COLA);
@@ -173,7 +173,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 		while(inf[i] == ' ') i++;
 
 		// si lo que sigue a algo que no sea un numero, es un signo menos, se le aplica al siguiente numero
-		op = esOp(inf[i]);
+		op = esOperacion(inf[i]);
 		if ((caso != NUMERO && caso != PARENTESIS_C) && \
 				(op == SUMA || op == RESTA))
 		{
@@ -181,7 +181,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 			while( inf[i] == ' ' ) i++;
 			if (op == RESTA)
 				negativo = SI;
-			op = esOp(inf[i]);
+			op = esOperacion(inf[i]);
 		}
 		caso = -1; // ninguno
 	} // while
@@ -196,7 +196,7 @@ nodo* infijaAPostfija(const char* inf, double ans)
 	return COLA;
 }
 
-int esNum(char c)
+int esNumero(char c)
 {
 	if ((c >= '0' && c <= '9') || c == '.' || c == ',')
 		return 1; // es numero (o coma)
@@ -204,7 +204,7 @@ int esNum(char c)
 		return 0; // no es numero
 }
 
-int esOp(char c)
+int esOperacion(char c)
 {
 	switch(c)
 	{
@@ -253,24 +253,29 @@ double resolverPostfija(nodo** Cola, int *errorFlag)
 	return resu;
 }
 
-nodo* resolver(nodo* n1, nodo* n2, nodo** op, int *errorFlag)
+nodo* resolver(nodo* n1, nodo* n2, nodo** operacion, int *errorFlag)
 {
-	double (*fResolver[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
+	static double (*pOperacion[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
+	nodo* resultado;
 
-	if(n1 == NULL || n2 == NULL || op == NULL)
+	if(n1 == NULL || n2 == NULL || operacion == NULL)
 		return NULL;
 
-	if(checkMath(n1->numero, (*op)->operador, n2->numero))
+	if(checkMath(n1->numero, (*operacion)->operador, n2->numero))
 		*errorFlag = E_MATH;
 	else
 	{
-		(*op)->numero = (*fResolver[esOp((*op)->operador) - 1]) (n1->numero,n2->numero);
-		(*op)->contenido = NUMERO;
+		int operador = esOperacion((*operacion)->operador) - 1;
+		resultado = *operacion;
+		//resultado->numero = (*fResolver[operador]) (n1->numero,n2->numero);
+		resultado->numero = operar (n1->numero, n2->numero,
+									pOperacion[operador]);
+		resultado->contenido = NUMERO;
 	}
 	eliminar(&n1);
 	eliminar(&n2);
 
-	return *op;
+	return resultado;
 }
 
 int checkMath(double n1, char op, double n2)

@@ -15,8 +15,8 @@
 int checkSintax(const char*);
 int checkMath(double n1, char op, double n2);
 nodo* infijaAPostfija(const char*, double);
-int esNum(char);
-int esOp(char);
+int esNumero(char);
+int esOperacion(char);
 double resolverPostfija(nodo**, int*);
 nodo* resolver(nodo* n1, nodo* n2, nodo** op, int *errorFlag);
 void mostrar(nodo*);

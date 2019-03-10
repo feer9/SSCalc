@@ -3,17 +3,23 @@
 #include "calc.h"
 
 #define _DEBUG_ 1
-#define _DBGPRNT_ENABLE_ 1
+#define _DBGPRNT_ENABLE_ 0
 #define DBGPRNT {if(_DEBUG_ && _DBGPRNT_ENABLE_) mostrar(COLA);}
 
 #define DECIMAL_DIGITS 15
 
+/* BUGS ENCONTRADOS
 
+(-2.5)^-1 -> double free or corruption (fasttop)
+             Abortado (`core' generado)
+
+verificar dos comas en el mismo número
+*/
 
 void consoleCalc()
 {
 	char input[256];
-	double res = 0.0;
+	double result = 0.0;
 	double ans = 0.0;
 	int errorFlag = E_NO;
 
@@ -22,15 +28,15 @@ void consoleCalc()
 
 	while(strcmp(input, "q") && strcmp(input, "quit"))
 	{
-		res = resolverExpresion(input, ans, &errorFlag);
+		result = resolverExpresion(input, ans, &errorFlag);
 		if(errorFlag == E_SINTAXIS)
 			puts("error de sintaxis");
 		else if(errorFlag == E_MATH)
 			puts("error matematico");
 		else
 		{
-			printf("= %.10g\n", res);
-			ans = res;
+			printf("= %.*g\n", DECIMAL_DIGITS, result);
+			ans = result;
 		}
 
 		errorFlag = 0;
@@ -43,7 +49,7 @@ double resolverExpresion(const char* expr, double ans, int* errorFlag)
 {
 	nodo* COLA = NULL;
 	
-	if(checkSintax(expr))
+	if(checkSintax(expr) != 0)
 	{
 		*errorFlag = E_SINTAXIS;
 		return 0.0;
