@@ -1,15 +1,11 @@
 Proyecto calculadora gráfica escrita desde cero en C  
-
-TODO:  
--> implementar GUI con librería gráfica en C o C++  
--> implementar ANS  
-
-
+  
+  
+  
 Para poder linkear correctamente las librerias:  
 
 1) agregar "${HOME}/.local/lib" a /etc/ld.so.conf
 2) hacer "# make install" en el directorio libs
-
 
 
 version de consola casi terminada  

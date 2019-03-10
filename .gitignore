@@ -1,11 +1,13 @@
 # archivos compilados #
 #######################
-*.so
-*.so.*
+libs/*/*.so
+libs/*/*.so.*
 *.o
 *.exe
 debug
 calc
+main
+ui
 
 # archivos de carpeta #
 #######################
