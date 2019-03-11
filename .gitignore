@@ -5,9 +5,10 @@ libs/*/*.so.*
 *.o
 *.exe
 debug
-calc
 main
+calc
 ui
+calc-ui
 
 # archivos de carpeta #
 #######################

@@ -45,18 +45,18 @@ obj:
 
 #-L. -Wl,-rpath=..
 build_console: ./obj ./obj/console.o $(OBJS) $(HEADERS)
-	$(CC) $(LDFLAGS) $(OBJS) ./obj/console.o -o calc -lmaths -lvarious
+	$(CC) $(LDFLAGS) $(OBJS) ./obj/console.o -o calc -lmaths -lvarious -no-pie
 
 install: $(OBJS) $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
-	sudo ldconfig
+#	sudo ldconfig
 
 install_console: build_console
 	mkdir -p ~/.local/bin
 	install calc ~/.local/bin
-	sudo ldconfig
+#	sudo ldconfig
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*

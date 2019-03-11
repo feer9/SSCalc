@@ -11,6 +11,9 @@ install:
 install_console:
 	make -C libcalc install_console
 
+configure-shared-libraries:
+	sudo ldconfig
+
 clean:
 	make -C libvarious clean
 	make -C libmaths clean

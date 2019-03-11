@@ -40,7 +40,7 @@ install: $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
-	sudo ldconfig
+#	sudo ldconfig
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*

@@ -32,13 +32,13 @@ $(LIBNAME): $(OBJDIR) $(OBJ)
 	mkdir obj
 
 debug: ./src/maths.c ./src/debug.c ./src/maths.h
-	gcc -Wall ./src/maths.c ./src/debug.c -o $@
+	gcc -Wall -no-pie ./src/maths.c ./src/debug.c -o $@
 
 install: $(LIBNAME)
 	install -c $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
-	sudo ldconfig
+#	sudo ldconfig
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*

@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wl,-rpath,.:./libs",
+                "src/main.c",
+                "-o",
+                "calc-ui",
+                "-L./libs",
+                "-lui",
+                "-Wall",
+                "-no-pie"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run tests",
+            "type": "process",
+            "command": "./calc-ui",
+            "isBackground": false,
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+//                "cwd": "./src"
+//                "env": {}
+            }
+        }
+    ]
+}
