@@ -39,7 +39,13 @@ obj/mainWindow.o: src/mainWindow.c src/mainWindow.h
 obj:
 	mkdir $@
 
-install: $(OBJS) $(EXECUTABLE)
+$(INSTALL_DIR):
+	mkdir $@
+
+$(LIBS_DIR):
+	mkdir $@
+
+install: $(OBJS) $(EXECUTABLE) $(INSTALL_DIR) $(LIBS_DIR)
 	make -C libs/libvarious install
 	make -C libs/libmaths install
 	make -C libs/libcalc install

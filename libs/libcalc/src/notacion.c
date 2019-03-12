@@ -8,33 +8,44 @@ int checkSintax(const char* str)
 	int ops_consec = 0;
 	int parentesis = 0;
 	int tama;
+	int comas = 0;
+	int esNum;
 
 	tama = (int) strlen(str);
 	c = esOperacion(str[i]);
-	if(c >= 3 && c <= 5)
-		return 1;
-	else while(i < tama && parentesis >= 0)
+	if((c >= MULTIPLICACION && c <= POTENCIA) || c == PARENTESIS_C)
+		return E_SINTAXIS;
+	
+	while(i < tama && parentesis >= 0)
 	{
-		if (c >= 1 && c <=5)
+		if (c >= SUMA && c <= POTENCIA) {
 			ops_consec++;
-		else
+			comas = 0;
+		}
+		else {
 			ops_consec = 0;
+			esNum = esNumero(str[i]);
+			if(esNum == 2) { // coma
+				comas++;
+				if(comas > 1)
+					return E_SINTAXIS;
+			}
+			else if(!esNum && !c)
+				return E_SINTAXIS;
+		}
 
-		if(ops_consec > 1 && (c != 1 && c != 2)) // despues de un operador, solo puede haber un + o un -
-			return 1;
+		if(ops_consec > 1 && (c != SUMA && c != RESTA))
+		// despues de un operador, solo puede haber un + o un -
+			return E_SINTAXIS;
 		if(ops_consec > 2)
-			return 1;
+			return E_SINTAXIS;
 
-		if ( !c && !esNumero(str[i]) ) // no es operador y ni operando
-			return 1;
-
-		if (c == 6)      // (
+		if (c == PARENTESIS_A)
 			parentesis++;
-		else if (c == 7) // )
+		else if (c == PARENTESIS_C)
 			parentesis--;
 
-		i++;
-		c = esOperacion(str[i]);
+		c = esOperacion(str[++i]);
 	}
 
 	return (parentesis + ops_consec == 0) ? E_NO : E_SINTAXIS;
@@ -196,8 +207,10 @@ nodo* infijaAPostfija(const char* inf, double ans)
 
 int esNumero(char c)
 {
-	if ((c >= '0' && c <= '9') || c == '.' || c == ',')
-		return 1; // es numero (o coma)
+	if (c >= '0' && c <= '9')
+		return 1; // es numero
+	else if (c == '.' || c == ',')
+		return 2; // es coma
 	else
 		return 0; // no es numero
 }

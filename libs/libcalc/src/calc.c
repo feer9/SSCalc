@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "notacion.h"
 #include "calc.h"
 
@@ -11,14 +10,6 @@
 #define DBGPRNT(...)
 #endif
 
-
-/* BUGS ENCONTRADOS
-
-(-2.5)^-1 -> double free or corruption (fasttop)
-             Abortado (`core' generado)
-
-verificar dos comas en el mismo número
-*/
 
 void consoleCalc()
 {
