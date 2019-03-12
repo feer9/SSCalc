@@ -1,16 +1,39 @@
-Proyecto calculadora gráfica escrita desde cero en C  
-  
-  
-  
-Para poder linkear correctamente las librerias:  
+# GUI Scientific Calculator proyect
+Written from scratch in C
 
-1) agregar "${HOME}/.local/lib" a /etc/ld.so.conf
-2) hacer "# make install" en el directorio libs
+## About the project
+The GUI works with the **_libui_** graphic library from Pietro Gagliardi  
+All the thanks to his project, link to [his git](https://github.com/andlabs/libui)  
+About the core, it's all written in 3 libraries, one for the math functions, other for processing the expressions, and the third with some common functions like string ones.
+
+## Building (linux)
+run
+```
+$ make build
+```
+### Installing
+run
+```
+$ make install
+```
+
+### Run
+You can run the GUI version with
+```
+$ calc-ui
+```
+or the console one
+```
+$ calc
+```
+
+### Linking the libraries
+To properly link the libraries, you need to do the following:
+
+* First add ```${HOME}/.local/lib``` to ```/etc/ld.so.conf```
+* and then run ```$ sudo ldconfig```
 
 
-version de consola casi terminada  
-compilar con   # make install_console  
-para ejecutar: $ calc  
-  
-cualquier problema con las librerias dinámicas, info en:  
+## Documentation
+Any problem with linking the shared libraries, more info in:
 https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html

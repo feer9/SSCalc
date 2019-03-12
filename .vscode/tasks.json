@@ -4,16 +4,30 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "install_libs",
+            "type": "shell",
+            "command": "make -C libs install",
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
             "label": "build",
             "type": "shell",
             "command": "gcc",
             "args": [
-                "-Wl,-rpath,.:./libs",
+                "-Wl,-rpath,'$ORIGIN':'$ORIGIN'/libs",
                 "src/main.c",
+                "src/mainWindow.c",
                 "-o",
                 "calc-ui",
                 "-L./libs",
+                "-L$HOME/.local/lib",
                 "-lui",
+                "-lvarious",
+                "-lmaths",
+                "-lcalc",
                 "-Wall",
                 "-no-pie"
             ],
@@ -34,10 +48,7 @@
             "presentation": {
                 "reveal": "always"
             },
-            "options": {
-//                "cwd": "./src"
-//                "env": {}
-            }
+            "options": {}
         }
     ]
 }

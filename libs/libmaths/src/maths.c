@@ -307,7 +307,7 @@ double pow_aux(int ex)
 
 double ipow(double b, double e)
 {
-	if (e < 0) return 1/ipow_aux(b, (int) -e);
+	if (e < 0) return 1.0/ipow_aux(b, (int) -e);
 	else return ipow_aux(b, (int) e);
 }
 

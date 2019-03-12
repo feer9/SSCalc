@@ -1,8 +1,6 @@
 #include "notacion.h"
 
 
-// Función que verifica una expresión matemática.
-// Devuelve 0 si está todo bien
 int checkSintax(const char* str)
 {
 	int c;
@@ -39,7 +37,7 @@ int checkSintax(const char* str)
 		c = esOperacion(str[i]);
 	}
 
-	return parentesis + ops_consec;
+	return (parentesis + ops_consec == 0) ? E_NO : E_SINTAXIS;
 }
 
 nodo* infijaAPostfija(const char* inf, double ans)

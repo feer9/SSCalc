@@ -2,11 +2,15 @@
 #include "notacion.h"
 #include "calc.h"
 
-#define _DEBUG_ 1
-#define _DBGPRNT_ENABLE_ 0
-#define DBGPRNT {if(_DEBUG_ && _DBGPRNT_ENABLE_) mostrar(COLA);}
+#define _DBGPRNT_ 0
+#if _DBGPRNT_
+#define DBGPRNT_COLA(x)  mostrar(x)
+#define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}
+#else
+#define DBGPRNT_COLA(x)
+#define DBGPRNT(...)
+#endif
 
-#define DECIMAL_DIGITS 15
 
 /* BUGS ENCONTRADOS
 
@@ -48,14 +52,15 @@ void consoleCalc()
 double resolverExpresion(const char* expr, double ans, int* errorFlag)
 {
 	nodo* COLA = NULL;
+	double result = 0.0;
 	
-	if(checkSintax(expr) != 0)
+	*errorFlag = checkSintax(expr);
+	if(*errorFlag == E_NO)
 	{
-		*errorFlag = E_SINTAXIS;
-		return 0.0;
+		COLA = infijaAPostfija(expr, ans);
+		DBGPRNT_COLA(COLA);
+		result = resolverPostfija(&COLA, errorFlag);
 	}
-
-	COLA = infijaAPostfija(expr, ans);
-	DBGPRNT;
-	return resolverPostfija(&COLA, errorFlag);
+	DBGPRNT("in ResolverExpresion(): result = %lf\n", result);
+	return result;
 }

@@ -12,7 +12,11 @@
 
 
 
+// Parses the given expression for sintax errors
+// returns E_NO when everything is okay
 int checkSintax(const char*);
+
+
 int checkMath(double n1, char op, double n2);
 nodo* infijaAPostfija(const char*, double);
 int esNumero(char);
