@@ -1,14 +1,16 @@
 #!/bin/bash
 
-FILE=${HOME}/.local/share/applications/calc-ui.desktop
+FILE="$HOME/.local/share/applications/calc-ui.desktop"
 
-echo "[Desktop Entry]"                    > ${FILE}
-echo "Type=Application"                  >> ${FILE}
-echo "Terminal=false"                    >> ${FILE}
-echo "Exec="${HOME}"/.local/bin/calc-ui" >> ${FILE}
-echo "Name=Calc-ui"                      >> ${FILE}
-echo "GenericName=Calculator"            >> ${FILE}
-echo "Comment=Scientific Calculator"     >> ${FILE}
-echo "Icon=calc-ui.png"                  >> ${FILE}
-echo "StartupNotify=false"               >> ${FILE}
-echo "Categories=Utility;Calculator;"    >> ${FILE}
+echo ".desktop file = ${FILE}"
+
+echo "[Desktop Entry]"                 > ${FILE}
+echo "Type=Application"               >> ${FILE}
+echo "Terminal=false"                 >> ${FILE}
+echo "Exec=$HOME/.local/bin/calc-ui"  >> ${FILE}
+echo "Name=Calc-ui"                   >> ${FILE}
+echo "GenericName=Calculator"         >> ${FILE}
+echo "Comment=Scientific Calculator"  >> ${FILE}
+echo "Icon=calc-ui.png"               >> ${FILE}
+echo "StartupNotify=false"            >> ${FILE}
+echo "Categories=Utility;Calculator;" >> ${FILE}

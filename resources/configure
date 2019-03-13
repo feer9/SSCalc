@@ -1,0 +1,49 @@
+#!/bin/bash
+
+prompt() {
+    while true; do
+        read -p "$* [y/n]: " yn
+        case $yn in
+            [Yy]*) return 0  ;;  
+            [Nn]*) echo "Aborted" ; return  1 ;;
+        esac
+    done
+}
+
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="$1${PATH:+:$PATH}"
+    fi
+}
+
+
+pathentry="$HOME/.local/bin"
+file="$HOME/.bashrc"
+
+echo "Adding '${pathentry}' into '${file}' file."
+echo "This will remove any older entry with '${pathentry}' and rewrite it"
+if prompt 'Proceed?' ; then
+	sed -i '/.local\/bin/d' ${file}
+	echo 'PATH=$HOME/.local/bin${PATH:+:$PATH}' >> ${file}
+	echo 'Done.'
+	echo 'To update the path just restart the terminal.'
+	echo 'It is recommended to put that line in ~/.profile instead'
+	echo 'but it requires to restart the whole session to take effect.'
+	echo ''
+fi
+
+
+pathentry="$HOME/.local/lib"
+file="/etc/ld.so.conf.d/user.conf"
+
+echo "Writing '${pathentry}' into '${file}'"
+if [ -f ${file} ] ; then
+	echo 'This action will replace all the content of this file.'
+fi
+if prompt 'Proceed?' ; then
+	echo "${pathentry}" | sudo tee $file > /dev/null
+	sudo ldconfig
+	echo 'Done.'
+fi
+
+echo 'Ready to go.'

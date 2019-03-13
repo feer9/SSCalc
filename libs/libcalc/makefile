@@ -14,7 +14,7 @@ EXECUTABLE:=../../calc
 # compiler flags
 CFLAGS:=-Wall -ggdb -fPIC
 # linker flags
-LDFLAGS:=-shared -Wl,-soname,$(SONAME) -L${HOME}/.local/lib -L../libmaths -L../libvarious
+LDFLAGS:=-shared -Wl,-soname,$(SONAME) -L$(INSTALL_DIR) -L../libmaths -L../libvarious
 
 
 all: build
@@ -44,9 +44,9 @@ obj/console.o: src/console.c src/calc.h
 obj:
 	mkdir $@
 
-#-L. -Wl,-rpath=..
+#-L. 
 $(EXECUTABLE): ./obj ./obj/console.o $(OBJS) $(HEADERS)
-	$(CC) $(OBJS) ./obj/console.o -o $@ -L${HOME}/.local/lib -L../libmaths -L../libvarious -lmaths -lvarious -no-pie
+	$(CC) $(OBJS) ./obj/console.o -o $@ -L${HOME}/.local/lib -L../libmaths -L../libvarious -Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -lmaths -lvarious -no-pie
 
 install: $(OBJS) $(LIBNAME) $(EXECUTABLE)
 	install -C $(LIBNAME) $(INSTALL_DIR)

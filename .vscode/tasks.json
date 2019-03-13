@@ -31,6 +31,12 @@
                 "-Wall",
                 "-no-pie"
             ],
+            "group": "build"
+        },
+        {
+            "label": "make install",
+            "type": "shell",
+            "command": "make install",
             "group": {
                 "kind": "build",
                 "isDefault": true

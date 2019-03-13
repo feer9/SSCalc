@@ -53,6 +53,14 @@ void onEqualsClicked(uiButton *b, void *data)
 							DECIMAL_DIGITS, result);
 			uiMultilineEntryAppend(m->resultsTextBox, sResult);
 		}
+		else if(m->errFlag == E_SINTAXIS)
+		{
+			uiMultilineEntryAppend(m->resultsTextBox, "SYNTAX ERROR\n");
+		}
+		else if(m->errFlag == E_MATH)
+		{
+			uiMultilineEntryAppend(m->resultsTextBox, "MATH ERROR\n");
+		}
 	}
 	uiEntrySetText( m->entryTextBox , "" );
 	m->ans = result;
@@ -170,7 +178,7 @@ void uiConfigure()
 void uiShowWindow_mainWindow(mainWindow_t *mainWindow)
 {
 	createMenus(mainWindow);
-	uiWindow *w = uiNewWindow("Main Window", 240, 320, 1);
+	uiWindow *w = uiNewWindow("Calculator", 240, 400, 1);
 	uiBox *box = uiNewVerticalBox();
 	uiGrid *grid = uiNewGrid();
 	uiMultilineEntry *resultsTextBox = 
@@ -198,7 +206,7 @@ void uiShowWindow_mainWindow(mainWindow_t *mainWindow)
 	// Fill Box with text fields and grid
 	uiBoxAppend(box, uiControl(resultsTextBox), 1);
 	uiBoxAppend(box, uiControl(entryTextBox), 0);
-	uiBoxAppend(box, uiControl(grid), 1);
+	uiBoxAppend(box, uiControl(grid), 0);
 
 	// Box parameters
 	uiBoxSetPadded(box, 1);
@@ -251,7 +259,7 @@ void createButtons(mainWindow_t *m)
 		row--;
 	}
 
-	column = 1;
+	column = 0;
 	row = 6;
 
 	newButton("0", onButtonClicked, m, grid, column, row,
@@ -265,9 +273,9 @@ void createButtons(mainWindow_t *m)
 	newButton("=", onEqualsClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
-	row--;
+	column++; row--;
 	newButton("+", onButtonClicked, m, grid, column, row,
-				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+				1, 2, 1, uiAlignFill, 1, uiAlignFill);
 
 	row--;
 	newButton("-", onButtonClicked, m, grid, column, row,
@@ -283,6 +291,14 @@ void createButtons(mainWindow_t *m)
 
 	column--;
 	newButton("^", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column--;
+	newButton(")", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column--;
+	newButton("(", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
 	return;

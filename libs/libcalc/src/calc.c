@@ -1,7 +1,7 @@
 #include "notacion.h"
 #include "calc.h"
 
-#define _DBGPRNT_ 0
+#define _DBGPRNT_ 1
 #if _DBGPRNT_
 #define DBGPRNT_COLA(x)  mostrar(x)
 #define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}
@@ -10,6 +10,8 @@
 #define DBGPRNT(...)
 #endif
 
+// TODO: si despues de un numero viene un parentesis,
+// insertar un *
 
 void consoleCalc()
 {
