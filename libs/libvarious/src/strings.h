@@ -1,6 +1,7 @@
 #ifndef _STRINGS_H
 #define _STRINGS_H
 
+#include <stdlib.h>
 #include <stddef.h>
 
 size_t strlen(const char *s);
@@ -12,5 +13,7 @@ char *strcpy(char *dest, const char *src);
 char *strncpy(char *dest, const char *src, size_t n);
 char *index(const char *s, int c);
 char *rindex(const char *s, int c);
+char *strmove(char *dest, const char *src, size_t len);
+char *strdup(const char *s);
 
 #endif // _STRINGS_H

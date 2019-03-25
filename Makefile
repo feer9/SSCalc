@@ -10,16 +10,22 @@ APPLICATIONS_DIR:=${HOME}/.local/share/applications
 # compiler flags
 CFLAGS:=-Wall
 # linker flags
-LDFLAGS:=-Wl,-rpath,$$'ORIGIN' -L${HOME}/.local/lib -L./libs -L./libs/libcalc -L./libs/libmaths -L./libs/libvarious -lui -lvarious -lmaths -lcalc -no-pie
+LDFLAGS:=-Wl,-rpath,$$'ORIGIN' -L./libs -L./libs/libcalc -L./libs/libmaths -L./libs/libvarious -lui -lvarious -lmaths -lcalc -no-pie
 #:$$'ORIGIN'/../lib
 
+
+.PHONY: all build debug install uninstall clean clean-build configure
 
 all: build
 
 build: ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
 
-.PHONY: all build install uninstall clean configure-shared-libraries
-
+debug: CFLAGS += -ggdb
+debug: clean ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
+	make -C libs/libvarious debug
+	make -C libs/libmaths debug
+	make -C libs/libcalc debug
+	
 
 $(EXECUTABLE): ./obj  $(OBJS) $(HEADERS) $(LIBS)
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
@@ -90,3 +96,9 @@ clean-build:
 	make -C libs/libmaths clean-build
 	make -C libs/libcalc clean-build
 	rm -rf $(EXECUTABLE)
+
+win64CC:=x86_64-w64-mingw32-gcc
+sources:=libs/libvarious/src/std.c libs/libvarious/src/strings.c libs/libvarious/src/various.c libs/libmaths/src/maths.c libs/libcalc/src/calc.c libs/libcalc/src/manejo_nodos.c libs/libcalc/src/notacion.c src/mainWindow.c src/main.c
+
+win64:
+	$(win64CC) -Wall libui.a $(sources) -o calcui.exe

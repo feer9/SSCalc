@@ -18,11 +18,11 @@ int checkSintax(const char*);
 
 
 int checkMath(double n1, char op, double n2);
-nodo* infijaAPostfija(const char*, double);
-int esNumero(char);
-int esOperacion(char);
-double resolverPostfija(nodo**, int*);
-nodo* resolver(nodo* n1, nodo* n2, nodo** op, int *errorFlag);
-void mostrar(nodo*);
+node_t* infixToPostfix(const char*, double);
+int isNumber(char);
+int isOperation(char);
+double solvePostfix(node_t**, int*);
+node_t* solve(node_t* n1, node_t* n2, node_t** op, int *errorFlag);
+void printNodes(node_t*);
 
 #endif

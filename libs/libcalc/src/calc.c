@@ -1,9 +1,9 @@
 #include "notacion.h"
 #include "calc.h"
 
-#define _DBGPRNT_ 1
+#define _DBGPRNT_ 0
 #if _DBGPRNT_
-#define DBGPRNT_COLA(x)  mostrar(x)
+#define DBGPRNT_COLA(x)  printNodes(x)
 #define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}
 #else
 #define DBGPRNT_COLA(x)
@@ -25,7 +25,7 @@ void consoleCalc()
 
 	while(strcmp(input, "q") && strcmp(input, "quit"))
 	{
-		result = resolverExpresion(input, ans, &errorFlag);
+		result = solveExpression(input, ans, &errorFlag);
 		if(errorFlag == E_SINTAXIS)
 			puts("error de sintaxis");
 		else if(errorFlag == E_MATH)
@@ -42,18 +42,35 @@ void consoleCalc()
 	}
 }
 
-double resolverExpresion(const char* expr, double ans, int* errorFlag)
+double solveExpression(const char* expression, double ans, int* errorFlag)
 {
-	nodo* COLA = NULL;
+	node_t* COLA = NULL;
 	double result = 0.0;
-	
+	char* expr = strdup(expression);
+	if(expr == NULL)
+	{
+		perror("malloc");
+		exit(1);
+	}
+
+	trim(expr); // remove spaces
 	*errorFlag = checkSintax(expr);
 	if(*errorFlag == E_NO)
 	{
-		COLA = infijaAPostfija(expr, ans);
+		COLA = infixToPostfix(expr, ans);
 		DBGPRNT_COLA(COLA);
-		result = resolverPostfija(&COLA, errorFlag);
+		result = solvePostfix(&COLA, errorFlag);
 	}
-	DBGPRNT("in ResolverExpresion(): result = %lf\n", result);
+	DBGPRNT("in solveExpression(): result = %lf\n", result);
 	return result;
+}
+
+void trim(char *buf)
+{
+	int i;
+	size_t len = strlen(buf);
+
+	for(i=0; buf[i]; i++)
+		while (isSpace(buf[i]))
+			strmove(buf+i, buf+i+1, len-i);
 }

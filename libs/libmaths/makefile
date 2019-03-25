@@ -6,18 +6,20 @@ LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
 
 CC:=gcc
-CFLAGS:=-Wall -ggdb -fPIC
+CFLAGS:=-Wall -fPIC
 LDFLAGS:=-shared -Wl,-soname,$(SONAME)
 
 OBJ:=./obj/maths.o
 OBJDIR:=./obj
-
+	
+.PHONY: all build debug install uninstall clean clean-build
 
 all: build
 
 build: $(LIBNAME)
-	
-.PHONY: all build install uninstall clean clean-build
+
+debug: CFLAGS += -ggdb
+debug: clean $(LIBNAME)
 
 #	sudo ldconfig -vn .
 $(LIBNAME): $(OBJDIR) $(OBJ)
@@ -31,8 +33,8 @@ $(LIBNAME): $(OBJDIR) $(OBJ)
 ./obj:
 	mkdir obj
 
-debug: ./src/maths.c ./src/debug.c ./src/maths.h
-	gcc -Wall -no-pie ./src/maths.c ./src/debug.c -o $@
+test: ./src/maths.c ./src/test.c ./src/maths.h
+	gcc -Wall -no-pie ./src/maths.c ./src/test.c -o $@
 
 install: $(LIBNAME)
 	install -C $(LIBNAME) $(INSTALL_DIR)
@@ -43,7 +45,7 @@ uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*
 
 clean:
-	rm -rf ./obj/*.o ./obj core debug
+	rm -rf ./obj/*.o ./obj core test
 
 clean-build:
 	rm -f $(LIB)*

@@ -4,19 +4,27 @@
 #define SI 1
 #define NO 0
 #define OK 0
-enum operaciones {SUMA=1,RESTA,MULTIPLICACION,DIVISION,POTENCIA,PARENTESIS_A,PARENTESIS_C,ESPACIO,OpMAX};
+
+enum bOperations { SUMA=1, RESTA, MULTIPLICACION, DIVISION,
+			POTENCIA, ROOT, PARENTESIS_A, PARENTESIS_C, OpMAX
+} ;
+
+enum uOperations {
+	SQRT, SIN, COS, TAN, FACTORIAL, 
+} ;
+
 enum {NUMERO,OPERADOR,SIMBOLO};
 
-typedef struct _nodo
+typedef struct node
 {
-	union{
-	double numero;
-	char operador; // Un operador puede ser +, -, *, ó /
-	char simbolo;  // por ahora seria un parentesis
+	union {
+	double Number;
+	char Operator; // Un operador puede ser +, -, *, /, ó ^
+	char Symbol;   // por ahora seria un parentesis
 	};
-	short int contenido; // contenido del nodo: NUMERO, OPERADOR o SIMBOLO
+	int Content;   // contenido del nodo: NUMERO, OPERADOR o SIMBOLO
 
-	struct _nodo* sig;
-} nodo;
+	struct node* next;
+} node_t;
 
 #endif // NODO_H

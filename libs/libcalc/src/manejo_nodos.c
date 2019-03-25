@@ -1,47 +1,47 @@
 #include "manejo_nodos.h"
 
-void apilar(char contenido, char c, nodo** P)
+void apilar(char Content, char c, node_t** P)
 {
-	nodo* nuevo;
+	node_t* nuevo;
 
-	nuevo = (nodo*) malloc(sizeof(nodo));
+	nuevo = (node_t*) malloc(sizeof(node_t));
 	if(nuevo == NULL)
 	{
-		perror("ERROR, Memoria Insuficiente");
+		perror("malloc");
 		exit(1);
 	}
 	// Si hay espacio en disco, carga el dato
-	nuevo->contenido = contenido;
+	nuevo->Content = Content;
 
-	if(contenido == OPERADOR)
-		nuevo->operador = c;
-	else if(contenido == SIMBOLO)
-		nuevo->simbolo = c;
+	if(Content == OPERADOR)
+		nuevo->Operator = c;
+	else if(Content == SIMBOLO)
+		nuevo->Symbol = c;
 	else
-		nuevo->numero = 0.0;
+		nuevo->Number = 0.0;
 
 	// Se lo coloca en la pila
-	nuevo->sig = *P;
+	nuevo->next = *P;
 	*P = nuevo;
 
 	return;
 }
 
-void acolarNumero(double n, nodo** C)
+void acolarNumero(double n, node_t** C)
 {
-	nodo *nuevo, *aux;
+	node_t *nuevo, *aux;
 
-	nuevo = (nodo*) malloc(sizeof(nodo));
+	nuevo = (node_t*) malloc(sizeof(node_t));
 	if(nuevo == NULL)
 	{
-		perror("ERROR, Memoria Insuficiente");
+		perror("malloc");
 		exit(1);
 	}
 
 	// Si hay espacio en disco, carga el dato
-	nuevo->numero = n;
-	nuevo->contenido = NUMERO;
-	nuevo->sig = NULL;
+	nuevo->Number = n;
+	nuevo->Content = NUMERO;
+	nuevo->next = NULL;
 	// Se lo coloca en la Cola
 	if(*C == NULL)
 		// Si lo Cola está vacía
@@ -49,79 +49,81 @@ void acolarNumero(double n, nodo** C)
 	else
 	{	// Si hay datos en la cola
 		aux = *C;
-		while (aux->sig != NULL)
-			aux = aux->sig;
-		aux->sig = nuevo;
+		while (aux->next != NULL)
+			aux = aux->next;
+		aux->next = nuevo;
 	}
 
 	return;
 }
 
-// Funcion que saca el primer elemento de una pila o cola, y devuelve su dirección (no lo elimina).
-nodo* sacar(nodo** N)
+// Funcion que saca el primer elemento de una pila o cola
+// y devuelve su dirección (no lo elimina).
+node_t* sacar(node_t** N)
 {
-	nodo* aux = NULL;
+	node_t* aux = NULL;
 	if(*N != NULL)
 	{
 		aux = *N;
-		*N = (*N)->sig;
+		*N = (*N)->next;
+		aux->next = NULL;
 	}
 	return aux;
 }
 
 // recibe un nodo y lo inserta en una cola
-void pasarACola(nodo** nodo_origen, nodo** cola_destino)
+void pasarACola(node_t** nodo_origen, node_t** cola_destino)
 {
-	nodo* aux;
+	node_t* aux;
 
-	(*nodo_origen)->sig = NULL;
+	(*nodo_origen)->next = NULL;
 	if(*cola_destino == NULL)
 		// Si lo Cola está vacía
 		*cola_destino = *nodo_origen;
 	else
 	{	// Si hay datos en la cola
 		aux = *cola_destino;
-		while (aux->sig != NULL)
-			aux = aux->sig;
-		aux->sig = *nodo_origen;
+		while (aux->next != NULL)
+			aux = aux->next;
+		aux->next = *nodo_origen;
 	}
 	return;
 }
 
 
 // meter el nodo origen (de una cola) en una pila
-void pasarAPila(nodo** cola, nodo** pila)
+void pasarAPila(node_t** cola, node_t** pila)
 {
-	nodo* aux;
+	node_t* aux;
 	if(*cola != NULL)
 	{
 		aux = *cola;
-		*cola = (*cola)->sig;
-		aux->sig = *pila;
+		*cola = (*cola)->next;
+		aux->next = *pila;
 		*pila = aux;
 	}
 	return;
 }
 
-void vaciar(nodo** N)
+void vaciar(node_t** N)
 {
-	nodo* aux;
+	node_t* aux;
 	while (*N != NULL)
 	{
 		aux = *N;
-		*N = aux->sig;
+		*N = aux->next;
 		free(aux);
 	}
 	return;
 }
 
-void eliminar(nodo** N)
+void eliminarNodo(node_t** N)
 {
-	nodo* aux;
+	node_t* aux;
 	if(*N != NULL)
 	{
 		aux = *N;
-		*N = aux->sig;
+		*N = aux->next;
 		free(aux);
 	}
 	return;

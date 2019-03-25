@@ -36,3 +36,26 @@ int getLine (const char *prmpt, char *buff, size_t sz)
 	buff[lastPos] = '\0';
 	return INPUT_OK;
 }
+
+int isSpace(int c)
+{
+	if(c == ' ')
+		return ' ';
+
+	if(c == '\f')
+		return '\f';
+
+	if(c == '\n')
+		return '\n';
+
+	if(c == '\r')
+		return '\r';
+
+	if(c == '\t')
+		return '\t';
+
+	if(c == '\v')
+		return '\v';
+
+	return 0;
+}

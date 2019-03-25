@@ -44,7 +44,7 @@ void onEqualsClicked(uiButton *b, void *data)
 	char *input = uiEntryText(m->entryTextBox);
 	if(strlen(input) > 0)
 	{
-		result = resolverExpresion(input, m->ans, &m->errFlag);
+		result = solveExpression(input, m->ans, &m->errFlag);
 		if(m->errFlag == E_NO)
 		{
 			uiMultilineEntryAppend(m->resultsTextBox, input);

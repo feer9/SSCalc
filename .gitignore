@@ -2,13 +2,16 @@
 #######################
 libs/*/*.so
 libs/*/*.so.*
+libs/*.dll
 *.o
+*.dll
 *.exe
 debug
 main
 calc
 ui
 calc-ui
+bin
 
 # archivos de carpeta #
 #######################
@@ -18,5 +21,4 @@ Thumbs.db
 # archivos de qt innecesarios #
 ###############################
 ./*.pro.user
-./Makefile
 ./.qmake.stash

@@ -103,6 +103,31 @@ char *rindex(const char *s, int c)
 	for( i = s_len ; i >= 0 ; i-- )
 		if(s[i] == c)
 			return (char*) (s+i);
-	
+
 	return NULL;
+}
+
+char *strmove(char *dest, const char *src, size_t len)
+{
+	unsigned int i;
+
+	if(src != dest)
+	{
+		for(i=0; i<len; i++)
+		{
+			*(dest + i) = *(src + i);
+		}
+	}
+	return dest;
+}
+
+char *strdup(const char *s)
+{
+	size_t len = strlen(s) + 1;
+	char *new = malloc(len);
+	
+	if(new == NULL)
+		return NULL;
+
+	return strncpy(new, s, len);
 }

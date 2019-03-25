@@ -12,16 +12,19 @@ INSTALL_DIR:=${HOME}/.local/lib
 EXECUTABLE:=../../calc
 
 # compiler flags
-CFLAGS:=-Wall -ggdb -fPIC
+CFLAGS:=-Wall -fPIC
 # linker flags
-LDFLAGS:=-shared -Wl,-soname,$(SONAME) -L$(INSTALL_DIR) -L../libmaths -L../libvarious
+LDFLAGS:=-shared -Wl,-soname,$(SONAME) -L../libmaths -L../libvarious
 
+
+.PHONY: all build debug install uninstall clean clean-build
 
 all: build
 
 build: $(LIBNAME) $(EXECUTABLE)
 
-.PHONY: all build install uninstall clean clean-build
+debug: CFLAGS += -ggdb
+debug: clean $(LIBNAME) $(EXECUTABLE)
 
 	# importante que "-L. -lmaths" esté a la derecha
 $(LIBNAME): ./obj  $(OBJS) $(HEADERS)

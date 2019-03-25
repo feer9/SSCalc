@@ -11,6 +11,7 @@
 
 #include "ui.h"
 #include "../libs/libcalc/src/calc.h"
+#include "../libs/libvarious/src/strings.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,6 +57,17 @@ static inline void closeWindowButton(uiButton *sender, void *window) {
 	uiControlDestroy(uiControl(window));
 }
 
+
+// g: pointer to the grid to append the item
+// c: pointer to the item to append to the grid
+// left: COLUMN   ;   top: ROW
+// xspan: number of blocks that this item will occupy, from 'left' to the right
+// yspan: number of blocks that this item will occupy, from 'top' to the bottom
+// hexpand: boolean: if true, the block try to expands horizontally
+// halign: typedef for the behavior of the block, it will tend to allign at (start|center|end|fill) in the horizontal direction
+// vexpand: boolean: if true, the block try to expands vertically
+// valign: typedef for the behavior of the block, it will tend to allign at (start|center|end|fill) in the vertical direction
+_UI_EXTERN void uiGridAppend(uiGrid *g, uiControl *c, int left, int top, int xspan, int yspan, int hexpand, uiAlign halign, int vexpand, uiAlign valign);
 
 
 #endif // __MAIN_WINDOW_H

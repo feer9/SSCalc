@@ -12,7 +12,7 @@ int checkSintax(const char* str)
 	int esNum;
 
 	tama = (int) strlen(str);
-	c = esOperacion(str[i]);
+	c = isOperation(str[i]);
 	if((c >= MULTIPLICACION && c <= POTENCIA) || c == PARENTESIS_C)
 		return E_SINTAXIS;
 	
@@ -24,7 +24,7 @@ int checkSintax(const char* str)
 		}
 		else {
 			ops_consec = 0;
-			esNum = esNumero(str[i]);
+			esNum = isNumber(str[i]);
 			if(esNum == 2) { // coma
 				comas++;
 				if(comas > 1)
@@ -45,55 +45,52 @@ int checkSintax(const char* str)
 		else if (c == PARENTESIS_C)
 			parentesis--;
 
-		c = esOperacion(str[++i]);
+		c = isOperation(str[++i]);
 	}
 
 	return (parentesis + ops_consec == 0) ? E_NO : E_SINTAXIS;
 }
 
-nodo* infijaAPostfija(const char* inf, double ans)
+node_t* infixToPostfix(const char* inf, double ans)
 {
 	unsigned int i=0, k;
-	int op; // OP actual
-	int tipoDeOp=0, caso = -1, negativo = NO;
-	char aux[256];
-	char primer_elem = 'n';
-	nodo* PILA = NULL;
-	nodo* COLA = NULL;
-	nodo* n_aux = NULL;
+	int op; // actual operation
+	int precedenciaOp=0, caso, negativo = NO;
+	char str_aux[256];
+	char cima;
+	node_t* PILA = NULL;
+	node_t* COLA = NULL;
+	node_t* nodo_aux = NULL;
 	const size_t tama = strlen(inf); // tamaño de la expresion
 
-	while(inf[i] == ' ') i++;
-
 	// compruebo si la expresion empieza con un negativo
-	op = esOperacion(inf[i]);
+	op = isOperation(inf[i]);
 	if(op == RESTA)
 	{
 //		negativo = SI;   no sirve por ejemplo si pongo -2^2 la caga
 		acolarNumero(0.0, &COLA);
 		apilar(OPERADOR, '-', &PILA);
 		i++;
-		while(inf[i] == ' ') i++;
-		op = esOperacion(inf[i]);
+		op = isOperation(inf[i]);
 	}
 	else if (op == SUMA)
 	// si algun boludo puso un + adelante del primer numero
 	{
 		i++;
-		while(inf[i] == ' ') i++;
-		op = esOperacion(inf[i]);
+		op = isOperation(inf[i]);
 	}
 
 
 	while (i < tama)
 	{
-		if(!op)
-		{
-			if(esNumero(inf[i]))
-				caso=NUMERO;
-		}
-		else
+		if(op)
 			caso = op;
+
+		else if(isNumber(inf[i]))
+			caso=NUMERO;
+
+		else
+			caso = -1; // ninguno
 
 
 		switch(caso)
@@ -103,48 +100,49 @@ nodo* infijaAPostfija(const char* inf, double ans)
 			apilar(SIMBOLO, inf[i], &PILA);
 			break;
 
-		// al encontrar un parentesis que se cierra ')', mando los elementos de la pila a la cadena,
+		// al encontrar un parentesis que se cierra ')',
+		// mando los elementos de la pila a la cola,
 		// hasta encontrar un parentesis que se abra. Este ultimo se elimina.
 		case PARENTESIS_C:
-			n_aux = sacar(&PILA);
-			while (n_aux != NULL && \
-					(n_aux->contenido == NUMERO || n_aux->contenido == OPERADOR || \
-					 (n_aux->contenido == SIMBOLO && n_aux->operador != '(' ) ) )
+			nodo_aux = sacar(&PILA);
+			while (nodo_aux != NULL && \
+					(nodo_aux->Content == NUMERO || nodo_aux->Content == OPERADOR || \
+					 (nodo_aux->Content == SIMBOLO && nodo_aux->Operator != '(' ) ) )
 			{
-				pasarACola(&n_aux, &COLA);
-				n_aux = sacar(&PILA);
+				pasarACola(&nodo_aux, &COLA);
+				nodo_aux = sacar(&PILA);
 			}
-			if(n_aux->contenido == SIMBOLO && n_aux->simbolo == '(')
-				free(n_aux);
+			if(nodo_aux->Content == SIMBOLO && nodo_aux->Symbol == '(')
+				free(nodo_aux);
 			break;
 
 
 			// si es +, -, *, / ó ^
-		case POTENCIA:						tipoDeOp += 2; // =5
-		case MULTIPLICACION: case DIVISION:	tipoDeOp += 2; // =3
-		case SUMA: case RESTA:				tipoDeOp += 1; // =1
+		case POTENCIA:						precedenciaOp += 2; // 2+2+1=5
+		case MULTIPLICACION: case DIVISION:	precedenciaOp += 2; //   2+1=3
+		case SUMA: case RESTA:				precedenciaOp += 1; //     1=1
 
 			/*  para suma y resta (1 y 2) si en la pila tengo otras operaciones consecutivas, las tengo que pasar a la cola
 			 *  para mult y divis (3 y 4) si en la pila tengo mult, div o pot las tengo que pasar a la cola
 			 *  para potencia (5) solo si en la pila hay otras potencias, las paso a la cola
 			 */
 
-			if(PILA != NULL && PILA->contenido == OPERADOR)
+			if(PILA != NULL && PILA->Content == OPERADOR)
 			{
-				primer_elem = esOperacion(PILA->operador);
+				cima = isOperation(PILA->Operator);
 
-				while (PILA != NULL && ( primer_elem >= tipoDeOp && primer_elem <= POTENCIA ))
+				while (PILA != NULL && ( cima >= precedenciaOp && cima <= POTENCIA ))
 				{	// los mando a la cola
-					n_aux = sacar(&PILA);
-					pasarACola(&n_aux, &COLA);
-					if(PILA != NULL && PILA->contenido == OPERADOR)
-						primer_elem = esOperacion(PILA->operador);
+					nodo_aux = sacar(&PILA);
+					pasarACola(&nodo_aux, &COLA);
+					if(PILA != NULL && PILA->Content == OPERADOR)
+						cima = isOperation(PILA->Operator);
 				}
 			}
 			// luego copio la OP actual a la pila
 			apilar(OPERADOR, inf[i], &PILA);
 
-			tipoDeOp=0;
+			precedenciaOp=0;
 			break;
 
 		// si el caracter es un numero
@@ -155,57 +153,54 @@ nodo* infijaAPostfija(const char* inf, double ans)
 			if(negativo)
 			{
 				negativo = OK;
-				aux[k] = '-';
+				str_aux[k] = '-';
 				k++;
 			}
-			// lo copio en aux
+			// lo copio en str_aux
 			do
 			{
-				aux[k] = inf[i];
+				str_aux[k] = inf[i];
 				k++;
 				i++;
 			}
-			while (esNumero(inf[i]));
-			aux[k] = '\0';
+			while (isNumber(inf[i]));
+			str_aux[k] = '\0';
 			// lo agrego a la cola
-			acolarNumero(atof(aux), &COLA);
+			acolarNumero(atof(str_aux), &COLA);
 			// y como despues voy a hacer un i++
 			i--;
 			break;
 
-		case ESPACIO: default:
+		default:
 			break;
 
 		} // switch
 
 		i++;
-		while(inf[i] == ' ') i++;
 
 		// si lo que sigue a algo que no sea un numero, es un signo menos, se le aplica al siguiente numero
-		op = esOperacion(inf[i]);
+		op = isOperation(inf[i]);
 		if ((caso != NUMERO && caso != PARENTESIS_C) && \
 				(op == SUMA || op == RESTA))
 		{
 			i++;
-			while( inf[i] == ' ' ) i++;
 			if (op == RESTA)
 				negativo = SI;
-			op = esOperacion(inf[i]);
+			op = isOperation(inf[i]);
 		}
-		caso = -1; // ninguno
 	} // while
 
 	// por ultimo, todo lo que quede en la pila se pasa a la cola
 	while (PILA != NULL)
 	{
-		n_aux = sacar(&PILA);
-		pasarACola(&n_aux, &COLA);
+		nodo_aux = sacar(&PILA);
+		pasarACola(&nodo_aux, &COLA);
 	}
 
 	return COLA;
 }
 
-int esNumero(char c)
+int isNumber(char c)
 {
 	if (c >= '0' && c <= '9')
 		return 1; // es numero
@@ -215,7 +210,7 @@ int esNumero(char c)
 		return 0; // no es numero
 }
 
-int esOperacion(char c)
+int isOperation(char c)
 {
 	switch(c)
 	{
@@ -226,28 +221,27 @@ int esOperacion(char c)
 		case '^': return POTENCIA;
 		case '(': return PARENTESIS_A;
 		case ')': return PARENTESIS_C;
-		case ' ': return ESPACIO;
 		default : return 0;
 	}
 }
 
-double resolverPostfija(nodo** Cola, int *errorFlag)
+double solvePostfix(node_t** Cola, int *errorFlag)
 {
-	nodo* Pila = NULL;
-	nodo* aux1 = NULL;
-	nodo* aux2 = NULL;
-	nodo* op = NULL;
-	nodo* res = NULL;
+	node_t* Pila = NULL;
+	node_t* aux1 = NULL;
+	node_t* aux2 = NULL;
+	node_t* op = NULL;
+	node_t* res = NULL;
 	double resu = 0.0;
 
 	while(*Cola != NULL)
 	{
-		if((*Cola)->contenido == OPERADOR)
+		if((*Cola)->Content == OPERADOR)
 		{
 			op = sacar(Cola);
 			aux2 = sacar(&Pila);
 			aux1 = sacar(&Pila);
-			res = resolver(aux1, aux2, &op, errorFlag);
+			res = solve(aux1, aux2, &op, errorFlag);
 			pasarAPila(&res, &Pila);
 		}
 		else
@@ -258,33 +252,33 @@ double resolverPostfija(nodo** Cola, int *errorFlag)
 			break;
 	}
 	if(Pila != NULL)
-		resu = Pila->numero;
+		resu = Pila->Number;
 	vaciar(&Pila);
 	vaciar(Cola);
 	return resu;
 }
 
-nodo* resolver(nodo* n1, nodo* n2, nodo** operacion, int *errorFlag)
+node_t* solve(node_t* n1, node_t* n2, node_t** operacion, int *errorFlag)
 {
 	static double (*pOperacion[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
-	nodo* resultado;
+	node_t* resultado;
 
 	if(n1 == NULL || n2 == NULL || operacion == NULL)
 		return NULL;
 
-	if(checkMath(n1->numero, (*operacion)->operador, n2->numero))
+	if(checkMath(n1->Number, (*operacion)->Operator, n2->Number) != E_NO)
 		*errorFlag = E_MATH;
 	else
 	{
-		int operador = esOperacion((*operacion)->operador) - 1;
+		int Operator = isOperation((*operacion)->Operator) - 1;
 		resultado = *operacion;
-		//resultado->numero = (*fResolver[operador]) (n1->numero,n2->numero);
-		resultado->numero = operar (n1->numero, n2->numero,
-									pOperacion[operador]);
-		resultado->contenido = NUMERO;
+		//resultado->Number = (*fResolver[Operator]) (n1->Number,n2->Number);
+		resultado->Number = operar (n1->Number, n2->Number,
+									pOperacion[Operator]);
+		resultado->Content = NUMERO;
 	}
-	eliminar(&n1);
-	eliminar(&n2);
+	eliminarNodo(&n1);
+	eliminarNodo(&n2);
 
 	return resultado;
 }
@@ -295,32 +289,32 @@ int checkMath(double n1, char op, double n2)
 	{
 	case '/':
 		if(n2 == 0.0)
-			return 1;
+			return E_MATH;
 		break;
 	case '^':
 	// exp real y base negativa, resultado imaginario
 	// 0^0 no definido
 		if(((n2 - (int)n2 != 0.0) && (n1 < 0)) || \
 			(n1 == 0.0 && n2 == 0.0) )
-			return 1;
+			return E_MATH;
 		break;
 	default:
 		break;
 	}
-	return 0;
+	return E_NO;
 }
 
-void mostrar(nodo* N)
+void printNodes(node_t* N)
 {
 	fputs("Cadena de nodos-> ", stdout);
 	while (N != NULL)
 	{
-		if(N->contenido == NUMERO)
-			printf("[%.*g]", 4, N->numero);
+		if(N->Content == NUMERO)
+			printf("[%.*g]", 4, N->Number);
 		else
-			printf("[%c]", N->simbolo);
+			printf("[%c]", N->Symbol);
 
-		N = N->sig;
+		N = N->next;
 	}
 	puts("");
 	return;

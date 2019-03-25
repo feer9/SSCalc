@@ -1,6 +1,4 @@
 CC:=gcc
-CFLAGS:=-Wall -ggdb -fPIC
-LDFLAGS:=-shared -Wl,-soname,$(SONAME)
 SOURCEDIR:=src
 SOURCES:=src/std.c src/strings.c src/various.c
 OBJECTSDIR:=obj
@@ -11,12 +9,18 @@ LIBSUBVER:=.0
 SONAME:=$(LIB)$(LIBVER)
 LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
+CFLAGS:=-Wall -fPIC
+LDFLAGS:=-shared -Wl,-soname,$(SONAME)
+
+.PHONY: all build debug install uninstall clean clean-build
 
 all: build
 
 build: $(LIBNAME)
 
-.PHONY: all build install uninstall clean clean-build
+debug: CFLAGS += -ggdb
+debug: clean $(LIBNAME)
+
 
 $(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
