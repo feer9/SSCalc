@@ -1,6 +1,6 @@
 #include "manejo_nodos.h"
 
-void apilar(char Content, char c, node_t** P)
+void apilar(char content, char c, node_t** P)
 {
 	node_t* nuevo;
 
@@ -11,11 +11,11 @@ void apilar(char Content, char c, node_t** P)
 		exit(1);
 	}
 	// Si hay espacio en disco, carga el dato
-	nuevo->Content = Content;
+	nuevo->Content = content;
 
-	if(Content == OPERADOR)
+	if(content == OPERADOR)
 		nuevo->Operator = c;
-	else if(Content == SIMBOLO)
+	else if(content == SIMBOLO)
 		nuevo->Symbol = c;
 	else
 		nuevo->Number = 0.0;

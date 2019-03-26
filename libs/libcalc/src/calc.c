@@ -61,6 +61,7 @@ double solveExpression(const char* expression, double ans, int* errorFlag)
 		DBGPRNT_COLA(COLA);
 		result = solvePostfix(&COLA, errorFlag);
 	}
+	free(expr);
 	DBGPRNT("in solveExpression(): result = %lf\n", result);
 	return result;
 }

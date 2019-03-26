@@ -251,36 +251,34 @@ double solvePostfix(node_t** Cola, int *errorFlag)
 		if(*errorFlag != E_NO)
 			break;
 	}
-	if(Pila != NULL)
+	if(Pila != NULL && *errorFlag == E_NO)
 		resu = Pila->Number;
 	vaciar(&Pila);
 	vaciar(Cola);
 	return resu;
 }
 
-node_t* solve(node_t* n1, node_t* n2, node_t** operacion, int *errorFlag)
+node_t* solve(node_t* n1, node_t* n2, node_t** operation, int *errorFlag)
 {
-	static double (*pOperacion[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
-	node_t* resultado;
+	static double (*opPtr[])(double, double) = {sumar, restar, multiplicar, dividir, pow};
+	node_t* result = *operation; // reuse of this object
 
-	if(n1 == NULL || n2 == NULL || operacion == NULL)
+	if(n1 == NULL || n2 == NULL || operation == NULL)
 		return NULL;
 
-	if(checkMath(n1->Number, (*operacion)->Operator, n2->Number) != E_NO)
+	if(checkMath(n1->Number, (*operation)->Operator, n2->Number) != E_NO)
 		*errorFlag = E_MATH;
 	else
 	{
-		int Operator = isOperation((*operacion)->Operator) - 1;
-		resultado = *operacion;
+		int operator = isOperation((*operation)->Operator) - 1;
 		//resultado->Number = (*fResolver[Operator]) (n1->Number,n2->Number);
-		resultado->Number = operar (n1->Number, n2->Number,
-									pOperacion[Operator]);
-		resultado->Content = NUMERO;
+		result->Number = operar (n1->Number, n2->Number, opPtr[operator]);
+		result->Content = NUMERO;
 	}
 	eliminarNodo(&n1);
 	eliminarNodo(&n2);
 
-	return resultado;
+	return result;
 }
 
 int checkMath(double n1, char op, double n2)
