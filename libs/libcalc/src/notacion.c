@@ -79,7 +79,7 @@ int checkSintax(const char* str)
 		c = isValidChar(str[i]);
 	}
 
-	return (parentesis + ops_consec == 0) ? E_NO : E_SYNTAX;
+	return (parentesis + ops_consec == 0) ? E_NONE : E_SYNTAX;
 }
 
 static inline void error(int err, int *errFlag, node_t **PILA, node_t **COLA)
@@ -93,7 +93,8 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 {
 	unsigned int i=0;
 	symbol_t op = 0;     // actual operation
-	content_t last = -1;
+	symbol_t  lastSymbol  = 0;
+	content_t lastContent = 0;
 	node_t* PILA = NULL;
 	node_t* COLA = NULL;
 	node_t* node_aux = NULL;
@@ -113,20 +114,20 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 		if(isNumber(inf[i]))
 		{
 			acolarNumero(getNumber(&inf[i], &i), &COLA);
-			last = NUMBER;
+			lastContent = NUMBER;
 		}
 		else if(isConstant(&inf[i], &i, &constant, ans))
 		{
-			if(last == NUMBER)
+			if(lastContent == NUMBER)
 				push_B_operator(MULTIPLICATION, &PILA, &COLA);
 			acolarNumero(constant, &COLA);
-			last = NUMBER;
+			lastContent = NUMBER;
 		}
 		else
 		{
 			if( (op = isParenthesis(inf[i])) != 0)
 			{
-				if(op == PARENTHESIS_OPEN && last == NUMBER)
+				if(op == PARENTHESIS_OPEN && lastContent == NUMBER)
 					push_B_operator(MULTIPLICATION, &PILA, &COLA);
 
 				push_parenthesis(op, &PILA, &COLA);
@@ -137,43 +138,48 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 					apilar(B_OPERATOR, SUBSTRACTION, &PILA);
 					i++;
 				}
-				last = PARENTHESIS;
+				lastContent = PARENTHESIS;
 			}
 
 			else if( (op = isBOperation(inf[i])) != 0)
 			{
+				if(lastSymbol == PARENTHESIS_OPEN && op != SUM && op != SUBSTRACTION) {
+					error(E_SYNTAX, errFlag, &PILA, &COLA);
+					return NULL;
+				}
 				push_B_operator(op, &PILA, &COLA);
 				if(inf[i+1] == '-')
 				{
 					push_U_operator(MINUS, &PILA, &COLA);
 					i++;
 				}
-				last = B_OPERATOR;
+				lastContent = B_OPERATOR;
 			}
 
 			else if( (op = isUOperation(inf[i])) != 0)
 			{
-				if(last != NUMBER && last != U_OPERATOR && last != PARENTHESIS) {
+				if(lastContent != NUMBER && lastContent != U_OPERATOR 
+						&& lastContent != PARENTHESIS) {
 					error(E_SYNTAX, errFlag, &PILA, &COLA);
 					return NULL;
 				}
 				push_U_operator(op, &PILA, &COLA);
-				last = U_OPERATOR;
+				lastContent = U_OPERATOR;
 			}
 
 			else if( (op = isUFunction(&inf[i], &i)) != 0)
 			{
-				if(last == NUMBER || last == U_OPERATOR)
+				if(lastContent == NUMBER || lastContent == U_OPERATOR)
 					push_B_operator(MULTIPLICATION, &PILA, &COLA);
 
 				push_U_function(op, &PILA, &COLA);
-				last = U_FUNCTION;
+				lastContent = U_FUNCTION;
 			}
 
 			else if( (op = isBFunction(&inf[i], &i)) != 0)
 			{
 				push_B_function(op, &PILA, &COLA);
-				last = B_FUNCTION;
+				lastContent = B_FUNCTION;
 			}
 
 			else
@@ -183,6 +189,8 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 			}
 			i++;
 		} // else
+		lastSymbol = op;
+		op = 0;
 	} // while
 
 	// por ultimo, todo lo que quede en la pila se pasa a la cola
@@ -231,7 +239,7 @@ static void push_B_function(symbol_t op, node_t **PILA, node_t **COLA)
 static void push_U_function(symbol_t op, node_t **PILA, node_t **COLA)
 {	// todo: check this
 	while(*PILA != NULL && ( (*PILA)->content == U_OPERATOR ) )
-//							|| (*PILA)->content == B_FUNCTION ) )
+//	|| (*PILA)->content != U_FUNCTION || (*PILA)->content ?= B_FUNCTION ) )
 	{
 		node_t *aux = sacar(PILA);
 		pasarACola(&aux, COLA);
@@ -276,8 +284,10 @@ static void push_B_operator(symbol_t op, node_t **PILA, node_t **COLA)
 		{
 			node_t *aux = sacar(PILA);
 			pasarACola(&aux, COLA);
-			if(*PILA != NULL && ((*PILA)->content == B_OPERATOR || (*PILA)->content == U_FUNCTION))
+			if(*PILA != NULL && (*PILA)->content != PARENTHESIS)
 				headPrecedence = (*PILA)->symbol;
+			else
+				headPrecedence = 0;
 		}
 	}
 	// luego copio la OP actual a la pila
@@ -389,7 +399,7 @@ static int isBFunction(const char *inf, unsigned int *i)
 	{
 		buf[sz] = inf[sz];
 		sz++;
-		(*i)++;
+	//	(*i)++;
 
 		if(sz == 3)
 		{
@@ -408,7 +418,7 @@ static int isBFunction(const char *inf, unsigned int *i)
 			break;
 	}
 	if(sz != 0)
-		(*i)--;
+		(*i) += sz-1;
 
 	return func;
 }
@@ -501,10 +511,10 @@ double solvePostfix(node_t** Cola, int *errorFlag)
 		{
 			pasarAPila(Cola, &Pila);
 		}
-		if(*errorFlag != E_NO)
+		if(*errorFlag != E_NONE)
 			break;
 	}
-	if(Pila != NULL && *errorFlag == E_NO)
+	if(Pila != NULL && *errorFlag == E_NONE)
 		resu = Pila->number;
 	vaciar(&Pila);
 	vaciar(Cola);
@@ -521,7 +531,7 @@ node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag)
 	if(n1 == NULL || n2 == NULL || *operation == NULL)
 		return NULL;
 
-	if(checkMath_binary(n1->number, (*operation)->symbol, n2->number) != E_NO)
+	if(checkMath_binary(n1->number, (*operation)->symbol, n2->number) != E_NONE)
 		*errorFlag = E_MATH;
 	else
 	{
@@ -543,7 +553,7 @@ node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag)
 	if(n == NULL || *operation == NULL)
 		return NULL;
 
-	if(checkMath_unary(n->number, (*operation)->symbol) != E_NO)
+	if(checkMath_unary(n->number, (*operation)->symbol) != E_NONE)
 		*errorFlag = E_MATH;
 	else
 	{
@@ -574,7 +584,7 @@ static int checkMath_binary(double n1, int op, double n2)
 	default:
 		break;
 	}
-	return E_NO;
+	return E_NONE;
 }
 
 static int checkMath_unary(double n, int op)
@@ -587,7 +597,7 @@ static int checkMath_unary(double n, int op)
 	default:
 		break;
 	}
-	return E_NO;
+	return E_NONE;
 }
 
 

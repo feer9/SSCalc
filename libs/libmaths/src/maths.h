@@ -31,7 +31,7 @@
 
 #ifndef _ERRORES_MATH
 #define _ERRORES_MATH
-enum errores {E_NO, E_SYNTAX, E_MATH};
+enum errores {E_NONE, E_SYNTAX, E_MATH};
 #endif
 
 #define max(a,b) (a>b ? a:b)
