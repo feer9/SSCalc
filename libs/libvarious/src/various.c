@@ -59,3 +59,14 @@ int isSpace(int c)
 
 	return 0;
 }
+
+int isAlpha(int c)
+{
+	if(c >= 'a' && c <= 'z')
+		return c;
+	
+	if(c >= 'A' && c <= 'Z')
+		return c;
+
+	return 0;
+}

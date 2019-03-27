@@ -31,7 +31,7 @@
 
 #ifndef _ERRORES_MATH
 #define _ERRORES_MATH
-enum errores {E_NO, E_SINTAXIS, E_MATH};
+enum errores {E_NO, E_SYNTAX, E_MATH};
 #endif
 
 #define max(a,b) (a>b ? a:b)
@@ -41,7 +41,8 @@ int					mayor			(size_t n, int *v);
 int					menor			(size_t n, int *v);
 double				promediar		(size_t n, ...);
 double				promediarVector	(size_t n, int *v);
-unsigned long int	factorial		(int num);
+//unsigned long int	factorial		(int num);
+double				factorial		(double num);
 unsigned long int	fibonacci		(int num);
 void				swap			(int *a, int *b);
 void				quicksort		(size_t n, int *ve);
@@ -69,7 +70,10 @@ double				log				(double num);
 double				ln				(double num);
 double				logarithm		(int b, double n);
 double				logarithm_aux	(int b, double n);
-double 				operar \
-			(double n1, double n2, double (*p_operacion) (double,double) );
+double				sin				(double num);
+double				cos				(double num);
+double				tan				(double num);
+
+static inline double negate			(double num) {return -num;}
 
 #endif

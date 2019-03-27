@@ -1,8 +1,8 @@
 LIB:=libmaths.so
-LIBVER:=.0.7
-LIBSUBVER:=.0
-SONAME:=$(LIB)$(LIBVER)
-LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
+LIBVER:=0.7
+LIBSUBVER:=0
+SONAME:=$(LIB).$(LIBVER)
+LIBNAME:=$(LIB).$(LIBVER).$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
 
 CC:=gcc
@@ -19,7 +19,7 @@ all: build
 build: $(LIBNAME)
 
 debug: CFLAGS += -ggdb
-debug: clean $(LIBNAME)
+debug: $(LIBNAME)
 
 #	sudo ldconfig -vn .
 $(LIBNAME): $(OBJDIR) $(OBJ)

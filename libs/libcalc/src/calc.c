@@ -1,7 +1,7 @@
 #include "notacion.h"
 #include "calc.h"
 
-#define _DBGPRNT_ 0
+#define _DBGPRNT_ 1
 #if _DBGPRNT_
 #define DBGPRNT_COLA(x)  printNodes(x)
 #define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}
@@ -13,6 +13,19 @@
 // TODO: si despues de un numero viene un parentesis,
 // insertar un *
 
+
+
+static void trim(char *buf)
+{
+	int i;
+	size_t len = strlen(buf);
+
+	for(i=0; buf[i]; i++)
+		while (isSpace(buf[i]))
+			strmove(buf+i, buf+i+1, len-i);
+}
+
+
 void consoleCalc()
 {
 	char input[256];
@@ -20,13 +33,13 @@ void consoleCalc()
 	double ans = 0.0;
 	int errorFlag = E_NO;
 
-	puts("Scientific Calc v0.9");
+	puts("Scientific Calc v1.0");
 	while( getLine("> ", input, sizeof input) != INPUT_OK);
 
 	while(strcmp(input, "q") && strcmp(input, "quit"))
 	{
 		result = solveExpression(input, ans, &errorFlag);
-		if(errorFlag == E_SINTAXIS)
+		if(errorFlag == E_SYNTAX)
 			puts("error de sintaxis");
 		else if(errorFlag == E_MATH)
 			puts("error matematico");
@@ -57,21 +70,11 @@ double solveExpression(const char* expression, double ans, int* errorFlag)
 	*errorFlag = checkSintax(expr);
 	if(*errorFlag == E_NO)
 	{
-		COLA = infixToPostfix(expr, ans);
+		COLA = infixToPostfix(expr, ans, errorFlag);
 		DBGPRNT_COLA(COLA);
 		result = solvePostfix(&COLA, errorFlag);
 	}
 	free(expr);
 	DBGPRNT("in solveExpression(): result = %lf\n", result);
 	return result;
-}
-
-void trim(char *buf)
-{
-	int i;
-	size_t len = strlen(buf);
-
-	for(i=0; buf[i]; i++)
-		while (isSpace(buf[i]))
-			strmove(buf+i, buf+i+1, len-i);
 }

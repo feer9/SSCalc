@@ -1,57 +1,83 @@
 #include "manejo_nodos.h"
 
-void apilar(char content, char c, node_t** P)
+void apilar(int content, int c, node_t** P)
 {
-	node_t* nuevo;
-
-	nuevo = (node_t*) malloc(sizeof(node_t));
-	if(nuevo == NULL)
+	node_t* new = (node_t*) malloc(sizeof(node_t));
+	if(new == NULL)
 	{
 		perror("malloc");
 		exit(1);
 	}
-	// Si hay espacio en disco, carga el dato
-	nuevo->Content = content;
 
-	if(content == OPERADOR)
-		nuevo->Operator = c;
-	else if(content == SIMBOLO)
-		nuevo->Symbol = c;
+	// Si hay espacio en disco, carga el dato
+	new->content = content;
+
+	if(content == NUMBER)
+		new->number = 0.0;
 	else
-		nuevo->Number = 0.0;
+		new->symbol = c;
 
 	// Se lo coloca en la pila
-	nuevo->next = *P;
-	*P = nuevo;
+	new->next = *P;
+	*P = new;
+
+	return;
+}
+
+void acolar(int content, int c, node_t** P)
+{
+	node_t* new = (node_t*) malloc(sizeof(node_t));
+	if(new == NULL)
+	{
+		perror("malloc");
+		exit(1);
+	}
+
+	new->next = NULL;
+	new->content = content;
+
+	if(content == NUMBER)
+		new->number = 0.0;
+	else
+		new->symbol = c;
+
+	if( *P == NULL )
+		*P = new;
+	else
+	{
+		node_t *last = *P;
+		while(last->next != NULL)
+			last = last->next;
+		last->next = new;
+	}
 
 	return;
 }
 
 void acolarNumero(double n, node_t** C)
 {
-	node_t *nuevo, *aux;
-
-	nuevo = (node_t*) malloc(sizeof(node_t));
-	if(nuevo == NULL)
+	node_t *aux;
+	node_t *new = (node_t*) malloc(sizeof(node_t));
+	if(new == NULL)
 	{
 		perror("malloc");
 		exit(1);
 	}
 
 	// Si hay espacio en disco, carga el dato
-	nuevo->Number = n;
-	nuevo->Content = NUMERO;
-	nuevo->next = NULL;
+	new->number = n;
+	new->content = NUMBER;
+	new->next = NULL;
 	// Se lo coloca en la Cola
 	if(*C == NULL)
 		// Si lo Cola está vacía
-		*C = nuevo;
+		*C = new;
 	else
 	{	// Si hay datos en la cola
 		aux = *C;
 		while (aux->next != NULL)
 			aux = aux->next;
-		aux->next = nuevo;
+		aux->next = new;
 	}
 
 	return;

@@ -4,15 +4,16 @@ CC:=gcc
 OBJS:=./obj/notacion.o ./obj/manejo_nodos.o ./obj/calc.o
 HEADERS:=../libmaths/src/maths.h ./src/calc.h ./src/notacion.h ./src/manejo_nodos.h ./src/nodo.h
 LIB:=libcalc.so
-LIBVER:=.0.9
-LIBSUBVER:=.1
-SONAME:=$(LIB)$(LIBVER)
-LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
+LIBVER:=1.0
+LIBSUBVER:=0
+SONAME:=$(LIB).$(LIBVER)
+LIBNAME:=$(LIB).$(LIBVER).$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
 EXECUTABLE:=../../calc
 
 # compiler flags
 CFLAGS:=-Wall -fPIC
+EXEC_CFLAGS:=-Wall
 # linker flags
 LDFLAGS:=-shared -Wl,-soname,$(SONAME) -L../libmaths -L../libvarious
 
@@ -24,7 +25,8 @@ all: build
 build: $(LIBNAME) $(EXECUTABLE)
 
 debug: CFLAGS += -ggdb
-debug: clean $(LIBNAME) $(EXECUTABLE)
+debug: EXEC_CFLAGS += -ggdb
+debug: $(LIBNAME) $(EXECUTABLE)
 
 	# importante que "-L. -lmaths" esté a la derecha
 $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
@@ -42,14 +44,14 @@ obj/manejo_nodos.o: src/manejo_nodos.c src/manejo_nodos.h src/notacion.h src/nod
 	$(CC) $(CFLAGS) -c $< -o $@
 
 obj/console.o: src/console.c src/calc.h
-	$(CC) -Wall -c $< -o $@
+	$(CC) $(EXEC_CFLAGS) -c $< -o $@
 
 obj:
 	mkdir $@
 
 #-L. 
 $(EXECUTABLE): ./obj ./obj/console.o $(OBJS) $(HEADERS)
-	$(CC) $(OBJS) ./obj/console.o -o $@ -L${HOME}/.local/lib -L../libmaths -L../libvarious -Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -lmaths -lvarious -no-pie
+	$(CC) $(OBJS) ./obj/console.o -o $@ -L../libmaths -L../libvarious -Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -lmaths -lvarious -no-pie
 
 install: $(OBJS) $(LIBNAME) $(EXECUTABLE)
 	install -C $(LIBNAME) $(INSTALL_DIR)

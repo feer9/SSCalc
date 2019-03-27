@@ -63,9 +63,10 @@ double promediarVector(size_t n, int* vec)
 	return (double) sum / n;
 }
 
-unsigned long int factorial(int num)
+//unsigned long int factorial(int num)
+double factorial(double num)
 {
-	unsigned long int factorial = 1;
+	double factorial = 1;
 
 	if(num < 0)
 		factorial = 0;
@@ -371,7 +372,7 @@ double log(double num)
 	return logarithm(10, num);
 }
 
-double operar(double n1, double n2, double (*p_operacion) (double,double) )
-{
-	return p_operacion ( n1 , n2 );
-}
+double sin(double x) {return x;}
+double cos(double x) {return x;}
+double tan(double x) {return x;}
+

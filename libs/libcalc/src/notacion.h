@@ -17,12 +17,10 @@
 int checkSintax(const char*);
 
 
-int checkMath(double n1, char op, double n2);
-node_t* infixToPostfix(const char*, double);
-int isNumber(char);
-int isOperation(char);
-double solvePostfix(node_t**, int*);
-node_t* solve(node_t* n1, node_t* n2, node_t** operation, int *errorFlag);
+node_t* infixToPostfix(const char *inf, double ans, int *err);
+double solvePostfix (node_t**, int*);
+node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag);
+node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag);
 void printNodes(node_t*);
 
 #endif

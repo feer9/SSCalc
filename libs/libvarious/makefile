@@ -4,10 +4,10 @@ SOURCES:=src/std.c src/strings.c src/various.c
 OBJECTSDIR:=obj
 OBJECTS:=obj/std.o obj/strings.o obj/various.o
 LIB:=libvarious.so
-LIBVER:=.0.3
-LIBSUBVER:=.0
-SONAME:=$(LIB)$(LIBVER)
-LIBNAME:=$(LIB)$(LIBVER)$(LIBSUBVER)
+LIBVER:=0.3
+LIBSUBVER:=1
+SONAME:=$(LIB).$(LIBVER)
+LIBNAME:=$(LIB).$(LIBVER).$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
 CFLAGS:=-Wall -fPIC
 LDFLAGS:=-shared -Wl,-soname,$(SONAME)
@@ -19,7 +19,7 @@ all: build
 build: $(LIBNAME)
 
 debug: CFLAGS += -ggdb
-debug: clean $(LIBNAME)
+debug: $(LIBNAME)
 
 
 $(LIBNAME): $(OBJECTSDIR) $(OBJECTS)

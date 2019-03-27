@@ -12,20 +12,20 @@ CFLAGS:=-Wall
 # linker flags
 LDFLAGS:=-Wl,-rpath,$$'ORIGIN' -L./libs -L./libs/libcalc -L./libs/libmaths -L./libs/libvarious -lui -lvarious -lmaths -lcalc -no-pie
 #:$$'ORIGIN'/../lib
-
+DEBUGFLAGS:=
 
 .PHONY: all build debug install uninstall clean clean-build configure
 
 all: build
 
 build: ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
+#build: $(EXECUTABLE)
 
 debug: CFLAGS += -ggdb
-debug: clean ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
-	make -C libs/libvarious debug
-	make -C libs/libmaths debug
-	make -C libs/libcalc debug
-	
+debug: DEBUGFLAGS += debug
+debug: ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
+
+
 
 $(EXECUTABLE): ./obj  $(OBJS) $(HEADERS) $(LIBS)
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
@@ -37,13 +37,13 @@ obj/mainWindow.o: src/mainWindow.c src/mainWindow.h ./obj
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ./libs/libvarious/libvarious.so:
-	make -C libs/libvarious
+	make -C libs/libvarious $(DEBUGFLAGS)
 
 ./libs/libmaths/libmaths.so:
-	make -C libs/libmaths
+	make -C libs/libmaths $(DEBUGFLAGS)
 
 ./libs/libcalc/libcalc.so:
-	make -C libs/libcalc 
+	make -C libs/libcalc $(DEBUGFLAGS)
 
 ./obj:
 	mkdir $@
@@ -60,8 +60,9 @@ $(ICONS_DIR):
 $(APPLICATIONS_DIR):
 	mkdir $@
 
+## not good >:c
 $(LIBS):
-	make -C libs/$@
+	make -C libs/$@ $(DEBUGFLAGS)
 
 
 install: $(OBJS) $(EXECUTABLE) $(INSTALL_DIR) $(LIBS_DIR) $(ICONS_DIR) $(APPLICATIONS_DIR)
@@ -91,6 +92,7 @@ clean:
 	make -C libs/libcalc clean
 	rm -rf *.o ./obj/*.o ./obj core
 
+## TODO: clean build must be a build, with previous clean. Not this.
 clean-build:
 	make -C libs/libvarious clean-build
 	make -C libs/libmaths clean-build

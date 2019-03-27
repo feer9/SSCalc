@@ -19,6 +19,7 @@ int main()
 		scanf("%lf",&e);
 		printf("\n%lf^%lf = %g\n",b,e, pow(b,e));
 		printf("\n(%lf)rootOf(%lf) = %.20lf\n",e,b, root(b,e));
+		printf("\nsqrt(%lf) = %.20lf\n",b, sqrt(b));
 		#endif
 		#if 0
 		printf("\nbase: ");

@@ -16,5 +16,6 @@
 
 int getLine (const char *prmpt, char *buff, size_t sz);
 int isSpace (int c);
+int isAlpha (int c);
 
 #endif // _VARIOUS_H

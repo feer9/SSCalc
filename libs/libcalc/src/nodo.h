@@ -5,24 +5,37 @@
 #define NO 0
 #define OK 0
 
-enum bOperations { SUMA=1, RESTA, MULTIPLICACION, DIVISION,
-			POTENCIA, ROOT, PARENTESIS_A, PARENTESIS_C, OpMAX
-} ;
 
-enum uOperations {
-	SQRT, SIN, COS, TAN, FACTORIAL, 
-} ;
+typedef enum {
+	/* binary operators */
+	SUM=1, SUBSTRACTION, MULTIPLICATION, DIVISION, POWER,
 
-enum {NUMERO,OPERADOR,SIMBOLO};
+	/* binary functions */
+	ROOT, POW,
+
+	/* unary operators */
+	FACTORIAL, MINUS,
+
+	/* unary functions */
+	SQRT, LOG, LN, SIN, COS, TAN,
+
+	/* parenthesis */
+	PARENTHESIS_OPEN, PARENTHESIS_CLOSE
+} symbol_t ;
+
+
+typedef enum {
+	NUMBER=1, B_OPERATOR, U_OPERATOR, B_FUNCTION, U_FUNCTION, PARENTHESIS 
+} content_t ;
 
 typedef struct node
 {
 	union {
-	double Number;
-	char Operator; // Un operador puede ser +, -, *, /, ó ^
-	char Symbol;   // por ahora seria un parentesis
+	double number;
+	symbol_t symbol;
 	};
-	int Content;   // contenido del nodo: NUMERO, OPERADOR o SIMBOLO
+
+	content_t content;
 
 	struct node* next;
 } node_t;

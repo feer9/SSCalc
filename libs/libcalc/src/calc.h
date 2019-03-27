@@ -3,7 +3,7 @@
 
 #ifndef _ERRORES_MATH
 #define _ERRORES_MATH
-enum errores {E_NO, E_SINTAXIS, E_MATH};
+enum errores {E_NO, E_SYNTAX, E_MATH};
 #endif
 
 #define DECIMAL_DIGITS 15
@@ -13,11 +13,9 @@ enum errores {E_NO, E_SINTAXIS, E_MATH};
 // Solves a complex mathematical expression.
 // Receives an ANS value to use when necessary (to future implementation)
 // and an error flag, which is ensured to be E_NO when everything is okay,
-// or E_SINTAXIS | E_MATH when it corresponds.
+// or E_SYNTAX | E_MATH when it corresponds.
 double solveExpression(const char *expression, double ans, int *errorFlag);
 
 void consoleCalc(void);
-
-void trim(char *buf);
 
 #endif

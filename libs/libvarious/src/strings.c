@@ -31,6 +31,22 @@ int strncmp(const char *s1, const char *s2, size_t n)
 	return s1[i] - s2[i];
 }
 
+int strcasecmp(const char *s1, const char *s2)
+{
+	int i=0;
+	char c1, c2;
+	
+	for(i=0; s1[i] && s2[i]; i++)
+	{
+		c1 = (s1[i] <= 'Z' && s1[i] >= 'A') ? s1[i] + 32 : s1[i];
+		c2 = (s2[i] <= 'Z' && s2[i] >= 'A') ? s2[i] + 32 : s2[i];
+		if(c1 != c2)
+			break;
+	}
+
+	return c1 - c2;
+}
+
 char *strcat(char *dest, const char *src)
 {
 	size_t i, dest_len = 0;

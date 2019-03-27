@@ -6,7 +6,8 @@
 #include "nodo.h"
 
 
-void apilar(char, char, node_t**);
+void apilar(int content, int c, node_t**);
+void acolar(int content, int c, node_t**);
 void acolarNumero(double, node_t**);
 node_t* sacar(node_t**);
 void pasarACola(node_t** nodo_origen, node_t** cola_destino);

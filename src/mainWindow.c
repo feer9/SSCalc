@@ -21,16 +21,15 @@ static void createButtons(mainWindow_t *m);
 void onButtonClicked(uiButton *b, void *data)
 {
 	mainWindow_t *mainWindow = (mainWindow_t *) data;
-	char c = *uiButtonText(b);
+	char *buttonText = uiButtonText(b);
 	char *prevText = uiEntryText(mainWindow->entryTextBox);
 	size_t prevLen = strlen(prevText);
 	char newText[128] = "";
 
-	if(prevLen < sizeof newText - 1)
+	if(prevLen + strlen(buttonText) < sizeof newText - 1)
 	{
 		strcpy(newText, prevText);
-		newText[prevLen] = c;
-		newText[prevLen+1] = '\0';
+		strcat(newText, buttonText);
 	}
 	uiEntrySetText(mainWindow->entryTextBox, newText);
 	DBGPRNT("in onButtonClicked: %c clicked\n", c);
@@ -39,8 +38,8 @@ void onButtonClicked(uiButton *b, void *data)
 void onEqualsClicked(uiButton *b, void *data)
 {
 	mainWindow_t *m = (mainWindow_t *) data;
-	double result;
-	char sResult[64];
+	double result = 0.0;
+	char sResult[64] = "";
 	char *input = uiEntryText(m->entryTextBox);
 	if(strlen(input) > 0)
 	{
@@ -53,7 +52,7 @@ void onEqualsClicked(uiButton *b, void *data)
 							DECIMAL_DIGITS, result);
 			uiMultilineEntryAppend(m->resultsTextBox, sResult);
 		}
-		else if(m->errFlag == E_SINTAXIS)
+		else if(m->errFlag == E_SYNTAX)
 		{
 			uiMultilineEntryAppend(m->resultsTextBox, "SYNTAX ERROR\n");
 		}
@@ -183,7 +182,7 @@ void uiShowWindow_mainWindow(mainWindow_t *mainWindow)
 	uiGrid *grid = uiNewGrid();
 	uiMultilineEntry *resultsTextBox = 
 			uiNewNonWrappingMultilineEntry();
-	uiEntry *entryTextBox = uiNewEntry();
+	uiEntry *entryTextBox = uiNewSearchEntry();
 
 	DBGPRNT("Main Window %p\n", (void *) w);
 
@@ -273,7 +272,7 @@ void createButtons(mainWindow_t *m)
 	newButton("=", onEqualsClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
-	column++; row--;
+	column = 3; row = 5;
 	newButton("+", onButtonClicked, m, grid, column, row,
 				1, 2, 1, uiAlignFill, 1, uiAlignFill);
 
@@ -281,7 +280,7 @@ void createButtons(mainWindow_t *m)
 	newButton("-", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
-	row--;
+	column = 4; row = 6;
 	newButton("*", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
@@ -289,16 +288,38 @@ void createButtons(mainWindow_t *m)
 	newButton("/", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
-	column--;
+	row--;
 	newButton("^", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
-	column--;
+	row--;
 	newButton(")", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
 	column--;
 	newButton("(", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column=0; row = 2;
+	newButton("log(", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column++;
+	newButton("ln(", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column++;
+	newButton("sqrt(", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column++;
+	/*newButton("π", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);*/ // todo: support unicode!
+	newButton("pi", onButtonClicked, m, grid, column, row,
+				1, 1, 1, uiAlignFill, 1, uiAlignFill);
+
+	column++;
+	newButton("e", onButtonClicked, m, grid, column, row,
 				1, 1, 1, uiAlignFill, 1, uiAlignFill);
 
 	return;

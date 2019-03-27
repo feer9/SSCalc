@@ -18,7 +18,8 @@ bin
 .directory
 Thumbs.db
 
-# archivos de qt innecesarios #
-###############################
+# archivos de IDEs innecesarios #
+#################################
 ./*.pro.user
 ./.qmake.stash
+.vscode/ipch
