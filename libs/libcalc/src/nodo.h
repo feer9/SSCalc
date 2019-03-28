@@ -14,7 +14,7 @@ typedef enum {
 	ROOT, POW,
 
 	/* unary operators */
-	FACTORIAL, MINUS,
+	FACTORIAL, MINUS, PLUS,
 
 	/* unary functions */
 	SQRT, LOG, LN, SIN, COS, TAN,

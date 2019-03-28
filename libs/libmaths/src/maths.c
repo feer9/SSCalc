@@ -268,7 +268,7 @@ double pow(double b, double ex)
 		polyInit = 1;
 		MacLaurinExp(PolyExp, GRADMACLAURINSERIES);
 	}
-	ex *= ln(b);
+	ex *= log(b);
 
 	if (ex > 0)
 		result = pow_aux((int)ex);
@@ -362,17 +362,70 @@ double logarithm_aux(int b, double n)
 	return (double) val/ipow(10,reps);
 }
 
-double ln(double num)
+// logarithm in base e
+inline double log(double num)
 {
 	return logarithm(10, num) / M_LOG10E;
 }
 
-double log(double num)
+// logarithm in base 10
+inline double log10(double num)
 {
 	return logarithm(10, num);
 }
 
-double sin(double x) {return x;}
-double cos(double x) {return x;}
-double tan(double x) {return x;}
+long double remquol(long double x, long double y, int *quo)
+{
+	long double div = x/y;
+	long double resto = div - (int) div;
+
+	if(resto > 0.5)
+		*quo = (int) div + 1;
+	else if(resto <= -0.5)
+		*quo = (int) div - 1;
+	else
+		*quo = (int) div;
+
+	return x - (*quo) * y;
+}
+
+// x in degrees
+double sin(double _x)
+{
+	long double x = _x;
+	long double res, term, x2, t1;
+	int phase;
+
+	x = remquol(x, 90, &phase);
+	if (phase & 1)
+		x = 90 - x;
+
+	x = x * M_PI_L / 180; // convert x to radians
+	x2 = x * x;           // pre-compute x^2
+
+	// compute the sine series: x - x^3/3! + x^5/5! ...
+	res = term = x;   // the first term is x
+	for (int n = 1; n < SINE_DEPTH; n += 4) {
+		// to reduce precision loss, compute 2 terms for each iteration
+		t1 = term * x2 / ((n + 1) * (n + 2));
+		term = t1 * x2 / ((n + 3) * (n + 4));
+		// update the result with the difference of the terms
+		res += term - t1;
+	}
+	if (phase & 2)
+		res = -res;
+
+	return res;
+}
+// todo: maybe implement horner's method?
+
+extern inline double cos(double x)
+{
+	return sin(90.0 - x);
+}
+
+extern inline double tan(double x)
+{
+	return sin(x) / sin(90.0 - x);
+}
 

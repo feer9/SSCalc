@@ -13,14 +13,12 @@
 
 
 // Parses the given expression for sintax errors
-// returns E_NO when everything is okay
+// returns E_NONE when everything is okay
 int checkSintax(const char*);
 
 
 node_t* infixToPostfix(const char *inf, double ans, int *err);
 double solvePostfix (node_t**, int*);
-node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag);
-node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag);
 void printNodes(node_t*);
 
 #endif

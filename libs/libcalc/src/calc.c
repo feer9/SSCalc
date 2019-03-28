@@ -10,10 +10,6 @@
 #define DBGPRNT(...)
 #endif
 
-// TODO: si despues de un numero viene un parentesis,
-// insertar un *
-
-
 
 static void trim(char *buf)
 {
@@ -31,7 +27,7 @@ void consoleCalc()
 	char input[256];
 	double result = 0.0;
 	double ans = 0.0;
-	int errorFlag = E_NO;
+	int errorFlag = E_NONE;
 
 	puts("Scientific Calc v1.0");
 	while( getLine("> ", input, sizeof input) != INPUT_OK);
@@ -68,7 +64,7 @@ double solveExpression(const char* expression, double ans, int* errorFlag)
 
 	trim(expr); // remove spaces
 	*errorFlag = checkSintax(expr);
-	if(*errorFlag == E_NO)
+	if(*errorFlag == E_NONE)
 	{
 		COLA = infixToPostfix(expr, ans, errorFlag);
 		DBGPRNT_COLA(COLA);

@@ -23,6 +23,9 @@
 #define M_SQRT2		1.41421356237309504880	/* sqrt(2)		*/
 #define M_SQRT1_2	0.70710678118654752440	/* 1/sqrt(2)	*/
 
+#define M_PI_L   3.14159265358979323846264338327950288L
+#define SINE_DEPTH  24
+
 #define GRADMACLAURINSERIES 30
 
 #ifndef NELEMS
@@ -66,14 +69,17 @@ double				*MacLaurinExp	(double *Poly, int grad);
 double				evalPoly		(const double *Poly, double x);
 double				sqrt			(double x);
 double				root			(double x, double n);
+double				log10			(double num);
 double				log				(double num);
-double				ln				(double num);
 double				logarithm		(int b, double n);
 double				logarithm_aux	(int b, double n);
+long double         remquol         (long double x, long double y, int *quo);
 double				sin				(double num);
 double				cos				(double num);
 double				tan				(double num);
 
+//#define negate(x) (-x)
 static inline double negate			(double num) {return -num;}
+static inline double equals			(double num) {return  num;}
 
 #endif

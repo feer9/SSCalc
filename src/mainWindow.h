@@ -21,7 +21,8 @@
 typedef struct {
 	uiWindow *window;
 	uiBox *box;
-	uiGrid *grid;
+	uiGrid *funcsGrid;
+	uiGrid *numsGrid;
 	uiMultilineEntry *resultsTextBox;
 	uiEntry *entryTextBox;
 	double ans;

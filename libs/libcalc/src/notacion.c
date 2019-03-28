@@ -21,6 +21,9 @@ static void error(int err, int *errFlag, node_t **PILA, node_t **COLA);
 static int checkMath_binary(double n1, int op, double n2);
 static int checkMath_unary(double n, int op);
 
+static node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag);
+static node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag);
+
 static inline int isValidChar(char c)
 {
 	return (isBOperation(c) | isUOperation(c) | isParenthesis(c));
@@ -147,13 +150,21 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 					error(E_SYNTAX, errFlag, &PILA, &COLA);
 					return NULL;
 				}
-				push_B_operator(op, &PILA, &COLA);
-				if(inf[i+1] == '-')
+				if( (lastContent == U_FUNCTION || lastContent == B_OPERATOR)
+						 && (op == SUM || op == SUBSTRACTION)) {
+					push_U_operator(op, &PILA, &COLA);
+					lastContent = U_OPERATOR;
+				}
+				else {
+					push_B_operator(op, &PILA, &COLA);
+					lastContent = B_OPERATOR;
+				}
+
+			/*	if(inf[i+1] == '-')
 				{
 					push_U_operator(MINUS, &PILA, &COLA);
 					i++;
-				}
-				lastContent = B_OPERATOR;
+				}*/
 			}
 
 			else if( (op = isUOperation(inf[i])) != 0)
@@ -239,7 +250,7 @@ static void push_B_function(symbol_t op, node_t **PILA, node_t **COLA)
 static void push_U_function(symbol_t op, node_t **PILA, node_t **COLA)
 {	// todo: check this
 	while(*PILA != NULL && ( (*PILA)->content == U_OPERATOR ) )
-//	|| (*PILA)->content != U_FUNCTION || (*PILA)->content ?= B_FUNCTION ) )
+//	|| (*PILA)->content !!!= U_FUNCTION || (*PILA)->content ?= B_FUNCTION ) )
 	{
 		node_t *aux = sacar(PILA);
 		pasarACola(&aux, COLA);
@@ -249,12 +260,18 @@ static void push_U_function(symbol_t op, node_t **PILA, node_t **COLA)
 
 static void push_U_operator(symbol_t op, node_t **PILA, node_t **COLA)
 {	// todo: check this
-	while(*PILA != NULL && ( (*PILA)->content == U_FUNCTION
-		|| (*PILA)->content == B_FUNCTION || (*PILA)->content == U_OPERATOR ) )
+	while(*PILA != NULL && ( (*PILA)->content == U_OPERATOR ) )
+		//(*PILA)->content == U_FUNCTION || 
+		//(*PILA)->content == B_FUNCTION || 
 	{
 		node_t *aux = sacar(PILA);
 		pasarACola(&aux, COLA);
 	}
+
+	if(op == SUBSTRACTION)
+		op = MINUS;
+	else if(op == SUM)
+		op = PLUS;
 
 	apilar(U_OPERATOR, op, PILA);
 }
@@ -339,6 +356,7 @@ static int isUOperation(char c)
 	{
 		case '!': return FACTORIAL;
 		case '-': return MINUS;
+		case '+': return PLUS;
 	}
 	return 0;
 }
@@ -523,44 +541,51 @@ double solvePostfix(node_t** Cola, int *errorFlag)
 
 
 // basic binary operations
-node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag)
+static node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag)
 {
 	static double (*opPtr[])(double, double) = {sumar, restar, multiplicar, dividir, pow, root, pow};
 	node_t* result = *operation; // reuse of this object
 
-	if(n1 == NULL || n2 == NULL || *operation == NULL)
-		return NULL;
-
-	if(checkMath_binary(n1->number, (*operation)->symbol, n2->number) != E_NONE)
-		*errorFlag = E_MATH;
-	else
+	if(n1 != NULL && n2 != NULL && *operation == NULL)
 	{
-		int operator = (*operation)->symbol - SUM;
-		result->number = (*opPtr[operator]) (n1->number, n2->number);
-		result->content = NUMBER;
+		if(checkMath_binary(n1->number, (*operation)->symbol, n2->number) != E_NONE)
+			*errorFlag = E_MATH;
+		else
+		{
+			int operator = (*operation)->symbol - SUM;
+			result->number = (*opPtr[operator]) (n1->number, n2->number);
+			result->content = NUMBER;
+		}
 	}
+	else
+		*errorFlag = E_SYNTAX;
+
 	eliminarNodo(&n1);
 	eliminarNodo(&n2);
 
 	return result;
 }
 
-node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag)
+static node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag)
 {
-	static double (*opPtr[])(double) = {factorial, negate, sqrt, log, ln, sin, cos, tan};
+	static double (*opPtr[])(double) = {factorial, negate, equals, sqrt, 
+								log10, log, sin, cos, tan};
 	node_t* result = *operation; // reuse of this object
 
-	if(n == NULL || *operation == NULL)
-		return NULL;
-
-	if(checkMath_unary(n->number, (*operation)->symbol) != E_NONE)
-		*errorFlag = E_MATH;
-	else
+	if(n != NULL && *operation != NULL)
 	{
-		int operator = (*operation)->symbol - FACTORIAL;
-		result->number = (*opPtr[operator]) (n->number);
-		result->content = NUMBER;
+		if(checkMath_unary(n->number, (*operation)->symbol) != E_NONE)
+		*errorFlag = E_MATH;
+		else
+		{
+			int operator = (*operation)->symbol - FACTORIAL;
+			result->number = (*opPtr[operator]) (n->number);
+			result->content = NUMBER;
+		}
 	}
+	else
+		*errorFlag = E_SYNTAX;
+
 	eliminarNodo(&n);
 
 	return result;
@@ -587,6 +612,8 @@ static int checkMath_binary(double n1, int op, double n2)
 	return E_NONE;
 }
 
+#define isInt(n) ( (n)-(int)(n) == 0.0 ? 1 : 0 )
+
 static int checkMath_unary(double n, int op)
 {
 	switch(op)
@@ -594,6 +621,15 @@ static int checkMath_unary(double n, int op)
 	case FACTORIAL:
 		if(n - (int)n != 0.0)
 			return E_MATH;
+		break;
+	case SQRT:
+		if(n < 0.0)
+			return E_MATH;
+		break;
+	case TAN:
+		if(isInt(n) && (int)(90 + n) % 180 == 0)
+			return E_MATH;
+		break;
 	default:
 		break;
 	}
@@ -605,22 +641,23 @@ static const char *getSymbol(symbol_t symbol)
 {
 	switch(symbol)
 	{
-		case SUM: return "+";
-		case SUBSTRACTION: return "-";
-		case MULTIPLICATION: return "*";
-		case DIVISION: return "/";
-		case POWER: return "^";
-		case FACTORIAL: return "!";
-		case MINUS: return "(-)";
-		case ROOT: return "root";
-		case SQRT: return "sqrt";
-		case LOG: return "log";
-		case LN: return "ln";
-		case SIN: return "sin";
-		case COS: return "cos";
-		case TAN: return "tan";
-		case POW: return "pow";
-		case PARENTHESIS_OPEN: return "(";
+		case SUM:               return "+";
+		case SUBSTRACTION:      return "-";
+		case MULTIPLICATION:    return "*";
+		case DIVISION:          return "/";
+		case POWER:             return "^";
+		case FACTORIAL:         return "!";
+		case MINUS:             return "(-)";
+		case PLUS:              return "(+)";
+		case ROOT:              return "root";
+		case SQRT:              return "sqrt";
+		case LOG:               return "log";
+		case LN:                return "ln";
+		case SIN:               return "sin";
+		case COS:               return "cos";
+		case TAN:               return "tan";
+		case POW:               return "pow";
+		case PARENTHESIS_OPEN:  return "(";
 		case PARENTHESIS_CLOSE: return ")";
 	}
 	return "";
