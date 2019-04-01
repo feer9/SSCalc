@@ -12,14 +12,14 @@ LDFLAGS:=-shared -Wl,-soname,$(SONAME)
 OBJ:=./obj/maths.o
 OBJDIR:=./obj
 	
-.PHONY: all build debug install uninstall clean clean-build
+.PHONY: all build build-debug install uninstall clean clean-all
 
 all: build
 
 build: $(LIBNAME)
 
-debug: CFLAGS += -ggdb
-debug: $(LIBNAME)
+build-debug: CFLAGS += -ggdb
+build-debug: $(LIBNAME)
 
 #	sudo ldconfig -vn .
 $(LIBNAME): $(OBJDIR) $(OBJ)
@@ -47,5 +47,5 @@ uninstall:
 clean:
 	rm -rf ./obj/*.o ./obj core test
 
-clean-build:
+clean-all: clean
 	rm -f $(LIB)*

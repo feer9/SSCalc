@@ -18,11 +18,11 @@ static void push_B_operator  (symbol_t op, node_t **_PILA, node_t **_COLA);
 
 static void error(int err, int *errFlag, node_t **PILA, node_t **COLA);
 
-static int checkMath_binary(double n1, int op, double n2);
-static int checkMath_unary(double n, int op);
+static int checkMath_binary(double n1, symbol_t op, double n2);
+static int checkMath_unary(double n, symbol_t op);
 
-static node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag);
-static node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag);
+static node_t* solve_binary(node_t* n1, node_t* n2, node_t* operation, int *errorFlag);
+static node_t* solve_unary (node_t* n, node_t* operation, int *errorFlag);
 
 static inline int isValidChar(char c)
 {
@@ -78,7 +78,11 @@ int checkSintax(const char* str)
 			parentesis--;
 
 		i++;
-		while(isAlpha(str[i])) i++;
+
+		if(isAlpha(str[i])) {
+			ops_consec = 0;
+			while(isAlpha(str[++i]));
+		}
 		c = isValidChar(str[i]);
 	}
 
@@ -515,14 +519,14 @@ double solvePostfix(node_t** Cola, int *errorFlag)
 			op = sacar(Cola);
 			aux2 = sacar(&Pila);
 			aux1 = sacar(&Pila);
-			res = solve_binary(aux1, aux2, &op, errorFlag);
+			res = solve_binary(aux1, aux2, op, errorFlag);
 			pasarAPila(&res, &Pila);
 		}
 		else if((*Cola)->content == U_FUNCTION || (*Cola)->content == U_OPERATOR)
 		{
 			op = sacar(Cola);
 			aux1 = sacar(&Pila);
-			res = solve_unary(aux1, &op, errorFlag);
+			res = solve_unary(aux1, op, errorFlag);
 			pasarAPila(&res, &Pila);
 		}
 		else
@@ -541,18 +545,18 @@ double solvePostfix(node_t** Cola, int *errorFlag)
 
 
 // basic binary operations
-static node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *errorFlag)
+static node_t* solve_binary(node_t* n1, node_t* n2, node_t* operation, int *errorFlag)
 {
 	static double (*opPtr[])(double, double) = {sumar, restar, multiplicar, dividir, pow, root, pow};
-	node_t* result = *operation; // reuse of this object
+	node_t* result = operation; // reuse of this object
 
-	if(n1 != NULL && n2 != NULL && *operation == NULL)
+	if(n1 != NULL && n2 != NULL && operation != NULL)
 	{
-		if(checkMath_binary(n1->number, (*operation)->symbol, n2->number) != E_NONE)
+		if(checkMath_binary(n1->number, operation->symbol, n2->number) != E_NONE)
 			*errorFlag = E_MATH;
 		else
 		{
-			int operator = (*operation)->symbol - SUM;
+			int operator = operation->symbol - SUM;
 			result->number = (*opPtr[operator]) (n1->number, n2->number);
 			result->content = NUMBER;
 		}
@@ -566,19 +570,19 @@ static node_t* solve_binary(node_t* n1, node_t* n2, node_t** operation, int *err
 	return result;
 }
 
-static node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag)
+static node_t* solve_unary (node_t* n, node_t* operation, int *errorFlag)
 {
 	static double (*opPtr[])(double) = {factorial, negate, equals, sqrt, 
 								log10, log, sin, cos, tan};
-	node_t* result = *operation; // reuse of this object
+	node_t* result = operation; // reuse of this object
 
-	if(n != NULL && *operation != NULL)
+	if(n != NULL && operation != NULL)
 	{
-		if(checkMath_unary(n->number, (*operation)->symbol) != E_NONE)
+		if(checkMath_unary(n->number, operation->symbol) != E_NONE)
 		*errorFlag = E_MATH;
 		else
 		{
-			int operator = (*operation)->symbol - FACTORIAL;
+			int operator = operation->symbol - FACTORIAL;
 			result->number = (*opPtr[operator]) (n->number);
 			result->content = NUMBER;
 		}
@@ -591,7 +595,9 @@ static node_t* solve_unary (node_t* n, node_t** operation, int *errorFlag)
 	return result;
 }
 
-static int checkMath_binary(double n1, int op, double n2)
+#define isInt(n) ( (n)-(int)(n) == 0.0 ? 1 : 0 )
+
+static int checkMath_binary(double n1, symbol_t op, double n2)
 {
 	switch (op)
 	{
@@ -601,9 +607,10 @@ static int checkMath_binary(double n1, int op, double n2)
 		break;
 	case POWER:
 	// exp real y base negativa, resultado imaginario
+		if( !isInt(n2) && n1 < 0.0 )
+			return E_MATH;
 	// 0^0 no definido
-		if(((n2 - (int)n2 != 0.0) && (n1 < 0)) || \
-			(n1 == 0.0 && n2 == 0.0) )
+		if( n1 == 0.0 && n2 == 0.0 )
 			return E_MATH;
 		break;
 	default:
@@ -612,9 +619,7 @@ static int checkMath_binary(double n1, int op, double n2)
 	return E_NONE;
 }
 
-#define isInt(n) ( (n)-(int)(n) == 0.0 ? 1 : 0 )
-
-static int checkMath_unary(double n, int op)
+static int checkMath_unary(double n, symbol_t op)
 {
 	switch(op)
 	{
@@ -675,6 +680,6 @@ void printNodes(node_t* N)
 
 		N = N->next;
 	}
-	puts("");
+	putchar('\n');
 	return;
 }

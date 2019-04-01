@@ -10,8 +10,8 @@
 #endif
 
 #include "ui.h"
-#include "../libs/libcalc/src/calc.h"
-#include "../libs/libvarious/src/strings.h"
+#include <libcalc/src/calc.h>
+#include <libvarious/src/strings.h>
 
 #include <stdio.h>
 #include <stdlib.h>

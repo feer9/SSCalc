@@ -6,7 +6,7 @@
 #define OK 0
 
 
-typedef enum {
+typedef enum symbol_t {
 	/* binary operators */
 	SUM=1, SUBSTRACTION, MULTIPLICATION, DIVISION, POWER,
 
@@ -24,11 +24,12 @@ typedef enum {
 } symbol_t ;
 
 
-typedef enum {
+typedef enum content_t {
 	NUMBER=1, B_OPERATOR, U_OPERATOR, B_FUNCTION, U_FUNCTION, PARENTHESIS 
 } content_t ;
 
-typedef struct node
+
+typedef struct node_t
 {
 	union {
 	double number;
@@ -37,7 +38,8 @@ typedef struct node
 
 	content_t content;
 
-	struct node* next;
+	struct node_t* next;
 } node_t;
+
 
 #endif // NODO_H

@@ -9,7 +9,7 @@ LIBSUBVER:=0
 SONAME:=$(LIB).$(LIBVER)
 LIBNAME:=$(LIB).$(LIBVER).$(LIBSUBVER)
 INSTALL_DIR:=${HOME}/.local/lib
-EXECUTABLE:=../../calc
+EXECUTABLE:=../../bin/calc
 
 # compiler flags
 CFLAGS:=-Wall -fPIC
@@ -18,15 +18,15 @@ EXEC_CFLAGS:=-Wall
 LDFLAGS:=-shared -Wl,-soname,$(SONAME) -L../libmaths -L../libvarious
 
 
-.PHONY: all build debug install uninstall clean clean-build
+.PHONY: all build build-debug install uninstall clean clean-all
 
 all: build
 
 build: $(LIBNAME) $(EXECUTABLE)
 
-debug: CFLAGS += -ggdb
-debug: EXEC_CFLAGS += -ggdb
-debug: $(LIBNAME) $(EXECUTABLE)
+build-debug: CFLAGS += -ggdb
+build-debug: EXEC_CFLAGS += -ggdb
+build-debug: $(LIBNAME) $(EXECUTABLE)
 
 	# importante que "-L. -lmaths" esté a la derecha
 $(LIBNAME): ./obj  $(OBJS) $(HEADERS)
@@ -49,8 +49,11 @@ obj/console.o: src/console.c src/calc.h
 obj:
 	mkdir $@
 
+../../bin:
+	mkdir $@
+
 #-L. 
-$(EXECUTABLE): ./obj ./obj/console.o $(OBJS) $(HEADERS)
+$(EXECUTABLE): ./obj ./obj/console.o $(OBJS) $(HEADERS) ../../bin
 	$(CC) $(OBJS) ./obj/console.o -o $@ -L../libmaths -L../libvarious -Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -lmaths -lvarious -no-pie
 
 install: $(OBJS) $(LIBNAME) $(EXECUTABLE)
@@ -63,10 +66,10 @@ install: $(OBJS) $(LIBNAME) $(EXECUTABLE)
 uninstall:
 	rm -rf $(INSTALL_DIR)/$(LIB)*
 	rm -f ~/.local/bin/calc
-	
+
 
 clean:
 	rm -rf *.o ./obj/*.o ./obj core
 
-clean-build:
-	rm -f $(LIB)* $(EXECUTABLE)
+clean-all: clean
+	rm -f $(LIB)*

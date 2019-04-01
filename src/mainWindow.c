@@ -95,7 +95,8 @@ int onShoudQuit(void *data)
 void uiShowWindow_about(uiMenuItem *sender, uiWindow *window, void *data)
 {
 #if 1
-	uiMsgBox(window,"About","Created by Fernando Coda");
+	uiMsgBox(window,"About","Created by Fernando Coda\n"
+							"fcoda.96@gmail.com");
 #else
 	// don't delete this since it's a good example of a new window
 	uiWindow *aboutWindow = uiNewWindow("About", 180, 120, 0);
@@ -185,7 +186,7 @@ void uiConfigure()
 void uiShowWindow_mainWindow(mainWindow_t *mainWindow)
 {
 	createMenus(mainWindow);
-	uiWindow *w = uiNewWindow("Calculator", 240, 400, 1);
+	uiWindow *w = uiNewWindow("Calculator", 260, 400, 1);
 	uiBox *box = uiNewVerticalBox();
 	uiGrid *numsGrid = uiNewGrid();
 	uiGrid *funcsGrid = uiNewGrid();

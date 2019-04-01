@@ -1,57 +1,85 @@
 CC:=gcc
 OBJS:=./obj/main.o ./obj/mainWindow.o
 HEADERS:=./src/mainWindow.h
-EXECUTABLE:=calc-ui
-INSTALL_DIR:=${HOME}/.local/bin
-LIBS_DIR:=${HOME}/.local/lib
-LIBS:=libvarious libmaths libcalc
+EXECUTABLE:=bin/calc-ui
+#LIBS:=libvarious libmaths libcalc
+INSTALL_DIR:=${HOME}/.local
+INSTALL_BIN_DIR:=${INSTALL_DIR}/bin
+INSTALL_LIBS_DIR:=${INSTALL_DIR}/lib
 ICONS_DIR:=${HOME}/.local/share/icons
 APPLICATIONS_DIR:=${HOME}/.local/share/applications
 # compiler flags
-CFLAGS:=-Wall
+CFLAGS:=-Wall -Ilibraries
 # linker flags
-LDFLAGS:=-Wl,-rpath,$$'ORIGIN' -L./libs -L./libs/libcalc -L./libs/libmaths -L./libs/libvarious -lui -lvarious -lmaths -lcalc -no-pie
+LDFLAGS:=-Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -L./lib -lui -lvarious -lmaths -lcalc -no-pie
 #:$$'ORIGIN'/../lib
 DEBUGFLAGS:=
 
-.PHONY: all build debug install uninstall clean clean-build configure
+.PHONY: all build build-clean build-debug install uninstall clean clean-all clean-bin configure
 
 all: build
 
-build: ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
-#build: $(EXECUTABLE)
+build: ./lib/libvarious.so ./lib/libmaths.so ./lib/libcalc.so ./bin/calc $(EXECUTABLE)
 
-debug: CFLAGS += -ggdb
-debug: DEBUGFLAGS += debug
-debug: ./libs/libvarious/libvarious.so ./libs/libmaths/libmaths.so ./libs/libcalc/libcalc.so $(EXECUTABLE)
+build-clean: clean-all build
 
 
 
-$(EXECUTABLE): ./obj  $(OBJS) $(HEADERS) $(LIBS)
+build-debug: CFLAGS += -ggdb
+build-debug: DEBUGFLAGS += build-debug
+build-debug: ./lib/libvarious.so ./lib/libmaths.so ./lib/libcalc.so $(EXECUTABLE)
+
+
+
+$(EXECUTABLE): ./obj ./bin $(OBJS) $(HEADERS)
 	$(CC) -o $@ $(OBJS) $(LDFLAGS)
 
-obj/main.o: src/main.c src/mainWindow.h ./obj 
+obj/main.o: src/main.c src/mainWindow.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-obj/mainWindow.o: src/mainWindow.c src/mainWindow.h ./obj 
+obj/mainWindow.o: src/mainWindow.c src/mainWindow.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./libs/libvarious/libvarious.so:
-	make -C libs/libvarious $(DEBUGFLAGS)
 
-./libs/libmaths/libmaths.so:
-	make -C libs/libmaths $(DEBUGFLAGS)
 
-./libs/libcalc/libcalc.so:
-	make -C libs/libcalc $(DEBUGFLAGS)
+lib/libvarious.so: ./libraries/libvarious/libvarious.so ./lib
+	cp $<* ./lib
+
+lib/libmaths.so: ./libraries/libmaths/libmaths.so ./lib
+	cp $<* ./lib
+
+lib/libcalc.so: ./libraries/libcalc/libcalc.so ./lib
+	cp $<* ./lib
+
+
+
+./libraries/libvarious/libvarious.so:
+	make -C libraries/libvarious $(DEBUGFLAGS)
+
+./libraries/libmaths/libmaths.so:
+	make -C libraries/libmaths $(DEBUGFLAGS)
+
+./libraries/libcalc/libcalc.so:
+	make -C libraries/libcalc $(DEBUGFLAGS)
+
+
+./calc:
+	make -C libraries/libcalc $(DEBUGFLAGS)
+
 
 ./obj:
 	mkdir $@
 
-$(INSTALL_DIR):
+./lib:
 	mkdir $@
 
-$(LIBS_DIR):
+./bin:
+	mkdir $@
+
+$(INSTALL_BIN_DIR):
+	mkdir $@
+
+$(INSTALL_LIBS_DIR):
 	mkdir $@
 
 $(ICONS_DIR):
@@ -60,47 +88,48 @@ $(ICONS_DIR):
 $(APPLICATIONS_DIR):
 	mkdir $@
 
-## not good >:c
-$(LIBS):
-	make -C libs/$@ $(DEBUGFLAGS)
 
-
-install: $(OBJS) $(EXECUTABLE) $(INSTALL_DIR) $(LIBS_DIR) $(ICONS_DIR) $(APPLICATIONS_DIR)
-	make -C libs/libvarious install
-	make -C libs/libmaths install
-	make -C libs/libcalc install
-	install -C $(EXECUTABLE) $(INSTALL_DIR)
-	install -C libs/libui.so.0 ~/.local/lib
+install: $(OBJS) $(EXECUTABLE) $(INSTALL_BIN_DIR) $(INSTALL_LIBS_DIR) $(ICONS_DIR) $(APPLICATIONS_DIR)
+	make -C libraries/libvarious install
+	make -C libraries/libmaths install
+	make -C libraries/libcalc install
+	install -C $(EXECUTABLE) $(INSTALL_BIN_DIR)
+	install -C lib/libui.so.0 ~/.local/lib
 	ln -sf libui.so.0 ~/.local/lib/libui.so
 	install -C ./resources/Surprised_Patrick.png $(ICONS_DIR)/calc-ui.png
 	./resources/desktop_gen
+	@echo "Done."
 
 configure:
 	./resources/configure
 
 uninstall:
-	make -C libs/libvarious uninstall
-	make -C libs/libmaths uninstall
-	make -C libs/libcalc uninstall
-	rm -f $(INSTALL_DIR)/$(EXECUTABLE) $(LIBS_DIR)/libui.so*
+	make -C libraries/libvarious uninstall
+	make -C libraries/libmaths uninstall
+	make -C libraries/libcalc uninstall
+	rm -f $(INSTALL_DIR)/$(EXECUTABLE) $(INSTALL_LIBS_DIR)/libui.so*
 	rm -f $(ICONS_DIR)/calc-ui.png
 	rm -f $(APPLICATIONS_DIR)/calc-ui.desktop
+	@echo "Done."
 
 clean:
-	make -C libs/libvarious clean
-	make -C libs/libmaths clean
-	make -C libs/libcalc clean
-	rm -rf *.o ./obj/*.o ./obj core
+	make -C libraries/libvarious clean
+	make -C libraries/libmaths clean
+	make -C libraries/libcalc clean
+	rm -rf *.o ./obj core
 
-## TODO: clean build must be a build, with previous clean. Not this.
-clean-build:
-	make -C libs/libvarious clean-build
-	make -C libs/libmaths clean-build
-	make -C libs/libcalc clean-build
-	rm -rf $(EXECUTABLE)
+clean-all:
+	make -C libraries/libvarious clean-all
+	make -C libraries/libmaths clean-all
+	make -C libraries/libcalc clean-all
+
+clean-bin:
+	rm -rf bin lib/libvarious.so* lib/libmaths.so* lib/libcalc.so*
+
+
 
 win64CC:=x86_64-w64-mingw32-gcc
-sources:=libs/libvarious/src/std.c libs/libvarious/src/strings.c libs/libvarious/src/various.c libs/libmaths/src/maths.c libs/libcalc/src/calc.c libs/libcalc/src/manejo_nodos.c libs/libcalc/src/notacion.c src/mainWindow.c src/main.c
+sources:=libraries/libvarious/src/std.c libraries/libvarious/src/strings.c libraries/libvarious/src/various.c libraries/libmaths/src/maths.c libraries/libcalc/src/calc.c libraries/libcalc/src/manejo_nodos.c libraries/libcalc/src/notacion.c src/mainWindow.c src/main.c
 
 win64:
 	$(win64CC) -Wall libui.a $(sources) -o calcui.exe

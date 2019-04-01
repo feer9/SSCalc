@@ -1,8 +1,10 @@
 # archivos compilados #
 #######################
-libs/*/*.so
-libs/*/*.so.*
-libs/*.dll
+libraries/*/*.so*
+libraries/*.dll
+lib/libvarious.so*
+lib/libmaths.so*
+lib/libcalc.so*
 *.o
 *.dll
 *.exe

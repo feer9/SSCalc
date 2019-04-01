@@ -1,7 +1,7 @@
 #include "notacion.h"
 #include "calc.h"
 
-#define _DBGPRNT_ 1
+#define _DBGPRNT_ 0
 #if _DBGPRNT_
 #define DBGPRNT_COLA(x)  printNodes(x)
 #define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}

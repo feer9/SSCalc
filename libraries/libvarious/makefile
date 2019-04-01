@@ -12,14 +12,14 @@ INSTALL_DIR:=${HOME}/.local/lib
 CFLAGS:=-Wall -fPIC
 LDFLAGS:=-shared -Wl,-soname,$(SONAME)
 
-.PHONY: all build debug install uninstall clean clean-build
+.PHONY: all build build-debug install uninstall clean clean-all
 
 all: build
 
 build: $(LIBNAME)
 
-debug: CFLAGS += -ggdb
-debug: $(LIBNAME)
+build-debug: CFLAGS += -ggdb
+build-debug: $(LIBNAME)
 
 
 $(LIBNAME): $(OBJECTSDIR) $(OBJECTS)
@@ -51,5 +51,5 @@ uninstall:
 clean:
 	rm -rf ./obj/*.o ./obj *~ core
 
-clean-build:
+clean-all: clean
 	rm -f $(LIB)*
