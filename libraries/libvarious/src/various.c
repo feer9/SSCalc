@@ -39,23 +39,16 @@ int getLine (const char *prmpt, char *buff, size_t sz)
 
 int isSpace(int c)
 {
-	if(c == ' ')
-		return ' ';
-
-	if(c == '\f')
-		return '\f';
-
-	if(c == '\n')
-		return '\n';
-
-	if(c == '\r')
-		return '\r';
-
-	if(c == '\t')
-		return '\t';
-
-	if(c == '\v')
-		return '\v';
+	switch(c)
+	{
+		case ' ' :
+		case '\f':
+		case '\n':
+		case '\r':
+		case '\t':
+		case '\v':
+			return c;
+	}
 
 	return 0;
 }
