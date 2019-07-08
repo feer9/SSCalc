@@ -11,13 +11,13 @@
 double atof(const char *s)
 {
 	DBGPRNT("in my atof(). s=%d;%d;%d;%d;%d;\n", s[0],s[1],s[2],s[3],s[4]);
-	int signo = 1, pos_coma = -1;
-	double num=0.0;
+	int pos_coma = -1;
+	double signo = 1.0, num=0.0;
 	size_t i = 0, n = strlen(s);
 
 	if(s[i] == '-')
 	{
-		signo = -1;
+		signo = -1.0;
 		i++;
 	}
 
@@ -44,8 +44,9 @@ double atof(const char *s)
 			break;
 	}
 
-	DBGPRNT("atof: num=%lf\n", num*(double)signo);
-	return num * (double) signo;
+	num *= signo;
+	DBGPRNT("atof: num=%lf\n", num);
+	return num;
 }
 
 int atoi(const char *s)
