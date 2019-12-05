@@ -1,4 +1,4 @@
-# GUI Scientific Calculator proyect
+# GUI Scientific Calculator
 Written from scratch in C
 
 ## About the project
