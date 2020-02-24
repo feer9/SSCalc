@@ -44,7 +44,7 @@ int checkSyntax(const char* str)
 	tama = (int) strlen(str);
 	while(isAlpha(str[i])) i++; // todo: verify if this will work
 	c = isValidChar(str[i]);
-	if((c >= MULTIPLICATION && c <= POWER) || c == PARENTHESIS_CLOSE)
+//	if((c >= MULTIPLICATION && c <= POWER) || c == PARENTHESIS_CLOSE)
 	
 	while(i < tama && parentesis >= 0)
 	{
