@@ -19,7 +19,7 @@ DEBUGFLAGS:=
 
 all: build
 
-build: ./lib/libvarious.so ./lib/libmaths.so ./lib/libcalc.so ./bin/calc $(EXECUTABLE)
+build: ./lib/libvarious.so ./lib/libmaths.so ./lib/libcalc.so ./bin/calc $(EXECUTABLE) ./lib
 
 build-clean: clean-all build
 
@@ -42,14 +42,14 @@ obj/mainWindow.o: src/mainWindow.c src/mainWindow.h
 
 
 
-lib/libvarious.so: ./libraries/libvarious/libvarious.so ./lib
-	cp $<* ./lib
+lib/libvarious.so: ./libraries/libvarious/libvarious.so
+	cp -P $<* ./lib
 
-lib/libmaths.so: ./libraries/libmaths/libmaths.so ./lib
-	cp $<* ./lib
+lib/libmaths.so: ./libraries/libmaths/libmaths.so
+	cp -P $<* ./lib
 
-lib/libcalc.so: ./libraries/libcalc/libcalc.so ./lib
-	cp $<* ./lib
+lib/libcalc.so: ./libraries/libcalc/libcalc.so
+	cp -P $<* ./lib
 
 
 

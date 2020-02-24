@@ -56,7 +56,7 @@ obj:
 $(EXECUTABLE): ./obj ./obj/console.o $(OBJS) $(HEADERS) ../../bin
 	$(CC) $(OBJS) ./obj/console.o -o $@ -L../libmaths -L../libvarious -Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -lmaths -lvarious -no-pie
 
-install: $(OBJS) $(LIBNAME) $(EXECUTABLE)
+install: $(LIBNAME) $(EXECUTABLE)
 	install -C $(LIBNAME) $(INSTALL_DIR)
 	ln -sf $(LIBNAME) $(INSTALL_DIR)/$(SONAME)
 	ln -sf $(SONAME) $(INSTALL_DIR)/$(LIB)
