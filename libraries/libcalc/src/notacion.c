@@ -31,7 +31,7 @@ static inline int isValidChar(char c)
 
 
 
-int checkSintax(const char* str)
+int checkSyntax(const char* str)
 {
 	int c;
 	int i = 0;

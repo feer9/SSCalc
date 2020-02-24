@@ -12,9 +12,9 @@
 
 
 
-// Parses the given expression for sintax errors
+// Parses the given expression for syntax errors
 // returns E_NONE when everything is okay
-int checkSintax(const char*);
+int checkSyntax(const char*);
 
 
 node_t* infixToPostfix(const char *inf, double ans, int *err);

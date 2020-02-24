@@ -63,7 +63,7 @@ double solveExpression(const char* expression, double ans, int* errorFlag)
 	}
 
 	trim(expr); // remove spaces
-	*errorFlag = checkSintax(expr);
+	*errorFlag = checkSyntax(expr);
 	if(*errorFlag == E_NONE)
 	{
 		COLA = infixToPostfix(expr, ans, errorFlag);
