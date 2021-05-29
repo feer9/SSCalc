@@ -18,13 +18,13 @@ add_custom_command(
         COMMAND
             glib-compile-resources
         ARGS
+            --sourcedir=resources
             --generate-source
-            "src/sscalc.gresource.xml"
-            --sourcedir=src
             --target=${CMAKE_BINARY_DIR}/sscalc.ui.c
+            "resources/sscalc.gresource.xml"
         DEPENDS
-            src/sscalc.gresource.xml
-            src/sscalc.ui
+            resources/sscalc.gresource.xml
+            resources/sscalc.ui
 )
 
 
@@ -33,17 +33,17 @@ add_custom_command(
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
-add_executable(SSCalc
+add_executable(sscalc-gui
         src/main.c
         sscalc.ui.c
-)
+        src/mainWindow.c src/mainWindow.h)
 
-target_include_directories (SSCalc PRIVATE ${GTK3_INCLUDE_DIRS})
-target_compile_options     (SSCalc PRIVATE ${GTK3_CFLAGS_OTHER})
-target_compile_definitions (SSCalc PRIVATE )
-target_link_directories    (SSCalc PRIVATE ${GTK3_LIBRARY_DIRS})
-target_link_options        (SSCalc PRIVATE -rdynamic)
-target_link_libraries      (SSCalc PRIVATE ${GTK3_LIBRARIES} )
+target_include_directories (sscalc-gui PRIVATE ${GTK3_INCLUDE_DIRS})
+target_compile_options     (sscalc-gui PRIVATE ${GTK3_CFLAGS_OTHER})
+target_compile_definitions (sscalc-gui PRIVATE )
+target_link_directories    (sscalc-gui PRIVATE ${GTK3_LIBRARY_DIRS})
+target_link_options        (sscalc-gui PRIVATE -rdynamic)
+target_link_libraries      (sscalc-gui PRIVATE ${GTK3_LIBRARIES} )
 
 
 #add_dependencies(SSCalc sscalc.ui.c)
