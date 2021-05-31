@@ -37,11 +37,37 @@ static void set_signals(GtkBuilder *builder)
 		g_signal_connect_swapped(gtk_builder_get_object(builder, "button_"#BUTTON), \
 		                 "clicked", G_CALLBACK(on_button_##BUTTON##_clicked), &app)
 
-	CONNECT_CALLBACK(multiply);
-	CONNECT_CALLBACK(equal);
-	CONNECT_CALLBACK(plus);
-	CONNECT_CALLBACK(sqrt);
+	CONNECT_CALLBACK(sine);
+	CONNECT_CALLBACK(cosine);
+	CONNECT_CALLBACK(tangent);
+	CONNECT_CALLBACK(log_10);
+	CONNECT_CALLBACK(log_e);
+	CONNECT_CALLBACK(abs);
+	CONNECT_CALLBACK(pi);
+	CONNECT_CALLBACK(euler);
 
+	CONNECT_CALLBACK(num_0);
+	CONNECT_CALLBACK(num_1);
+	CONNECT_CALLBACK(num_2);
+	CONNECT_CALLBACK(num_3);
+	CONNECT_CALLBACK(num_4);
+	CONNECT_CALLBACK(num_5);
+	CONNECT_CALLBACK(num_6);
+	CONNECT_CALLBACK(num_7);
+	CONNECT_CALLBACK(num_8);
+	CONNECT_CALLBACK(num_9);
+	CONNECT_CALLBACK(dot);
+	CONNECT_CALLBACK(exp);
+
+	CONNECT_CALLBACK(open_bracket);
+	CONNECT_CALLBACK(close_bracket);
+	CONNECT_CALLBACK(plus);
+	CONNECT_CALLBACK(minus);
+	CONNECT_CALLBACK(multiply);
+	CONNECT_CALLBACK(divided);
+	CONNECT_CALLBACK(sqrt);
+	CONNECT_CALLBACK(ans);
+	CONNECT_CALLBACK(equal);
 
 	// Load each callback defined in the .glade file into the gtk API
 	gtk_builder_connect_signals(builder, NULL);
@@ -114,6 +140,8 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 		case GDK_KEY_KP_Multiply:
 		case GDK_KEY_asterisk:
 			g_debug("* key pressed");
+/*			g_signal_emit_by_name(GTK_BUTTON(gtk_builder_get_object(app.builder, "button_multiply")),
+						 "clicked", 0);*/
 			on_button_multiply_clicked(&app);
 			handled = TRUE;
 			break;
