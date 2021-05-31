@@ -536,19 +536,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">×</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="receives-default">False</property>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="button_sqrt">
                         <property name="label" translatable="yes">√</property>
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -581,14 +569,25 @@
                         <property name="has-default">True</property>
                         <property name="receives-default">False</property>
                         <property name="vexpand">True</property>
-                        <signal name="clicked" handler="on_button_equal_clicked" object="text_in" swapped="no"/>
-                        <accelerator key="Return" signal="clicked"/>
                         <accelerator key="KP_Enter" signal="clicked"/>
+                        <accelerator key="Return" signal="clicked"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
                         <property name="top-attach">3</property>
                         <property name="height">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_multiply">
+                        <property name="label" translatable="yes">×</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="receives-default">False</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">2</property>
                       </packing>
                     </child>
                   </object>

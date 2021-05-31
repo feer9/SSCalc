@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 project(SSCalc C)
 
 #set(CMAKE_C_STANDARD 11)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_C_FLAGS "-Wall")
 
 message( "src dir:        " ${CMAKE_CURRENT_SOURCE_DIR})
@@ -33,10 +33,13 @@ add_custom_command(
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
-add_executable(sscalc-gui
+add_executable( sscalc-gui
         src/main.c
         sscalc.ui.c
-        src/mainWindow.c src/mainWindow.h)
+        src/mainWindow.c
+        src/sscalc-gui.h
+        src/callbacks.c
+)
 
 target_include_directories (sscalc-gui PRIVATE ${GTK3_INCLUDE_DIRS})
 target_compile_options     (sscalc-gui PRIVATE ${GTK3_CFLAGS_OTHER})
