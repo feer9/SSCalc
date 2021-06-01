@@ -16,9 +16,16 @@
 #include <gtk/gtkbuildable.h>
 #include <glib.h>
 #include <locale.h>
+#include <memory.h>
 
 // https://stackoverflow.com/questions/17967997/gtk-pass-user-data-to-callback-using-glade
-// code to
+
+struct calculator_data {
+	double ans;
+	int errFlag;
+	int i;
+	char c;
+} ;
 
 struct application {
 	GtkBuilder *builder;
@@ -27,6 +34,7 @@ struct application {
 	GtkTextBuffer *buffer_out;
 	GtkEntry *text_in;
 	GtkTextView *text_out;
+	struct calculator_data calc_data ;
 } ;
 
 void setupGUI();

@@ -81,6 +81,7 @@ static void set_pointers(GtkBuilder *builder)
 	app.text_out   = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_out"));
 	app.buffer_in  = GTK_ENTRY_BUFFER(gtk_builder_get_object(builder, "buffer_in"));
 	app.buffer_out = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "buffer_out"));
+	memset(&app.calc_data, 0, sizeof(struct calculator_data));
 }
 
 
