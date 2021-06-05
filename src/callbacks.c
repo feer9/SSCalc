@@ -46,14 +46,18 @@ BUTTON_CLICKED_CALLBACK(sqrt,         "√(");
 BUTTON_CLICKED_CALLBACK(ans,          "ANS");
 
 
-enum {E_NONE, E_SYNTAX, E_MATH, E_size};
-#define DECIMAL_DIGITS 8
-double solveExpression(const gchar *input, double ans, int *err)
-{
-	(void) ans; (void)err;
-	return atof(input) * (double) (rand() % 1000) / 1000; // (?
-}
-
+#if 1
+	#include "libcalc/src/calc.h"
+	#include "libvarious/src/strings.h"
+#else
+	enum {E_NONE, E_SYNTAX, E_MATH, E_size};
+	#define DECIMAL_DIGITS 8
+	double solveExpression(const gchar *input, double ans, int *err)
+	{
+		(void) ans; (void)err;
+		return atof(input) * (double) (rand() % 1000) / 1000; // (?
+	}
+#endif
 
 void on_button_equal_clicked (struct application *app)
 {

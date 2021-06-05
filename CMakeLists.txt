@@ -9,6 +9,25 @@ message( "src dir:        " ${CMAKE_CURRENT_SOURCE_DIR})
 message( "cmake bin dir:  " ${CMAKE_BINARY_DIR})
 message( "project bin dir:" ${PROJECT_BINARY_DIR} "\n")
 
+add_library(maths STATIC
+        lib/libmaths/src/maths.c
+)
+
+add_library(various STATIC
+        lib/libvarious/src/std.c
+        lib/libvarious/src/strings.c
+        lib/libvarious/src/various.c
+)
+
+add_library(calc STATIC
+        lib/libcalc/src/notacion.c
+        lib/libcalc/src/manejo_nodos.c
+        lib/libcalc/src/calc.c
+)
+
+target_include_directories(calc PUBLIC lib)
+target_link_libraries(calc PUBLIC maths various)
+
 ## Generate GUI source file to be compiled an linked to binary file
 add_custom_command(
         OUTPUT
@@ -41,12 +60,16 @@ add_executable( sscalc-gui
         src/callbacks.c
 )
 
-target_include_directories (sscalc-gui PRIVATE ${GTK3_INCLUDE_DIRS})
+target_include_directories (sscalc-gui PRIVATE lib ${GTK3_INCLUDE_DIRS})
 target_compile_options     (sscalc-gui PRIVATE ${GTK3_CFLAGS_OTHER})
 target_compile_definitions (sscalc-gui PRIVATE )
 target_link_directories    (sscalc-gui PRIVATE ${GTK3_LIBRARY_DIRS})
+target_link_libraries      (sscalc-gui PRIVATE calc ${GTK3_LIBRARIES})
 target_link_options        (sscalc-gui PRIVATE -rdynamic)
-target_link_libraries      (sscalc-gui PRIVATE ${GTK3_LIBRARIES} )
 
 
 #add_dependencies(SSCalc sscalc.ui.c)
+
+#PRIVATE   - use only for this specified build target
+#PUBLIC    - use it for specified target and for targets which links with this project
+#INTERFACE - use it only for targets which links with the current project

@@ -9,7 +9,7 @@ INSTALL_LIBS_DIR:=${INSTALL_DIR}/lib
 ICONS_DIR:=${HOME}/.local/share/icons
 APPLICATIONS_DIR:=${HOME}/.local/share/applications
 # compiler flags
-CFLAGS:=-Wall -Ilibraries
+CFLAGS:=-Wall -Ilib
 # linker flags
 LDFLAGS:=-Wl,-rpath,$$'ORIGIN':$$'ORIGIN'/../lib -L./lib -lui -lvarious -lmaths -lcalc -no-pie
 #:$$'ORIGIN'/../lib
@@ -42,29 +42,29 @@ obj/mainWindow.o: src/mainWindow.c src/mainWindow.h
 
 
 
-lib/libvarious.so: ./libraries/libvarious/libvarious.so
+lib/libvarious.so: ./lib/libvarious/libvarious.so
 	cp -P $<* ./lib
 
-lib/libmaths.so: ./libraries/libmaths/libmaths.so
+lib/libmaths.so: ./lib/libmaths/libmaths.so
 	cp -P $<* ./lib
 
-lib/libcalc.so: ./libraries/libcalc/libcalc.so
+lib/libcalc.so: ./lib/libcalc/libcalc.so
 	cp -P $<* ./lib
 
 
 
-./libraries/libvarious/libvarious.so:
-	make -C libraries/libvarious $(DEBUGFLAGS)
+./lib/libvarious/libvarious.so:
+	make -C lib/libvarious $(DEBUGFLAGS)
 
-./libraries/libmaths/libmaths.so:
-	make -C libraries/libmaths $(DEBUGFLAGS)
+./lib/libmaths/libmaths.so:
+	make -C lib/libmaths $(DEBUGFLAGS)
 
-./libraries/libcalc/libcalc.so:
-	make -C libraries/libcalc $(DEBUGFLAGS)
+./lib/libcalc/libcalc.so:
+	make -C lib/libcalc $(DEBUGFLAGS)
 
 
 ./calc:
-	make -C libraries/libcalc $(DEBUGFLAGS)
+	make -C lib/libcalc $(DEBUGFLAGS)
 
 
 ./obj:
@@ -90,9 +90,9 @@ $(APPLICATIONS_DIR):
 
 
 install: $(OBJS) $(EXECUTABLE) $(INSTALL_BIN_DIR) $(INSTALL_LIBS_DIR) $(ICONS_DIR) $(APPLICATIONS_DIR)
-	make -C libraries/libvarious install
-	make -C libraries/libmaths install
-	make -C libraries/libcalc install
+	make -C lib/libvarious install
+	make -C lib/libmaths install
+	make -C lib/libcalc install
 	install -C $(EXECUTABLE) $(INSTALL_BIN_DIR)
 	install -C lib/libui.so.0 ~/.local/lib
 	ln -sf libui.so.0 ~/.local/lib/libui.so
@@ -104,24 +104,24 @@ configure:
 	./resources/configure
 
 uninstall:
-	make -C libraries/libvarious uninstall
-	make -C libraries/libmaths uninstall
-	make -C libraries/libcalc uninstall
+	make -C lib/libvarious uninstall
+	make -C lib/libmaths uninstall
+	make -C lib/libcalc uninstall
 	rm -f $(INSTALL_DIR)/$(EXECUTABLE) $(INSTALL_LIBS_DIR)/libui.so*
 	rm -f $(ICONS_DIR)/calc-ui.png
 	rm -f $(APPLICATIONS_DIR)/calc-ui.desktop
 	@echo "Done."
 
 clean:
-	make -C libraries/libvarious clean
-	make -C libraries/libmaths clean
-	make -C libraries/libcalc clean
+	make -C lib/libvarious clean
+	make -C lib/libmaths clean
+	make -C lib/libcalc clean
 	rm -rf *.o ./obj core
 
 clean-all:
-	make -C libraries/libvarious clean-all
-	make -C libraries/libmaths clean-all
-	make -C libraries/libcalc clean-all
+	make -C lib/libvarious clean-all
+	make -C lib/libmaths clean-all
+	make -C lib/libcalc clean-all
 
 clean-bin:
 	rm -rf bin lib/libvarious.so* lib/libmaths.so* lib/libcalc.so*
@@ -129,7 +129,7 @@ clean-bin:
 
 
 win64CC:=x86_64-w64-mingw32-gcc
-sources:=libraries/libvarious/src/std.c libraries/libvarious/src/strings.c libraries/libvarious/src/various.c libraries/libmaths/src/maths.c libraries/libcalc/src/calc.c libraries/libcalc/src/manejo_nodos.c libraries/libcalc/src/notacion.c src/mainWindow.c src/main.c
+sources:=lib/libvarious/src/std.c lib/libvarious/src/strings.c lib/libvarious/src/various.c lib/libmaths/src/maths.c lib/libcalc/src/calc.c lib/libcalc/src/manejo_nodos.c lib/libcalc/src/notacion.c src/mainWindow.c src/main.c
 
 win64:
 	$(win64CC) -Wall libui.a $(sources) -o calcui.exe
