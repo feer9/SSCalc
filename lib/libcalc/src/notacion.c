@@ -208,7 +208,7 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 		op = 0;
 	} // while
 
-	// por ultimo, todo lo que quede en la pila se pasa a la cola
+	// por ultimo, t0do lo que quede en la pila se pasa a la cola
 	while (PILA != NULL)
 	{
 		node_aux = sacar(&PILA);

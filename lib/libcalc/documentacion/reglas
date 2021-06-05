@@ -17,7 +17,7 @@ operador 			prioridad en expresion				prioridad en pila
 
 -operador de menor o igual prioridad -> se pasan todos los operadores de menor o igual prioridad que esten juntos en la pila a la expresion de salida, y se coloca el actual en la pila
 
--parentesis de cierre -> se saca todo de la pila hasta encontrar un parentesis de apertura
+-parentesis de cierre -> se saca t0do de la pila hasta encontrar un parentesis de apertura
 
 
 
@@ -26,7 +26,7 @@ operador 			prioridad en expresion				prioridad en pila
 si me encuentro SUMA o RESTA y la pila tiene:
 
 	SUMA o RESTA o MULTIPLICACION o DIVISION o POTENCIA: 
-		saco de la pila todo hasta un parentesis (no inclusive) y meto la suma o resta actual a la pila
+		saco de la pila t0do hasta un parentesis (no inclusive) y meto la suma o resta actual a la pila
 	
 	PARENTESIS_APERTURA: meto la suma o resta a la pila
 
