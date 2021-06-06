@@ -31,6 +31,7 @@ void consoleCalc()
 
 	puts("Scientific Calc v1.0");
 	while( getLine("> ", input, sizeof input) != INPUT_OK);
+	// see the readline() and getline() functions
 
 	while(strcmp(input, "q") && strcmp(input, "quit"))
 	{
@@ -51,6 +52,59 @@ void consoleCalc()
 	}
 }
 
+static const char* utf8CharToAscii(wchar_t wchar)
+{
+	static char c[2] = "";
+	switch (wchar)
+	{
+		case L'×': return "*";
+		case L'√': return "sqrt";
+		case L'π': return "pi";
+	}
+	c[0] = '\0';
+	if(wchar - (wchar & 0x7F) == 0) // if it's a valid ascii     - wchar & ~((wchar_t)0x7F)
+		c[0] = *((char*) &wchar);      // directly cast it as ascii
+
+	return c;
+}
+
+static void utf8StrToAscii(char **_s)
+{
+	char *s = *_s;
+	size_t bytesIn = strlen(s);
+	wchar_t *ws = malloc((bytesIn + 1) * sizeof(wchar_t));
+	if(!ws) {
+		perror("malloc");
+		exit(1);
+	}
+
+	size_t len = mbstowcs(ws, s, bytesIn);
+
+	char buf[256];
+	int outLen = 0;
+
+	for(int iw=0; iw < len; ++iw)
+	{
+		const char *tmp = utf8CharToAscii(ws[iw]);
+		size_t tmpLen =  strlen(tmp);
+		strncpy(&buf[outLen], tmp, tmpLen);
+		outLen += (int)tmpLen;
+	}
+	buf[outLen] = '\0';
+
+	char *newS = s;
+	if(outLen > bytesIn) {
+		newS = realloc(s, outLen+1);
+		if(newS)
+			*_s = newS;
+		else
+			outLen = bytesIn;
+	}
+	strncpy(newS, buf, bytesIn+1);
+
+	free(ws);
+}
+
 double solveExpression(const char* expression, double ans, int* errorFlag)
 {
 	node_t* COLA = NULL;
@@ -63,6 +117,7 @@ double solveExpression(const char* expression, double ans, int* errorFlag)
 	}
 
 	trim(expr); // remove spaces
+	utf8StrToAscii(&expr);  // dirty trick to not support utf-8 :-)
 	*errorFlag = checkSyntax(expr);
 	if(*errorFlag == E_NONE)
 	{
