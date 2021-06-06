@@ -10,7 +10,7 @@ To build the project you can use cmake
 ```
 $ mkdir -p build && cd build
 $ cmake ..
-$ make build
+$ make
 ```
 
 Also some makefiles are left from previous attempts
@@ -20,7 +20,7 @@ You can run the GUI simply by double clicking the generated executable or by com
 ```
 build $ ./sscalc-gui
 ```
-Also the program can be run from the terminal  
+Also the program can be run from the terminal  (currently not working)
 ```
 build $ ./sscalc
 ```
