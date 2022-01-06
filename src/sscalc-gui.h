@@ -9,6 +9,7 @@
 	#undef G_LOG_DOMAIN
 #endif
 #define G_LOG_DOMAIN "sscalc"
+// execute with env G_MESSAGES_DEBUG=sscalc to enable debug messages
 
 #include <gtk/gtk.h>
 #include <gio/gio.h>
@@ -28,7 +29,7 @@ struct calculator_data {
 } ;
 
 struct application {
-	GtkBuilder *builder;
+//	GtkBuilder *builder;
 	GtkWidget *window;
 	GtkEntryBuffer *buffer_in;
 	GtkTextBuffer *buffer_out;

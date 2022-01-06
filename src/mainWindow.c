@@ -16,15 +16,16 @@ static struct application app = {0};
 
 void setupGUI()
 {
-	setlocale (LC_ALL, "");
+	setlocale (LC_ALL, "en_US.UTF-8");
 
 	GtkBuilder  *builder = gtk_builder_new_from_resource ("/org/gtk/SSCalc/sscalc.ui");
 
 	set_pointers(builder);
 	set_signals(builder);
 
-//	g_object_unref (G_OBJECT (builder));
+	g_object_unref (G_OBJECT (builder));
 
+	gtk_window_set_icon_name (GTK_WINDOW (app.window), "sscalc.png"); // nope, not working
 	gtk_widget_show (app.window);
 }
 
@@ -75,7 +76,7 @@ static void set_signals(GtkBuilder *builder)
 
 static void set_pointers(GtkBuilder *builder)
 {
-	app.builder    = builder;
+//	app.builder    = builder;
 	app.window     = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	app.text_in    = GTK_ENTRY(gtk_builder_get_object(builder, "text_in"));
 	app.text_out   = GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_out"));
@@ -115,6 +116,7 @@ void on_text_in_changed (GtkEditable *text_in)
 
 static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
+	(void) widget; (void) data;
 	gboolean handled = FALSE;
 	guint val = event->keyval;
 

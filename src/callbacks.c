@@ -4,6 +4,9 @@
 
 #include "sscalc-gui.h"
 
+#include "libcalc/src/calc.h"
+#include "libvarious/src/strings.h"
+
 static void text_insert(GtkEditable *widget, gchar *text);
 void process_input(const gchar *input, struct calculator_data *data, gchar *str_out);
 
@@ -29,12 +32,11 @@ BUTTON_CLICKED_CALLBACK(num_3,   "3");
 BUTTON_CLICKED_CALLBACK(num_4,   "4");
 BUTTON_CLICKED_CALLBACK(num_5,   "5");
 BUTTON_CLICKED_CALLBACK(num_6,   "6");
-BUTTON_CLICKED_CALLBACK(num_7,   "7");
+BUTTON_CLICKED_CALLBACK(num_7,   "7")
 BUTTON_CLICKED_CALLBACK(num_8,   "8");
 BUTTON_CLICKED_CALLBACK(num_9,   "9");
 BUTTON_CLICKED_CALLBACK(dot,     ".");
 BUTTON_CLICKED_CALLBACK(exp,     "E");
-
 
 BUTTON_CLICKED_CALLBACK(open_bracket, "(");
 BUTTON_CLICKED_CALLBACK(close_bracket,")");
@@ -45,19 +47,6 @@ BUTTON_CLICKED_CALLBACK(divided,      "/");
 BUTTON_CLICKED_CALLBACK(sqrt,         "√(");
 BUTTON_CLICKED_CALLBACK(ans,          "ANS");
 
-
-#if 1
-	#include "libcalc/src/calc.h"
-	#include "libvarious/src/strings.h"
-#else
-	enum {E_NONE, E_SYNTAX, E_MATH, E_size};
-	#define DECIMAL_DIGITS 8
-	double solveExpression(const gchar *input, double ans, int *err)
-	{
-		(void) ans; (void)err;
-		return atof(input) * (double) (rand() % 1000) / 1000; // (?
-	}
-#endif
 
 void on_button_equal_clicked (struct application *app)
 {
