@@ -1,16 +1,25 @@
 #!/bin/bash
 
-FILE="$HOME/.local/share/applications/calc-ui.desktop"
+FILE="$HOME/.local/share/applications/sscalc-gui.desktop"
 
 echo ".desktop file = ${FILE}"
 
-echo "[Desktop Entry]"                 > ${FILE}
-echo "Type=Application"               >> ${FILE}
-echo "Terminal=false"                 >> ${FILE}
-echo "Exec=$HOME/.local/bin/calc-ui"  >> ${FILE}
-echo "Name=Calc-ui"                   >> ${FILE}
-echo "GenericName=Calculator"         >> ${FILE}
-echo "Comment=Scientific Calculator"  >> ${FILE}
-echo "Icon=calc-ui.png"               >> ${FILE}
-echo "StartupNotify=false"            >> ${FILE}
-echo "Categories=Utility;Calculator;" >> ${FILE}
+{
+  echo "[Desktop Entry]"
+  echo "Version=1.0"
+  echo "Type=Application"
+  echo "Terminal=false"
+  echo "Exec=env LC_ALL=\"en_US.UTF-8\" $HOME/.local/bin/sscalc-gui"
+  echo "TryExec=$HOME/.local/bin/sscalc-gui"
+  echo "Name=SSCalc"
+  echo "GenericName=Calculator"
+  echo "Comment=Simple Scientific Calculator"
+  echo "Icon=sscalc"
+  echo "StartupNotify=true"
+  echo "StartupWMClass=sscalc-gui"
+  echo "Categories=Utility;Calculator;"
+  echo "Keywords=calculator;arithmetic;scientific;"
+  echo "Keywords[es]=calculadora;aritmética;científica;"
+} > "${FILE}"
+
+
