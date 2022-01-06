@@ -265,6 +265,8 @@ double pow(double b, double ex)
 
 	if(!polyInit)
 	{
+		// TODO: see __attribute__((constructor))
+		// https://code-examples.net/en/q/12593e
 		polyInit = 1;
 		MacLaurinExp(PolyExp, GRADMACLAURINSERIES);
 	}
