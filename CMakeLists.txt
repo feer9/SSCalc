@@ -4,6 +4,8 @@ project(SSCalc C)
 #set(CMAKE_C_STANDARD 11)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_C_FLAGS "-Wall")
+# Be aware that defining DEBUG will break gdb functionality
+#set(CMAKE_C_FLAGS_DEBUG "-DDEBUG")
 
 message( "src dir:        " ${CMAKE_CURRENT_SOURCE_DIR})
 message( "cmake bin dir:  " ${CMAKE_BINARY_DIR})
@@ -68,8 +70,19 @@ target_link_libraries      (sscalc-gui PRIVATE calc ${GTK3_LIBRARIES})
 target_link_options        (sscalc-gui PRIVATE -rdynamic)
 
 
+add_executable( sscalc
+        lib/libcalc/src/console.c
+)
+
+target_compile_definitions (sscalc PRIVATE )
+target_link_libraries      (sscalc PRIVATE calc )
+target_link_options        (sscalc PRIVATE -rdynamic)
+
 #add_dependencies(SSCalc sscalc.ui.c)
 
 #PRIVATE   - use only for this specified build target
 #PUBLIC    - use it for specified target and for targets which links with this project
 #INTERFACE - use it only for targets which links with the current project
+
+# static libs info
+# https://renenyffenegger.ch/notes/development/languages/C-C-plus-plus/GCC/create-libraries/index
