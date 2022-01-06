@@ -8,6 +8,14 @@ size_t strlen(const char *s)
 	return n;
 }
 
+size_t strnlen(const char *s, size_t maxlen)
+{
+	size_t n = 0;
+	while(s[n] != '\0' && n < maxlen)
+		n++;
+	return n;
+}
+
 int strcmp(const char *s1, const char *s2)
 {
 	int i=0;
@@ -34,7 +42,7 @@ int strncmp(const char *s1, const char *s2, size_t n)
 int strcasecmp(const char *s1, const char *s2)
 {
 	int i=0;
-	char c1, c2;
+	char c1=0, c2=0;
 	
 	for(i=0; s1[i] && s2[i]; i++)
 	{
