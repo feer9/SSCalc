@@ -1,7 +1,6 @@
 #include "std.h"
 
-#undef DBGPRNT
-#if 0
+#if (defined(DEBUG) && !defined(DBGPRNT))
 #include <stdio.h>
 #define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}
 #else

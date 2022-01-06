@@ -20,8 +20,6 @@ void apilar(int content, int c, node_t** P)
 	// Se lo coloca en la pila
 	new->next = *P;
 	*P = new;
-
-	return;
 }
 
 void acolar(int content, int c, node_t** P)
@@ -50,8 +48,6 @@ void acolar(int content, int c, node_t** P)
 			last = last->next;
 		last->next = new;
 	}
-
-	return;
 }
 
 void acolarNumero(double n, node_t** C)
@@ -79,8 +75,6 @@ void acolarNumero(double n, node_t** C)
 			aux = aux->next;
 		aux->next = new;
 	}
-
-	return;
 }
 
 // Funcion que saca el primer elemento de una pila o cola
@@ -113,7 +107,6 @@ void pasarACola(node_t** nodo_origen, node_t** cola_destino)
 			aux = aux->next;
 		aux->next = *nodo_origen;
 	}
-	return;
 }
 
 
@@ -128,7 +121,6 @@ void pasarAPila(node_t** cola, node_t** pila)
 		aux->next = *pila;
 		*pila = aux;
 	}
-	return;
 }
 
 void vaciar(node_t** N)
@@ -140,7 +132,6 @@ void vaciar(node_t** N)
 		*N = aux->next;
 		free(aux);
 	}
-	return;
 }
 
 void eliminarNodo(node_t** N)
@@ -152,6 +143,5 @@ void eliminarNodo(node_t** N)
 		*N = aux->next;
 		free(aux);
 	}
-	return;
 }
 
