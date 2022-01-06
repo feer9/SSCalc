@@ -18,4 +18,6 @@ double solveExpression(const char *expression, double ans, int *errorFlag);
 
 void consoleCalc(void);
 
+int calculate(const char *expression, double *ans, int *errorFlag);
+
 #endif

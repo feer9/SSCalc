@@ -16,7 +16,7 @@ static void push_U_operator  (symbol_t op, node_t **_PILA, node_t **_COLA);
 static void push_U_function  (symbol_t op, node_t **_PILA, node_t **_COLA);
 static void push_B_operator  (symbol_t op, node_t **_PILA, node_t **_COLA);
 
-static void error(int err, int *errFlag, node_t **PILA, node_t **COLA);
+static void error(int err, int *errPtr, node_t **PILA, node_t **COLA);
 
 static int checkMath_binary(double n1, symbol_t op, double n2);
 static int checkMath_unary(double n, symbol_t op);
@@ -26,11 +26,23 @@ static node_t* solve_unary (node_t* n, node_t* operation, int *errorFlag);
 
 static inline int isValidChar(char c)
 {
-	return (isBOperation(c) | isUOperation(c) | isParenthesis(c));
+	int x;
+	x = isBOperation(c);
+	if(x)
+		return x;
+	x = isUOperation(c);
+	if(x)
+		return x;
+	x = isParenthesis(c);
+	if(x)
+		return x;
+	return 0;
 }
 
 
 
+// todo: 2.565+2.1 = SYNTAX ERROR
+// todo: 2E3 = SYNTAX ERROR
 int checkSyntax(const char* str)
 {
 	int c;
@@ -57,8 +69,9 @@ int checkSyntax(const char* str)
 			esNum = isNumber(str[i]);
 			if(esNum == 2) { // dot
 				comas++;
-				if(comas > 1)
+				if(comas > 1) {
 					return E_SYNTAX;
+				}
 			}
 			else if(!esNum && !c) {
 				// not a number nor another valid thing
@@ -89,15 +102,17 @@ int checkSyntax(const char* str)
 	return (parentesis + ops_consec == 0) ? E_NONE : E_SYNTAX;
 }
 
-static inline void error(int err, int *errFlag, node_t **PILA, node_t **COLA)
+static inline void error(int err, int *errPtr, node_t **PILA, node_t **COLA)
 {
-	*errFlag = err;
+	*errPtr = err;
 	vaciar(PILA);
 	vaciar(COLA);
 }
 
 node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 {
+	if(!inf) return NULL;
+
 	unsigned int i=0;
 	symbol_t op = 0;     // actual operation
 	symbol_t  lastSymbol  = 0;
@@ -107,7 +122,11 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 	node_t* node_aux = NULL;
 	const size_t tama = strlen(inf); // tamaño de la expresion
 	double constant = 0;
-	// check for a sign at beggining
+	int _errFlag;
+	if(errFlag == NULL)
+		errFlag = &_errFlag; // It won't get back but I can continue
+
+	// check for a sign at beginning
 	if((op = isBOperation(inf[i])) == SUBSTRACTION || op == SUM)
 	{
 		acolarNumero(0.0, &COLA);
@@ -208,7 +227,7 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 		op = 0;
 	} // while
 
-	// por ultimo, t0do lo que quede en la pila se pasa a la cola
+	// por último, t0do lo que quede en la pila se pasa a la cola
 	while (PILA != NULL)
 	{
 		node_aux = sacar(&PILA);
@@ -248,6 +267,7 @@ static void push_parenthesis(symbol_t op, node_t **PILA, node_t **COLA)
 
 static void push_B_function(symbol_t op, node_t **PILA, node_t **COLA)
 {
+	(void) op; (void) PILA; (void) COLA;
 	// To be done...
 }
 
@@ -315,6 +335,7 @@ static void push_B_operator(symbol_t op, node_t **PILA, node_t **COLA)
 	apilar(B_OPERATOR, op, PILA);
 }
 
+// consider replacing this function with strtod()
 static double getNumber(const char *str, unsigned int *i)
 {
 	char buf[128];
@@ -328,7 +349,8 @@ static double getNumber(const char *str, unsigned int *i)
 	}
 	buf[pos] = '\0';
 
-	return atof(buf);
+	return atof(buf);   /* todo: this code is calling the system atof() instead of my custom atof()
+						   causing locale to affect the "dot / comma" interpretation */
 }
 
 static int isNumber(char c)
@@ -361,8 +383,8 @@ static int isUOperation(char c)
 		case '!': return FACTORIAL;
 		case '-': return MINUS;
 		case '+': return PLUS;
+		default:  return 0;
 	}
-	return 0;
 }
 
 static int isUFunction(const char *inf, unsigned int *i)
@@ -556,7 +578,7 @@ static node_t* solve_binary(node_t* n1, node_t* n2, node_t* operation, int *erro
 			*errorFlag = E_MATH;
 		else
 		{
-			int operator = operation->symbol - SUM;
+			int operator = (int) (operation->symbol - SUM);
 			result->number = (*opPtr[operator]) (n1->number, n2->number);
 			result->content = NUMBER;
 		}
@@ -582,7 +604,7 @@ static node_t* solve_unary (node_t* n, node_t* operation, int *errorFlag)
 		*errorFlag = E_MATH;
 		else
 		{
-			int operator = operation->symbol - FACTORIAL;
+			int operator = (int) (operation->symbol - FACTORIAL);
 			result->number = (*opPtr[operator]) (n->number);
 			result->content = NUMBER;
 		}
@@ -664,8 +686,8 @@ static const char *getSymbol(symbol_t symbol)
 		case POW:               return "pow";
 		case PARENTHESIS_OPEN:  return "(";
 		case PARENTHESIS_CLOSE: return ")";
+		default:                return "";
 	}
-	return "";
 }
 
 void printNodes(node_t* N)
@@ -681,5 +703,4 @@ void printNodes(node_t* N)
 		N = N->next;
 	}
 	putchar('\n');
-	return;
 }

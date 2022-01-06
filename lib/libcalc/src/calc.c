@@ -1,8 +1,7 @@
 #include "notacion.h"
 #include "calc.h"
 
-#define _DBGPRNT_ 0
-#if _DBGPRNT_
+#ifdef DEBUG
 #define DBGPRNT_COLA(x)  printNodes(x)
 #define DBGPRNT(...) {printf(__VA_ARGS__);fflush(stdout);}
 #else
@@ -25,7 +24,6 @@ static void trim(char *buf)
 void consoleCalc()
 {
 	char input[256];
-	double result = 0.0;
 	double ans = 0.0;
 	int errorFlag = E_NONE;
 
@@ -33,23 +31,33 @@ void consoleCalc()
 	while( getLine("> ", input, sizeof input) != INPUT_OK);
 	// see the readline() and getline() functions
 
-	while(strcmp(input, "q") && strcmp(input, "quit"))
+	while(strcmp(input, "q") != 0 && strcmp(input, "quit") != 0)
 	{
-		result = solveExpression(input, ans, &errorFlag);
-		if(errorFlag == E_SYNTAX)
-			puts("error de sintaxis");
-		else if(errorFlag == E_MATH)
-			puts("error matematico");
-		else
-		{
-			printf("= %.*g\n", DECIMAL_DIGITS, result);
-			ans = result;
-		}
-
-		errorFlag = 0;
+		errorFlag = E_NONE;
+		calculate(input, &ans, &errorFlag);
 
 		while( getLine("> ", input, sizeof input) != INPUT_OK);
 	}
+}
+
+int calculate(const char *expression, double *ans, int *errorFlag)
+{
+	double result, _ans = (ans != NULL ? *ans : 0.0);
+	int _err = 0; if(errorFlag == NULL) errorFlag = &_err;
+
+	result = solveExpression(expression, _ans, errorFlag);
+
+	if(*errorFlag == E_SYNTAX)
+		puts("SYNTAX ERROR");
+	else if(*errorFlag == E_MATH)
+		puts("MATH ERROR");
+	else
+	{
+		printf("= %.*g\n", DECIMAL_DIGITS, result);
+		if (ans) *ans = result;
+	}
+
+	return *errorFlag;
 }
 
 static const char* utf8CharToAscii(wchar_t wchar)
@@ -61,7 +69,7 @@ static const char* utf8CharToAscii(wchar_t wchar)
 		case L'√': return "sqrt";
 		case L'π': return "pi";
 	}
-	c[0] = '\0';
+	c[0] = c[1] = '\0';
 	if(wchar - (wchar & 0x7F) == 0) // if it's a valid ascii     - wchar & ~((wchar_t)0x7F)
 		c[0] = *((char*) &wchar);      // directly cast it as ascii
 
@@ -71,7 +79,8 @@ static const char* utf8CharToAscii(wchar_t wchar)
 static void utf8StrToAscii(char **_s)
 {
 	char *s = *_s;
-	size_t bytesIn = strlen(s);
+	size_t bytesIn = strnlen(s, 256);
+
 	wchar_t *ws = malloc((bytesIn + 1) * sizeof(wchar_t));
 	if(!ws) {
 		perror("malloc");
@@ -79,7 +88,6 @@ static void utf8StrToAscii(char **_s)
 	}
 
 	size_t len = mbstowcs(ws, s, bytesIn);
-
 	char buf[256];
 	int outLen = 0;
 
@@ -105,10 +113,12 @@ static void utf8StrToAscii(char **_s)
 	free(ws);
 }
 
+// todo: 2e3 = 8.1548 ¿?¿? 2E3 doesn't work either
 double solveExpression(const char* expression, double ans, int* errorFlag)
 {
 	node_t* COLA = NULL;
 	double result = 0.0;
+	int _err = 0; if(errorFlag == NULL) errorFlag = &_err;
 	char* expr = strdup(expression);
 	if(expr == NULL)
 	{
@@ -118,6 +128,7 @@ double solveExpression(const char* expression, double ans, int* errorFlag)
 
 	trim(expr); // remove spaces
 	utf8StrToAscii(&expr);  // dirty trick to not support utf-8 :-)
+
 	*errorFlag = checkSyntax(expr);
 	if(*errorFlag == E_NONE)
 	{
