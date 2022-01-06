@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="SSCalc" targetName="calc" />
       <config projectName="SSCalc" targetName="various" />
       <config projectName="SSCalc" targetName="maths" />
+      <config projectName="SSCalc" targetName="sscalc" />
       <config projectName="SSCalc" targetName="sscalc-gui" />
     </generated>
   </component>
@@ -15,28 +19,28 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/configure" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/desktop_gen" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/SSCalc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Added TODO">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/configure" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/desktop_gen" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/console.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/console.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/notacion.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/notacion.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libmaths/src/maths.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libmaths/src/maths.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -54,11 +58,13 @@
     <property name="cf.first.check.clang-format" value="false" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="CMake Application.sscalc-gui">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+  <component name="RunManager" selected="CMake Application.sscalc">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="calc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SSCalc" TARGET_NAME="calc" CONFIG_NAME="Debug">
@@ -72,6 +78,14 @@
       </method>
     </configuration>
     <configuration name="sscalc-gui" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$ProjectFileDir$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SSCalc" TARGET_NAME="sscalc-gui" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="SSCalc" RUN_TARGET_NAME="sscalc-gui">
+      <envs>
+        <env name="G_MESSAGES_DEBUG" value="sscalc" />
+      </envs>
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sscalc" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="&quot;2.1+6.3&quot;" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SSCalc" TARGET_NAME="sscalc" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="SSCalc" RUN_TARGET_NAME="sscalc">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -89,6 +103,7 @@
     <list>
       <item itemvalue="CMake Application.calc" />
       <item itemvalue="CMake Application.maths" />
+      <item itemvalue="CMake Application.sscalc" />
       <item itemvalue="CMake Application.sscalc-gui" />
       <item itemvalue="CMake Application.various" />
     </list>
@@ -101,8 +116,69 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1622936843426</updated>
-      <workItem from="1622936846292" duration="9982000" />
+      <workItem from="1622936846292" duration="13416000" />
+      <workItem from="1622957735794" duration="137000" />
+      <workItem from="1623028040665" duration="3309000" />
+      <workItem from="1623031368360" duration="29000" />
+      <workItem from="1623035204814" duration="599000" />
+      <workItem from="1623037975415" duration="632000" />
+      <workItem from="1623636269654" duration="1469000" />
+      <workItem from="1623637755210" duration="1134000" />
+      <workItem from="1624746981847" duration="1133000" />
+      <workItem from="1624908745213" duration="8000" />
+      <workItem from="1641437082540" duration="1181000" />
+      <workItem from="1641445463090" duration="9465000" />
     </task>
+    <task id="LOCAL-00001" summary="Clion project files">
+      <created>1622952829213</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1622952829213</updated>
+    </task>
+    <task id="LOCAL-00002" summary="&quot;Support&quot; utf-8 entry">
+      <created>1622953304732</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1622953304732</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add console executable to CMake">
+      <created>1641454304712</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1641454304713</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Files moved">
+      <created>1641454366287</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1641454366287</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Minor changes">
+      <created>1641454541454</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1641454541454</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Code cleanup">
+      <created>1641454842148</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1641454842148</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added strnlen to custom strings library">
+      <created>1641454887882</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1641454887882</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,5 +194,37 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Clion project files" />
+    <MESSAGE value="&quot;Support&quot; utf-8 entry" />
+    <MESSAGE value="Add console executable to CMake" />
+    <MESSAGE value="Files moved" />
+    <MESSAGE value="Minor changes" />
+    <MESSAGE value="Code cleanup" />
+    <MESSAGE value="Added strnlen to custom strings library" />
+    <MESSAGE value="Added TODO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added TODO" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib/libcalc/src/notacion.c</url>
+          <line>54</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/lib/libcalc/src/console.c</url>
+          <line>15</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
