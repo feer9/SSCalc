@@ -126,3 +126,24 @@ void on_paste_clipboard(struct application *app)
 	g_signal_emit_by_name(G_OBJECT(app->text_in), "paste-clipboard", NULL);
 	statusbar_update(app, "Pasted");
 }
+
+void show_about_dialog(struct application *app)
+{
+	static gboolean init = FALSE;
+	if (!init) {
+		GdkPixbuf *app_logo = gdk_pixbuf_new_from_resource("/org/gtk/SSCalc/sscalc.png", NULL);
+		gchar *auth[] = {"Fernando Coda", "fcoda@pm.me", NULL};
+		gtk_show_about_dialog (/*GTK_WINDOW(app->window),*/NULL,
+		                       "program-name", "Simple Scientific Calc",
+		                       "logo", app_logo,
+		                       "title", ("About SSCalc"),
+							   "authors", auth,
+							   "comments", "Just another simple but functional (kinda) calculator.",
+		                       NULL);
+		g_object_unref(G_OBJECT(app_logo));
+		init = TRUE;
+	}
+	else {
+		gtk_show_about_dialog(NULL, NULL, NULL);
+	}
+}

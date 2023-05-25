@@ -16,7 +16,6 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 static struct application app = {0};
 
 
-
 void setupGUI()
 {
 	setlocale (LC_ALL, "en_US.UTF-8");
@@ -28,7 +27,10 @@ void setupGUI()
 
 	g_object_unref (G_OBJECT (builder));
 
-	gtk_window_set_icon_name (GTK_WINDOW (app.window), "sscalc.png"); // fixme: nope, not working
+	GdkPixbuf *app_logo = gdk_pixbuf_new_from_resource("/org/gtk/SSCalc/sscalc.png", NULL);
+	gtk_window_set_icon (GTK_WINDOW (app.window), app_logo);
+	g_object_unref(G_OBJECT(app_logo));
+
 	gtk_widget_show (app.window);
 }
 
@@ -83,6 +85,7 @@ static void set_signals(GtkBuilder *builder)
 	CONNECT_MENU_CALLBACK(menu_paste,     on_paste_clipboard);
 	CONNECT_MENU_CALLBACK(menu_clear,     on_menu_clear_activate);
 	CONNECT_MENU_CALLBACK(menu_clear_all, on_menu_clear_all_activate);
+	CONNECT_MENU_CALLBACK(menu_about,     show_about_dialog);
 
 	// Load each callback defined in the .ui file into the gtk API
 	gtk_builder_connect_signals(builder, &app);
@@ -159,6 +162,8 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 		case GDK_KEY_Up:
 		{
 			gchar buf[128];
+			// TODO: shouldn't the up arrow be bringing up the previous expression, not the result?
+			// TODO: make this a linked list...
 			snprintf(buf, 128, "%.*g", DECIMAL_DIGITS, app.calc_data.ans);
 			set_input(buf);
 		}

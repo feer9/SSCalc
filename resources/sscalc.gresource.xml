@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/org/gtk/SSCalc">
     <file compressed="true">sscalc.ui</file>
+    <file compressed="true">sscalc.png</file>
   </gresource>
 </gresources>

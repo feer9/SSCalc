@@ -46,6 +46,7 @@ add_custom_command(
         DEPENDS
             resources/sscalc.gresource.xml
             resources/sscalc.ui
+            resources/sscalc.png
 )
 
 

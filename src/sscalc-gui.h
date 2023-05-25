@@ -79,6 +79,7 @@ void setupGUI();
 void text_insert(GtkEditable *widget, gchar *text);
 void process_input(const gchar *input, struct calculator_data *data, gchar *str_out);
 
+void show_about_dialog          ();
 void clear_all                  (void);
 void clear_input                (void);
 void on_text_in_changed         (struct application *);

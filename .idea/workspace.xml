@@ -25,9 +25,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Reorder and organize.">
+    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add basic navigation with arrows.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Surprised_Patrick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/sscalc.gresource.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sscalc.gresource.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/callbacks.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/callbacks.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mainWindow.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainWindow.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sscalc-gui.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/sscalc-gui.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +162,7 @@
       <workItem from="1684029262937" duration="3339000" />
       <workItem from="1684033133809" duration="339000" />
       <workItem from="1684907669877" duration="146000" />
-      <workItem from="1684969832348" duration="30259000" />
+      <workItem from="1684969832348" duration="35690000" />
     </task>
     <task id="LOCAL-00001" summary="Clion project files">
       <created>1622952829213</created>
@@ -257,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685003124898</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Add basic navigation with arrows.">
+      <created>1685003785246</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1685003785246</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,7 +307,8 @@
     <MESSAGE value="Add clipboard support" />
     <MESSAGE value="Add statusbar" />
     <MESSAGE value="Reorder and organize." />
-    <option name="LAST_COMMIT_MESSAGE" value="Reorder and organize." />
+    <MESSAGE value="Add basic navigation with arrows." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add basic navigation with arrows." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -304,6 +317,11 @@
           <url>file://$PROJECT_DIR$/lib/libcalc/src/console.c</url>
           <line>15</line>
           <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/callbacks.c</url>
+          <line>130</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
