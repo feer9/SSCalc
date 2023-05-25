@@ -74,8 +74,16 @@ BUTTON_CLICKED_CALLBACK_PROTOTYPE(multiply);
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(divided);
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(sqrt);
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(ans);
-BUTTON_CLICKED_CALLBACK_PROTOTYPE(equal);
+extern BUTTON_CLICKED_CALLBACK_PROTOTYPE(equal);
 
+void clear_all                  (void);
+void clear_input                (void);
+void on_text_in_changed         (struct application *);
+void on_copy_clipboard          (struct application *);
+void on_cut_clipboard           (struct application *);
+void on_paste_clipboard         (struct application *);
+void on_menu_clear_activate     (struct application *);
+void on_menu_clear_all_activate (struct application *);
 
 
 

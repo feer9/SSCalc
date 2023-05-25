@@ -41,8 +41,8 @@ static inline int isValidChar(char c)
 
 
 
-// todo: 2.565+2.1 = SYNTAX ERROR
-// todo: 2E3 = SYNTAX ERROR
+// fixme: 2.565+2.1 = SYNTAX ERROR
+// fixme: 2E3 = SYNTAX ERROR
 int checkSyntax(const char* str)
 {
 	int c;

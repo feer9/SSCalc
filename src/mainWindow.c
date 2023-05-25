@@ -25,7 +25,7 @@ void setupGUI()
 
 	g_object_unref (G_OBJECT (builder));
 
-	gtk_window_set_icon_name (GTK_WINDOW (app.window), "sscalc.png"); // nope, not working
+	gtk_window_set_icon_name (GTK_WINDOW (app.window), "sscalc.png"); // fixme: nope, not working
 	gtk_widget_show (app.window);
 }
 
@@ -70,8 +70,19 @@ static void set_signals(GtkBuilder *builder)
 	CONNECT_CALLBACK(ans);
 	CONNECT_CALLBACK(equal);
 
-	// Load each callback defined in the .glade file into the gtk API
-	gtk_builder_connect_signals(builder, NULL);
+
+#define CONNECT_MENU_CALLBACK(MENU,CALLBACK) \
+	g_signal_connect_swapped(gtk_builder_get_object(builder, #MENU), \
+							 "activate", G_CALLBACK(CALLBACK), &app);
+
+	CONNECT_MENU_CALLBACK(menu_cut,       on_cut_clipboard);
+	CONNECT_MENU_CALLBACK(menu_copy,      on_copy_clipboard);
+	CONNECT_MENU_CALLBACK(menu_paste,     on_paste_clipboard);
+	CONNECT_MENU_CALLBACK(menu_clear,     on_menu_clear_activate);
+	CONNECT_MENU_CALLBACK(menu_clear_all, on_menu_clear_all_activate);
+
+	// Load each callback defined in the .ui file into the gtk API
+	gtk_builder_connect_signals(builder, &app);
 }
 
 static void set_pointers(GtkBuilder *builder)
@@ -86,7 +97,7 @@ static void set_pointers(GtkBuilder *builder)
 }
 
 
-static void clear_input(void)
+void clear_input(void)
 {
 	gtk_entry_buffer_delete_text(app.buffer_in, 0, -1);
 }
@@ -96,21 +107,10 @@ static void clear_output(void)
 	gtk_text_buffer_set_text(app.buffer_out, "", -1);
 }
 
-static void clear_all(void)
+void clear_all(void)
 {
 	clear_input();
 	clear_output();
-}
-
-void on_menu_discard_activate ()
-{
-	clear_all();
-}
-
-void on_text_in_changed (GtkEditable *text_in)
-{
-//	const gchar *in = gtk_entry_get_text(app.text_in);
-	g_debug("text in changed");
 }
 
 
@@ -149,7 +149,7 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 			handled = TRUE;
 			break;
 		default:
-			g_debug("Other key pressed");
+		//	g_debug("Other key pressed");
 			break;
 	}
 	return handled;

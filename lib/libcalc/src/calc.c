@@ -113,7 +113,7 @@ static void utf8StrToAscii(char **_s)
 	free(ws);
 }
 
-// todo: 2e3 = 8.1548 ¿?¿? 2E3 doesn't work either
+// fixme: 2e3 = 8.1548 ¿?¿? 2E3 doesn't work either
 double solveExpression(const char* expression, double ans, int* errorFlag)
 {
 	node_t* COLA = NULL;

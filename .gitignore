@@ -19,6 +19,7 @@ build
 cmake-build-debug
 cmake-build-release
 src_old
+*.ui~
 
 # archivos de carpeta #
 #######################
