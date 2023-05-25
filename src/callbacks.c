@@ -131,14 +131,14 @@ void on_copy_clipboard(struct application *app)
 	gboolean text_in_selected = abs(selection_bound - cursor_position);
 
 	if (text_in_selected) {
-		g_debug("Copy input selection to the clipboard");
+		statusbar_update(app, "Selection copied to the clipboard");
 		g_signal_emit_by_name(G_OBJECT(app->text_in), "copy-clipboard", NULL);
 	}
 	else {
 		gboolean text_out_selected = gtk_text_buffer_get_has_selection(GTK_TEXT_BUFFER(app->buffer_out));
 
 		if (text_out_selected) {
-			g_debug("Copy selected result to the clipboard");
+			statusbar_update(app, "Selection copied to the clipboard");
 			g_signal_emit_by_name(G_OBJECT(app->text_out), "copy-clipboard", NULL);
 		}
 		else {
@@ -146,7 +146,7 @@ void on_copy_clipboard(struct application *app)
 			if (gtk_text_buffer_get_char_count(GTK_TEXT_BUFFER(app->buffer_out)) > 0 &&
 					app->calc_data.errFlag == E_NONE)
 			{
-				g_debug("Copy ANS value to the clipboard");
+				statusbar_update(app, "ANS value copied to the clipboard");
 				GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
 				gchar ans_str[128];
 				snprintf(ans_str, 128, "%.*g", DECIMAL_DIGITS, app->calc_data.ans);
@@ -158,12 +158,13 @@ void on_copy_clipboard(struct application *app)
 
 void on_cut_clipboard(struct application *app)
 {
-	g_debug("Clipboard cut callback function.");
 	g_signal_emit_by_name(G_OBJECT(app->text_in), "cut-clipboard", NULL);
+	gtk_statusbar_pop(app->statusbar,0);
+	statusbar_update(app, "Cut");
 }
 
 void on_paste_clipboard(struct application *app)
 {
-	g_debug("Clipboard paste callback function.");
 	g_signal_emit_by_name(G_OBJECT(app->text_in), "paste-clipboard", NULL);
+	statusbar_update(app, "Pasted");
 }

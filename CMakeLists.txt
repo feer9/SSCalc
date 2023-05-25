@@ -60,6 +60,7 @@ add_executable( sscalc-gui
         src/mainWindow.c
         src/sscalc-gui.h
         src/callbacks.c
+        src/statusbar.c
 )
 
 target_include_directories (sscalc-gui PRIVATE lib ${GTK3_INCLUDE_DIRS})

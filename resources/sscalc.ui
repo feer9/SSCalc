@@ -15,7 +15,6 @@
         <property name="margin-start">12</property>
         <property name="margin-end">12</property>
         <property name="margin-top">12</property>
-        <property name="margin-bottom">12</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
@@ -201,6 +200,7 @@
             <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <property name="spacing">4</property>
+            <property name="baseline-position">bottom</property>
             <child>
               <!-- n-columns=4 n-rows=2 -->
               <object class="GtkGrid">
@@ -583,8 +583,8 @@
                         <property name="has-default">True</property>
                         <property name="receives-default">False</property>
                         <property name="vexpand">True</property>
-                        <accelerator key="KP_Enter" signal="clicked"/>
                         <accelerator key="Return" signal="clicked"/>
+                        <accelerator key="KP_Enter" signal="clicked"/>
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
@@ -623,6 +623,24 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="statusbar">
+            <property name="name">statusbar</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="hexpand">True</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">1</property>
+            <property name="baseline-position">bottom</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>

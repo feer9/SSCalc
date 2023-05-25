@@ -35,6 +35,7 @@ struct application {
 	GtkTextBuffer *buffer_out;
 	GtkEntry *text_in;
 	GtkTextView *text_out;
+	GtkStatusbar *statusbar;
 	struct calculator_data calc_data ;
 } ;
 
@@ -85,7 +86,7 @@ void on_paste_clipboard         (struct application *);
 void on_menu_clear_activate     (struct application *);
 void on_menu_clear_all_activate (struct application *);
 
-
+void statusbar_update(struct application *, const char *);
 
 
 #endif // SSCALC_GUI_H
