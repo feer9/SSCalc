@@ -156,6 +156,16 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 			on_button_multiply_clicked(&app);
 			handled = TRUE;
 			break;
+		case GDK_KEY_Up:
+		{
+			gchar buf[128];
+			snprintf(buf, 128, "%.*g", DECIMAL_DIGITS, app.calc_data.ans);
+			set_input(buf);
+		}
+			break;
+		case GDK_KEY_Down:
+			clear_input();
+			break;
 		default:
 		//	g_debug("Other key pressed");
 			break;
