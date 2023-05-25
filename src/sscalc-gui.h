@@ -39,11 +39,9 @@ struct application {
 	struct calculator_data calc_data ;
 } ;
 
-void setupGUI();
 
 #define BUTTON_CLICKED_CALLBACK_PROTOTYPE(BUTTON) \
 		void on_button_##BUTTON##_clicked (struct application *)
-
 
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(sine);
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(cosine);
@@ -76,6 +74,10 @@ BUTTON_CLICKED_CALLBACK_PROTOTYPE(divided);
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(sqrt);
 BUTTON_CLICKED_CALLBACK_PROTOTYPE(ans);
 extern BUTTON_CLICKED_CALLBACK_PROTOTYPE(equal);
+
+void setupGUI();
+void text_insert(GtkEditable *widget, gchar *text);
+void process_input(const gchar *input, struct calculator_data *data, gchar *str_out);
 
 void clear_all                  (void);
 void clear_input                (void);

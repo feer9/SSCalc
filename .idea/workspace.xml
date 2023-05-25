@@ -25,11 +25,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add clipboard support">
-      <change afterPath="$PROJECT_DIR$/src/statusbar.c" afterDir="false" />
+    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add statusbar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sscalc.ui" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sscalc.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/callbacks.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/callbacks.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mainWindow.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainWindow.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sscalc-gui.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/sscalc-gui.h" afterDir="false" />
@@ -162,7 +159,7 @@
       <workItem from="1684029262937" duration="3339000" />
       <workItem from="1684033133809" duration="339000" />
       <workItem from="1684907669877" duration="146000" />
-      <workItem from="1684969832348" duration="28784000" />
+      <workItem from="1684969832348" duration="29571000" />
     </task>
     <task id="LOCAL-00001" summary="Clion project files">
       <created>1622952829213</created>
@@ -248,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684998340844</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add statusbar">
+      <created>1685002459985</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1685002459985</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +288,8 @@
     <MESSAGE value="Update CLion files" />
     <MESSAGE value="Update .desktop generator" />
     <MESSAGE value="Add clipboard support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add clipboard support" />
+    <MESSAGE value="Add statusbar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add statusbar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
