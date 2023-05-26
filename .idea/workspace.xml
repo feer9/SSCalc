@@ -25,18 +25,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add an About dialog.">
-      <change afterPath="$PROJECT_DIR$/lib/libcalc/src/double_linked_lists.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/libcalc/src/double_linked_lists.h" afterDir="false" />
+    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add proper history scrolling.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sscalc.gresource.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sscalc.gresource.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sscalc.ui" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sscalc.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/notacion.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/notacion.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/callbacks.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/callbacks.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mainWindow.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainWindow.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sscalc-gui.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/sscalc-gui.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +72,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.cidr.known.project.marker": "true",
+    "TODO_SCOPE": "All Places",
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
@@ -95,9 +89,9 @@
   }
 }]]></component>
   <component name="RunManager" selected="CMake Application.sscalc-gui">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="calc" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SSCalc" TARGET_NAME="calc" CONFIG_NAME="Debug">
@@ -173,7 +167,8 @@
       <workItem from="1684969832348" duration="35791000" />
       <workItem from="1685009438976" duration="147000" />
       <workItem from="1685009746559" duration="65000" />
-      <workItem from="1685058114611" duration="36971000" />
+      <workItem from="1685058114611" duration="37165000" />
+      <workItem from="1685138271494" duration="4649000" />
     </task>
     <task id="LOCAL-00001" summary="Clion project files">
       <created>1622952829213</created>
@@ -287,7 +282,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685009285467</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Add proper history scrolling.">
+      <created>1685097590620</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1685097590620</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +329,8 @@
     <MESSAGE value="Reorder and organize." />
     <MESSAGE value="Add basic navigation with arrows." />
     <MESSAGE value="Add an About dialog." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add an About dialog." />
+    <MESSAGE value="Add proper history scrolling." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add proper history scrolling." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

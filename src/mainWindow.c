@@ -20,6 +20,7 @@ void setupGUI()
 	setlocale (LC_ALL, "en_US.UTF-8");
 
 	GtkBuilder  *builder = gtk_builder_new_from_resource ("/org/gtk/SSCalc/sscalc.ui");
+	// TODO: missing "^" and "clear" buttons on the UI
 
 	set_pointers(builder);
 	set_signals(builder);
@@ -100,7 +101,7 @@ static void set_pointers(GtkBuilder *builder)
 	app.buffer_out = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "buffer_out"));
 	app.statusbar  = GTK_STATUSBAR(gtk_builder_get_object(builder, "statusbar"));
 	memset(&app.calc_data, 0, sizeof(struct calculator_data));
-	app.calc_data.index=1;
+	app.calc_data.index = 1;
 }
 
 void set_input(const gchar *str)
@@ -108,30 +109,40 @@ void set_input(const gchar *str)
 	gtk_entry_buffer_set_text(app.buffer_in, str, -1);
 }
 
+// n<0: scroll "up" to older entries.
+// n>0: scroll "down" to newer entries.
 void input_scroll(int n) {
 	const char *buf;
-	int listIndex = calc_getLastIndex(app.calc_data.list);
-	int displayIndex = app.calc_data.index;
+	calculator_data_t *cdata = &app.calc_data;
+	int listIndex = calc_getLastIndex(cdata->list);
+	int displayIndex = cdata->index;
 
-	if (n > 0 && app.calc_data.list && app.calc_data.list->prev == NULL) {
+	if (n > 0 && cdata->list && cdata->list->prev == NULL) {
+		// if scrolling DOWN and there's no more items,
+		// just let a blank input field to start typing
 		buf = "";
 		displayIndex += n;
 	}
 	else if(displayIndex > listIndex) {
-		buf = calc_getLastExpr(app.calc_data.list);
+		// if we're not scrolling data yet, take the first item in history
+		buf = calc_getLastExpr(cdata->list);
 		displayIndex += n;
 	}
 	else {
-		buf = calc_scroll(&app.calc_data.list, n);
+		buf = calc_scroll(&cdata->list, n);
 		displayIndex += n;
 	}
+	// TODO: it may be convenient to always have an empty node in list ready for input,
+	// and when adding something to the list, use the empty node and then place a new one
+	// This way all the scrolling code would be much simpler,
+	// and we could process the input in realtime
 
 	if (displayIndex < 1 )
 		displayIndex = 1;
 	else if(displayIndex > listIndex+1)
 		displayIndex = listIndex+1;
 
-	app.calc_data.index = displayIndex;
+	cdata->index = displayIndex;
 
 	set_input(buf);
 	gtk_editable_set_position(GTK_EDITABLE(app.text_in), -1);
