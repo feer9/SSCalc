@@ -25,11 +25,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add basic navigation with arrows.">
+    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add an About dialog.">
+      <change afterPath="$PROJECT_DIR$/lib/libcalc/src/double_linked_lists.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/libcalc/src/double_linked_lists.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Surprised_Patrick.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/sscalc.gresource.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sscalc.gresource.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/sscalc.ui" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sscalc.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/callbacks.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/callbacks.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mainWindow.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainWindow.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sscalc-gui.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/sscalc-gui.h" afterDir="false" />
@@ -47,7 +51,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -63,29 +67,33 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="1tYCsT5xvabdeFW61LrpZfWsUYR" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.updates",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="CMake Application.sscalc-gui">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -162,7 +170,10 @@
       <workItem from="1684029262937" duration="3339000" />
       <workItem from="1684033133809" duration="339000" />
       <workItem from="1684907669877" duration="146000" />
-      <workItem from="1684969832348" duration="35690000" />
+      <workItem from="1684969832348" duration="35791000" />
+      <workItem from="1685009438976" duration="147000" />
+      <workItem from="1685009746559" duration="65000" />
+      <workItem from="1685058114611" duration="36971000" />
     </task>
     <task id="LOCAL-00001" summary="Clion project files">
       <created>1622952829213</created>
@@ -269,7 +280,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685003785246</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Add an About dialog.">
+      <created>1685009285467</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685009285467</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -308,7 +326,8 @@
     <MESSAGE value="Add statusbar" />
     <MESSAGE value="Reorder and organize." />
     <MESSAGE value="Add basic navigation with arrows." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add basic navigation with arrows." />
+    <MESSAGE value="Add an About dialog." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add an About dialog." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -318,13 +337,14 @@
           <line>15</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/callbacks.c</url>
-          <line>130</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="*((operation_t (*)) app.calc_data.list-&gt;d)" language="ObjectiveC" />
+        <watch expression="app.calc_data" language="ObjectiveC" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

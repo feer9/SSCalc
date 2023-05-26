@@ -6,6 +6,8 @@ project(SSCalc C)
 set(CMAKE_C_FLAGS "-Wall")
 # Be aware that defining DEBUG will break gdb functionality
 #set(CMAKE_C_FLAGS_DEBUG "-DDEBUG")
+set(CMAKE_C_FLAGS_RELEASE  "-DNDEBUG")
+
 
 message( "src dir:        " ${CMAKE_CURRENT_SOURCE_DIR})
 message( "cmake bin dir:  " ${CMAKE_BINARY_DIR})
@@ -25,7 +27,7 @@ add_library(calc STATIC
         lib/libcalc/src/notacion.c
         lib/libcalc/src/manejo_nodos.c
         lib/libcalc/src/calc.c
-)
+        lib/libcalc/src/double_linked_lists.c lib/libcalc/src/double_linked_lists.h)
 
 target_include_directories(calc PUBLIC lib)
 target_link_libraries(calc PUBLIC maths various)
@@ -66,10 +68,11 @@ add_executable( sscalc-gui
 
 target_include_directories (sscalc-gui PRIVATE lib ${GTK3_INCLUDE_DIRS})
 target_compile_options     (sscalc-gui PRIVATE ${GTK3_CFLAGS_OTHER})
+target_compile_options     (sscalc-gui PUBLIC -fdata-sections -ffunction-sections -O2)
 target_compile_definitions (sscalc-gui PRIVATE )
 target_link_directories    (sscalc-gui PRIVATE ${GTK3_LIBRARY_DIRS})
 target_link_libraries      (sscalc-gui PRIVATE calc ${GTK3_LIBRARIES})
-target_link_options        (sscalc-gui PRIVATE -rdynamic)
+target_link_options        (sscalc-gui PRIVATE -rdynamic -Wl,--gc-sections)
 
 
 add_executable( sscalc

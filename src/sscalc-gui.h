@@ -5,6 +5,8 @@
 #ifndef SSCALC_GUI_H
 #define SSCALC_GUI_H
 
+#include "libcalc/src/calc.h"
+
 #ifdef G_LOG_DOMAIN
 	#undef G_LOG_DOMAIN
 #endif
@@ -21,12 +23,6 @@
 
 // https://stackoverflow.com/questions/17967997/gtk-pass-user-data-to-callback-using-glade
 
-struct calculator_data {
-	double ans;
-	int errFlag;
-	int i;
-	char c;
-} ;
 
 struct application {
 //	GtkBuilder *builder;
@@ -77,7 +73,7 @@ extern BUTTON_CLICKED_CALLBACK_PROTOTYPE(equal);
 
 void setupGUI();
 void text_insert(GtkEditable *widget, gchar *text);
-void process_input(const gchar *input, struct calculator_data *data, gchar *str_out);
+void process_input(const gchar *input, struct calculator_data *data, gchar *str_out, size_t len);
 
 void show_about_dialog          ();
 void clear_all                  (void);

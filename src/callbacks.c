@@ -46,16 +46,18 @@ BUTTON_CLICKED_CALLBACK(ans,          "ANS")
 
 void on_button_equal_clicked (struct application *app)
 {
+	// This string points to internally allocated storage in the
+	// widget and must not be freed, modified or stored.
 	const gchar *input = gtk_entry_get_text(app->text_in);
-	gchar str_out[128] = "";
+	gchar str_out[MAX_EXPR_LEN] = "";
 
 	if(strlen(input) > 0)
 	{
-		process_input(input, &app->calc_data, str_out);
+		process_input(input, &app->calc_data, str_out, sizeof str_out);
 	}
 
 	GtkTextIter iter;
-	gtk_text_buffer_get_iter_at_line (app->buffer_out, &iter, 0);
+	gtk_text_buffer_get_start_iter(app->buffer_out, &iter);
 	gtk_text_buffer_insert(app->buffer_out, &iter, str_out, -1);
 
 	if(app->calc_data.errFlag == E_NONE)
@@ -132,7 +134,7 @@ void show_about_dialog(struct application *app)
 	static gboolean init = FALSE;
 	if (!init) {
 		GdkPixbuf *app_logo = gdk_pixbuf_new_from_resource("/org/gtk/SSCalc/sscalc.png", NULL);
-		gchar *auth[] = {"Fernando Coda", "fcoda@pm.me", NULL};
+		gchar *auth[] = {"Fernando Coda", "fcoda@pm.me", "github.com/feer9",NULL};
 		gtk_show_about_dialog (/*GTK_WINDOW(app->window),*/NULL,
 		                       "program-name", "Simple Scientific Calc",
 		                       "logo", app_logo,

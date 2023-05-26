@@ -4,7 +4,6 @@
 
 #include "sscalc-gui.h"
 
-#include "libcalc/src/calc.h"
 #include "libvarious/src/strings.h"
 
 
@@ -37,7 +36,7 @@ void setupGUI()
 static void set_signals(GtkBuilder *builder)
 {
 	g_signal_connect(app.window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(app.window, "key_press_event", G_CALLBACK(keys_handler), NULL);
+	g_signal_connect(app.window, "key_press_event", G_CALLBACK(keys_handler), &app);
 
 #define CONNECT_CALLBACK(BUTTON) \
 		g_signal_connect_swapped(gtk_builder_get_object(builder, "button_"#BUTTON), \
@@ -78,7 +77,7 @@ static void set_signals(GtkBuilder *builder)
 
 #define CONNECT_MENU_CALLBACK(MENU,CALLBACK) \
 	g_signal_connect_swapped(gtk_builder_get_object(builder, #MENU), \
-							 "activate", G_CALLBACK(CALLBACK), &app);
+							 "activate", G_CALLBACK(CALLBACK), &app)
 
 	CONNECT_MENU_CALLBACK(menu_cut,       on_cut_clipboard);
 	CONNECT_MENU_CALLBACK(menu_copy,      on_copy_clipboard);
@@ -101,12 +100,72 @@ static void set_pointers(GtkBuilder *builder)
 	app.buffer_out = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "buffer_out"));
 	app.statusbar  = GTK_STATUSBAR(gtk_builder_get_object(builder, "statusbar"));
 	memset(&app.calc_data, 0, sizeof(struct calculator_data));
+	app.calc_data.index=1;
 }
 
-void set_input(gchar *str)
+void set_input(const gchar *str)
 {
 	gtk_entry_buffer_set_text(app.buffer_in, str, -1);
 }
+
+void input_scroll(int n) {
+	const char *buf;
+	int listIndex = calc_getLastIndex(app.calc_data.list);
+	int displayIndex = app.calc_data.index;
+
+	if (n > 0 && app.calc_data.list && app.calc_data.list->prev == NULL) {
+		buf = "";
+		displayIndex += n;
+	}
+	else if(displayIndex > listIndex) {
+		buf = calc_getLastExpr(app.calc_data.list);
+		displayIndex += n;
+	}
+	else {
+		buf = calc_scroll(&app.calc_data.list, n);
+		displayIndex += n;
+	}
+
+	if (displayIndex < 1 )
+		displayIndex = 1;
+	else if(displayIndex > listIndex+1)
+		displayIndex = listIndex+1;
+
+	app.calc_data.index = displayIndex;
+
+	set_input(buf);
+	gtk_editable_set_position(GTK_EDITABLE(app.text_in), -1);
+}
+
+/*static gboolean cb_char_equal(gunichar ch, gpointer user_data)
+{
+	(void) user_data;
+	return (ch == '=');
+}
+
+void set_input_last_expression(struct application *p_app)
+{
+	GtkTextIter start_iter, end_iter;
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(p_app->buffer_out), &start_iter);
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(p_app->buffer_out), &end_iter);
+
+	if (gtk_text_iter_forward_find_char(&end_iter, cb_char_equal, NULL, NULL))
+	{
+		gchar buf[MAX_EXPR_LEN];
+		gchar *expr = gtk_text_iter_get_text(&start_iter, &end_iter);
+		size_t len = strnlen(expr, sizeof buf) - 1;
+
+		strncpy(&buf[1], expr, sizeof buf - 3);
+		buf[0] = '(';
+		buf[len + 1] = ')';
+		buf[len + 2] = '\0';
+
+		set_input(buf);
+		gtk_editable_set_position(GTK_EDITABLE(p_app->text_in) , -1);
+
+		free(expr);
+	}
+}*/
 
 void clear_input(void)
 {
@@ -116,6 +175,7 @@ void clear_input(void)
 static void clear_output(void)
 {
 	gtk_text_buffer_set_text(app.buffer_out, "", -1);
+	calc_clearData(&app.calc_data);
 }
 
 void clear_all(void)
@@ -124,19 +184,22 @@ void clear_all(void)
 	clear_output();
 }
 
-
 static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
-	(void) widget; (void) data;
-	gboolean handled = FALSE;
+	(void) widget;
 	guint val = event->keyval;
+	struct application *p_app = data;
+	gboolean handled = FALSE;
 
 	if(event->is_modifier) return handled;
 
 	switch (val)
 	{
 		case GDK_KEY_Escape:
-			clear_all();
+			if(gtk_entry_get_text_length(p_app->text_in) > 0)
+				clear_input();
+			else
+				clear_all();
 			handled = TRUE;
 			break;
 		case GDK_KEY_Return:
@@ -160,16 +223,10 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 			handled = TRUE;
 			break;
 		case GDK_KEY_Up:
-		{
-			gchar buf[128];
-			// TODO: shouldn't the up arrow be bringing up the previous expression, not the result?
-			// TODO: make this a linked list...
-			snprintf(buf, 128, "%.*g", DECIMAL_DIGITS, app.calc_data.ans);
-			set_input(buf);
-		}
+			input_scroll(-1);
 			break;
 		case GDK_KEY_Down:
-			clear_input();
+			input_scroll( 1);
 			break;
 		default:
 		//	g_debug("Other key pressed");
@@ -178,19 +235,16 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 	return handled;
 }
 
-
-void process_input(const gchar *input, struct calculator_data *data, gchar *str_out)
+void process_input(const gchar *input, struct calculator_data *data, gchar *str_out, size_t len)
 {
-	double result;
 	int *err = &data->errFlag;
-	double *ans = &data->ans;
 
-	result = solveExpression(input, *ans, err);
+	calc_solveExpression(input, data);
 
 	if(*err == E_NONE)
 	{
-		snprintf(str_out, 128, "%s = %.*g\n",
-						input, DECIMAL_DIGITS, result);
+		snprintf(str_out, len, "%s = %.*g\n",
+						input, DECIMAL_DIGITS, data->ans);
 	}
 	else if(*err == E_SYNTAX)
 	{
@@ -201,13 +255,11 @@ void process_input(const gchar *input, struct calculator_data *data, gchar *str_
 		strcpy(str_out,  "MATH ERROR\n");
 	}
 
-	*ans = result;
-
-	g_debug("equal clicked:\n"
+	g_debug("equal clicked:\n\n"
 			"\tinput: %s\n"
 			"\tresult: %lf\n"
 			"\tsResult: %s",
-			input, result, str_out);
+			input, data->ans, str_out);
 }
 
 void text_insert(GtkEditable *widget, gchar *text)
