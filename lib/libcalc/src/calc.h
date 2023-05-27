@@ -44,5 +44,6 @@ void calc_clearData(calculator_data_t *cdata);
 const char *calc_scroll(dl_list_t **_list, int n);
 const char *calc_getLastExpr(dl_list_t *list);
 int calc_getLastIndex(dl_list_t *list);
+void calc_history_rewind(calculator_data_t *cdata);
 
 #endif

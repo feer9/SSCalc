@@ -177,6 +177,18 @@ const char *calc_scroll(dl_list_t **_list, int n)
 	return calc_getLastExpr(list);
 }
 
+void calc_history_rewind(calculator_data_t *cdata)
+{
+	if(cdata) {
+		dl_list_t **list = &cdata->list;
+		if (*list)
+			while ((*list)->prev)
+				*list = (*list)->prev;
+
+		cdata->index = (*list)->d->index + 1;
+	}
+}
+
 void calc_clearData(calculator_data_t *cdata)
 {
 	if(cdata)

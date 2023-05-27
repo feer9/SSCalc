@@ -181,6 +181,7 @@ void set_input_last_expression(struct application *p_app)
 void clear_input(void)
 {
 	gtk_entry_buffer_delete_text(app.buffer_in, 0, -1);
+	calc_history_rewind(&app.calc_data);
 }
 
 static void clear_output(void)
@@ -215,19 +216,15 @@ static gboolean keys_handler(GtkWidget *widget, GdkEventKey *event, gpointer dat
 			break;
 		case GDK_KEY_Return:
 		case GDK_KEY_KP_Enter:
-			g_debug("enter key pressed");
-			break;
+//			break;
 		case GDK_KEY_KP_Add:
 		case GDK_KEY_plus:
-			g_debug("+ key pressed");
-			break;
+//			break;
 		case GDK_KEY_KP_Subtract:
 		case GDK_KEY_minus:
-			g_debug("- key pressed");
 			break;
 		case GDK_KEY_KP_Multiply:
 		case GDK_KEY_asterisk:
-			g_debug("* key pressed");
 /*			g_signal_emit_by_name(GTK_BUTTON(gtk_builder_get_object(app.builder, "button_multiply")),
 						 "clicked", 0);*/
 			on_button_multiply_clicked(&app);

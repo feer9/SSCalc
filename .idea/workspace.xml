@@ -25,10 +25,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Add proper history scrolling.">
+    <list default="true" id="760a2e13-3c7a-4c39-b55c-23bb711207f5" name="Default Changelist" comment="Code cleanup.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/notacion.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/notacion.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/callbacks.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/callbacks.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libcalc/src/calc.h" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libcalc/src/calc.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mainWindow.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainWindow.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +45,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -168,7 +169,7 @@
       <workItem from="1685009438976" duration="147000" />
       <workItem from="1685009746559" duration="65000" />
       <workItem from="1685058114611" duration="37165000" />
-      <workItem from="1685138271494" duration="4649000" />
+      <workItem from="1685138271494" duration="8117000" />
     </task>
     <task id="LOCAL-00001" summary="Clion project files">
       <created>1622952829213</created>
@@ -289,7 +290,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685097590620</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Code cleanup.">
+      <created>1685143084476</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1685143084477</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -330,7 +338,8 @@
     <MESSAGE value="Add basic navigation with arrows." />
     <MESSAGE value="Add an About dialog." />
     <MESSAGE value="Add proper history scrolling." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add proper history scrolling." />
+    <MESSAGE value="Code cleanup." />
+    <option name="LAST_COMMIT_MESSAGE" value="Code cleanup." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
