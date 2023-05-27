@@ -14,7 +14,7 @@ int getLine (const char *prmpt, char *buff, size_t sz)
 	}
 
 	// Get line with buffer overrun protection.
-	if (fgets (buff, sz, stdin) == NULL)
+	if (fgets (buff, (int)sz, stdin) == NULL)
 	    return INPUT_EMPTY;
 
 	size_t lastPos = strlen(buff) - 1;

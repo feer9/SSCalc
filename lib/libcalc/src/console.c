@@ -8,7 +8,7 @@ static void printHelp()
     puts("Use 'q' or 'quit' to close the program");
 }
 
-static int analyze(int argc, char *argv[])
+static int oneShot(int argc, char *argv[])
 {
     char buf[256] = "";
     int i, len=0, curr_len;
@@ -34,13 +34,16 @@ static int analyze(int argc, char *argv[])
     }
     buf[len] = '\0';
 
-    return calculate(buf, NULL, NULL);
+	calculator_data_t cdata = {0};
+	calculate(buf, &cdata);
+
+    return cdata.errFlag;
 }
 
 int main(int argc, char *argv[])
 {
     if(argc != 1) {
-        return analyze(argc,argv);
+        return oneShot(argc, argv);
     }
 
 	consoleCalc();

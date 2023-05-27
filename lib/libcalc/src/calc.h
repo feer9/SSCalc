@@ -38,7 +38,7 @@ void calc_solveExpression(const char *expression, calculator_data_t *cdata);
 
 void consoleCalc(void);
 
-int calculate(const char *expression, double *ans, int *errorFlag);
+void calculate(const char *expression, calculator_data_t *);
 
 void calc_clearData(calculator_data_t *cdata);
 const char *calc_scroll(dl_list_t **_list, int n);

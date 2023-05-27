@@ -23,9 +23,8 @@ static void trim(char *buf)
 
 void consoleCalc()
 {
-	char input[256];
-	double ans = 0.0;
-	int errorFlag = E_NONE;
+	char input[MAX_EXPR_LEN];
+	calculator_data_t cdata = {0};
 
 	puts("Scientific Calc v1.0");
 	while( getLine("> ", input, sizeof input) != INPUT_OK);
@@ -33,31 +32,27 @@ void consoleCalc()
 
 	while(strcmp(input, "q") != 0 && strcmp(input, "quit") != 0)
 	{
-		errorFlag = E_NONE;
-		calculate(input, &ans, &errorFlag);
+		cdata.errFlag = E_NONE;
+		calculate(input, &cdata);
 
 		while( getLine("> ", input, sizeof input) != INPUT_OK);
 	}
+	// TODO: Add support for arrow keys history
 }
 
-int calculate(const char *expression, double *ans, int *errorFlag)
+void calculate(const char *expression, calculator_data_t *cdata)
 {
-/*	double result, _ans = (ans != NULL ? *ans : 0.0);
-	int _err = 0; if(errorFlag == NULL) errorFlag = &_err;
+	double *ans = &cdata->ans;
+	int *errorFlag = &cdata->errFlag;
 
-	result = calc_solveExpression(expression, _ans, errorFlag);
+	calc_solveExpression(expression, cdata);
 
 	if(*errorFlag == E_SYNTAX)
 		puts("SYNTAX ERROR");
 	else if(*errorFlag == E_MATH)
 		puts("MATH ERROR");
 	else
-	{
-		printf("= %.*g\n", DECIMAL_DIGITS, result);
-		if (ans) *ans = result;
-	}
-
-	return *errorFlag;*/return 0;
+		printf("= %.*g\n", DECIMAL_DIGITS, *ans);
 }
 
 static const char* utf8CharToAscii(wchar_t wchar)
