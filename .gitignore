@@ -8,17 +8,10 @@ lib/libcalc.so*
 *.o
 *.dll
 *.exe
-debug
-main
-calc
-ui
-sscalc
-SSCalc
 bin
 build
 cmake-build-debug
 cmake-build-release
-src_old
 *.ui~
 
 # archivos de carpeta #
@@ -31,3 +24,4 @@ Thumbs.db
 ./*.pro.user
 ./.qmake.stash
 .vscode/ipch
+.idea/workspace.xml
