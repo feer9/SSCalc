@@ -12,6 +12,9 @@ enum errores {E_NONE, E_SYNTAX, E_MATH};
 #define DECIMAL_DIGITS 15
 #define MAX_EXPR_LEN 1024
 
+#define CONSOLE_CALC_VERSION "v1.0"
+#define GUI_CALC_VERSION "v1.1"
+
 typedef struct operation {
 	char expression[MAX_EXPR_LEN];
 	double result;

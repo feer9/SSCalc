@@ -4,7 +4,7 @@
 
 static void printHelp()
 {
-    puts("Simple Scientific Calc v1.0");
+    puts("Simple Scientific Calc " CONSOLE_CALC_VERSION);
     puts("Use 'q' or 'quit' to close the program");
 }
 
