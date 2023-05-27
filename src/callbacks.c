@@ -137,6 +137,7 @@ void show_about_dialog(struct application *app)
 		gchar *auth[] = {"Fernando Coda", "fcoda@pm.me", "github.com/feer9",NULL};
 		gtk_show_about_dialog (/*GTK_WINDOW(app->window),*/NULL,
 		                       "program-name", "Simple Scientific Calc",
+								   "version", GUI_CALC_VERSION,
 		                       "logo", app_logo,
 		                       "title", ("About SSCalc"),
 							   "authors", auth,
