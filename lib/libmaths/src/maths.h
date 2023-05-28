@@ -40,10 +40,10 @@ enum errores {E_NONE, E_SYNTAX, E_MATH};
 #define max(a,b) (a>b ? a:b)
 #define min(a,b) (a<b ? a:b)
 
-int					mayor			(size_t n, int *v);
-int					menor			(size_t n, int *v);
+int					mayor			(size_t n, const int *v);
+int					menor			(size_t n, const int *v);
 double				promediar		(size_t n, ...);
-double				promediarVector	(size_t n, int *v);
+double				promediarVector	(size_t n, const int *v);
 //unsigned long int	factorial		(int num);
 double				factorial		(double num);
 unsigned long int	fibonacci		(int num);
@@ -51,12 +51,12 @@ void				swap			(int *a, int *b);
 void				quicksort		(size_t n, int *ve);
 void				qs				(int *v, int ext_izq, int ext_der);
 void				burbujeo		(int *v, int max);
-int					busqueda		(int *v, int M, int D);
-int					buscaBin		(int *v, int tam, int D);
+int					busqueda		(const int *v, int M, int D);
+int					buscaBin		(const int *v, int tam, int D);
 double				cuartil			(int cuartil, size_t n, int *vec);
 double				mediana			(size_t n, int *vec);
 double				dEstandar		(size_t n, int *vec);
-int					prodEscalar		(size_t tamV1, int *vec1, size_t tamV2, int *vec2);
+int					prodEscalar		(size_t tamV1, const int *vec1, size_t tamV2, const int *vec2);
 double				sumar			(double a, double b);
 double				restar			(double a, double b);
 double				multiplicar		(double a, double b);
@@ -77,6 +77,7 @@ long double         remquol         (long double x, long double y, int *quo);
 double				sin				(double num);
 double				cos				(double num);
 double				tan				(double num);
+double              abs_            (double x);
 
 //#define negate(x) (-x)
 static inline double negate			(double num) {return -num;}

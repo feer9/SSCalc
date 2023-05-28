@@ -10,11 +10,11 @@ static int isUFunction  (const char *inf, unsigned int *i);
 static int isBFunction  (const char *inf, unsigned int *i);
 static int isConstant   (const char *inf, unsigned int *i, double *num, double ans);
 
-static void push_parenthesis (symbol_t op, node_t **_PILA, node_t **_COLA);
-static void push_B_function  (symbol_t op, node_t **_PILA, node_t **_COLA);
-static void push_U_operator  (symbol_t op, node_t **_PILA, node_t **_COLA);
-static void push_U_function  (symbol_t op, node_t **_PILA, node_t **_COLA);
-static void push_B_operator  (symbol_t op, node_t **_PILA, node_t **_COLA);
+static void push_parenthesis (symbol_t op, node_t **PILA, node_t **COLA);
+static void push_B_function  (symbol_t op, node_t **PILA, node_t **COLA);
+static void push_U_operator  (symbol_t op, node_t **PILA, node_t **COLA);
+static void push_U_function  (symbol_t op, node_t **PILA, node_t **COLA);
+static void push_B_operator  (symbol_t op, node_t **PILA, node_t **COLA);
 
 static void error(int err, int *errPtr, node_t **PILA, node_t **COLA);
 
@@ -39,9 +39,6 @@ static inline int isValidChar(char c)
 	return 0;
 }
 
-
-
-// fixme: 2.565+2.1 = SYNTAX ERROR
 // fixme: 2E3 = SYNTAX ERROR
 int checkSyntax(const char* str)
 {
@@ -115,7 +112,7 @@ node_t* infixToPostfix(const char* inf, double ans, int *errFlag)
 	if(!inf) return NULL;
 
 	unsigned int i=0;
-	symbol_t op = 0;     // actual operation
+	symbol_t op;     // actual operation
 	symbol_t  lastSymbol  = 0;
 	content_t lastContent = 0;
 	node_t* PILA = NULL;
@@ -270,6 +267,7 @@ static void push_B_function(symbol_t op, node_t **PILA, node_t **COLA)
 {
 	(void) op; (void) PILA; (void) COLA;
 	// To be done...
+	// example: log(10, 7) = log of 7 in base 10
 }
 
 static void push_U_function(symbol_t op, node_t **PILA, node_t **COLA)
@@ -342,7 +340,11 @@ static double getNumber(const char *str, unsigned int *i)
 	char buf[128];
 	int pos=0;
 
-	while (isNumber(str[pos]))
+	// Don't ask why. TODO: please clean this up
+	while( isNumber(str[pos]) ||
+	       ( pos>0 && (str[pos] & 0xDF) == 'E' &&
+	         ( isNumber(str[pos+1]) == 1 || str[pos+1] == '-') ) ||
+	       ( pos>=2 && str[pos] == '-' && (str[pos-1] & 0xDF) == 'E' ))
 	{
 		buf[pos] = str[pos];
 		pos++;
@@ -350,8 +352,7 @@ static double getNumber(const char *str, unsigned int *i)
 	}
 	buf[pos] = '\0';
 
-	return atof(buf);   /* todo: this code is calling the system atof() instead of my custom atof()
-						   causing locale to affect the "dot / comma" interpretation */
+	return atof(buf);
 }
 
 static int isNumber(char c)
@@ -417,6 +418,8 @@ static int isUFunction(const char *inf, unsigned int *i)
 				func = COS;
 			else if(!strcmp(buf, "tan"))
 				func = TAN;
+			else if(!strcmp(buf, "abs"))
+				func = ABS;
 		}
 		else if(sz == 4)
 		{
@@ -444,7 +447,6 @@ static int isBFunction(const char *inf, unsigned int *i)
 	{
 		buf[sz] = inf[sz];
 		sz++;
-	//	(*i)++;
 
 		if(sz == 3)
 		{
@@ -595,8 +597,10 @@ static node_t* solve_binary(node_t* n1, node_t* n2, node_t* operation, int *erro
 
 static node_t* solve_unary (node_t* n, node_t* operation, int *errorFlag)
 {
-	static double (*opPtr[])(double) = {factorial, negate, equals, sqrt, 
-								log10, log, sin, cos, tan};
+	static double (*opPtr[])(double) = {
+			factorial, negate, equals,
+			sqrt,log10, log, sin, cos, tan, abs_
+	};
 	node_t* result = operation; // reuse of this object
 
 	if(n != NULL && operation != NULL)
@@ -644,24 +648,43 @@ static int checkMath_binary(double n1, symbol_t op, double n2)
 
 static int checkMath_unary(double n, symbol_t op)
 {
+	int ret = E_NONE;
+
 	switch(op)
 	{
 	case FACTORIAL:
 		if(n - (int)n != 0.0)
-			return E_MATH;
+			ret = E_MATH;
 		break;
+
+	case MINUS: case PLUS:
+		break;
+
 	case SQRT:
 		if(n < 0.0)
-			return E_MATH;
+			ret = E_MATH;
 		break;
+
+	case LOG:
+	case LN:
+		if(n <= 0.0)
+			ret = E_MATH;
+		break;
+
+	case SIN:
+	case COS:
+		break;
+
 	case TAN:
 		if(isInt(n) && (int)(90 + n) % 180 == 0)
-			return E_MATH;
+			ret = E_MATH;
 		break;
+
+	case ABS:
 	default:
 		break;
 	}
-	return E_NONE;
+	return ret;
 }
 
 
@@ -684,11 +707,12 @@ static const char *getSymbol(symbol_t symbol)
 		case SIN:               return "sin";
 		case COS:               return "cos";
 		case TAN:               return "tan";
+		case ABS:               return "abs";
 		case POW:               return "pow";
 		case PARENTHESIS_OPEN:  return "(";
 		case PARENTHESIS_CLOSE: return ")";
-		default:                return "";
 	}
+	return "";
 }
 
 void printNodes(node_t* N)

@@ -17,7 +17,7 @@ BUTTON_CLICKED_CALLBACK(cosine,  "cos(")
 BUTTON_CLICKED_CALLBACK(tangent, "tan(")
 BUTTON_CLICKED_CALLBACK(log_10,  "log(")
 BUTTON_CLICKED_CALLBACK(log_e,   "ln(")
-BUTTON_CLICKED_CALLBACK(abs,     "|")
+BUTTON_CLICKED_CALLBACK(abs,     "abs(") /* TODO: use módulo "||" */
 BUTTON_CLICKED_CALLBACK(pi,      "π")
 BUTTON_CLICKED_CALLBACK(euler,   "e")
 
@@ -78,6 +78,7 @@ void on_menu_clear_all_activate (struct application *app)
 
 void on_text_in_changed (struct application *app)
 {
+	(void)app;
 //	const gchar *in = gtk_entry_get_text(app->text_in);
 //	(void) in;
 }

@@ -2,7 +2,7 @@
 
 // recibe un vector de numeros
 // devuelve la posicion del mayor
-int mayor(size_t n, int* v)
+int mayor(size_t n, const int* v)
 {
 	size_t i;
 	int num_mayor = v[0];
@@ -20,7 +20,7 @@ int mayor(size_t n, int* v)
 
 // recibe un vector de numeros
 // devuelve la posicion del menor
-int menor(size_t n, int* v)
+int menor(size_t n, const int* v)
 {
 	size_t i;
 	int num_menor = v[0];
@@ -53,11 +53,11 @@ double promediar (size_t n, ...)
 	return (double) sum / n;
 }
 
-double promediarVector(size_t n, int* vec)
+double promediarVector(size_t n, const int* vec)
 {
 	long int sum = 0;
 
-	for(int i=0; i<(int)n; i++)
+	for(size_t i=0; i<n; i++)
 		sum += vec[i];
 
 	return (double) sum / n;
@@ -185,7 +185,7 @@ double dEstandar(size_t n, int *vec)
 	return sqrt(sumatoria / (n - 1));
 }
 
-int prodEscalar(size_t tamV1, int *vec1, size_t tamV2, int *vec2)
+int prodEscalar(size_t tamV1, const int *vec1, size_t tamV2, const int *vec2)
 {
 	unsigned int ciclo = 0;
 	int res = 0;
@@ -207,28 +207,31 @@ void burbujeo(int *v, int max)
 				swap((v + i), (v + i + 1));
 }
 
-int busqueda(int *v, int M, int D)
+int busqueda(const int *v, int M, int D)
 {
 	int i = 0;
-	while(*(v+i) != D && i < M) i++;
-	if(*(v+i) == D) return i;
-		else return -1;
+	while(v[i] != D && i < M)
+		i++;
+	if(v[i] == D)
+		return i;
+	else
+		return -1;
 }
 
-int buscaBin(int *v, int tam, int D)
+int buscaBin(const int *v, int tam, int D)
 {
 	int izq = 0;
 	int der = tam - 1;
 	int pivote = (der + izq) / 2;
-	while(*(v + pivote) != D && (izq <= der))
+	while(v[pivote] != D && (izq <= der))
 	{
-		if(*(v + pivote) < D)
+		if(v[pivote] < D)
 			izq = pivote + 1;
 		else
 			der = pivote - 1;
 		pivote = (izq + der) / 2;
 	}
-	if(*(v + pivote) == D)
+	if(v[pivote] == D)
 		return pivote;
 	else
 		return -1;
@@ -417,7 +420,7 @@ double sin(double _x)
 	if (phase & 2)
 		res = -res;
 
-	return res;
+	return (double) res;
 }
 // todo: maybe implement horner's method?
 
@@ -431,3 +434,7 @@ extern inline double tan(double x)
 	return sin(x) / sin(90.0 - x);
 }
 
+extern inline double abs_(double x)
+{
+	return x < 0.0 ? -x : x;
+}

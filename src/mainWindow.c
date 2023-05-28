@@ -20,7 +20,7 @@ void setupGUI()
 	setlocale (LC_ALL, "en_US.UTF-8");
 
 	GtkBuilder  *builder = gtk_builder_new_from_resource ("/org/gtk/SSCalc/sscalc.ui");
-	// TODO: missing "^" and "clear" buttons on the UI
+	// TODO: missing "^", "!" and "clear" buttons on the UI
 
 	set_pointers(builder);
 	set_signals(builder);
@@ -93,6 +93,13 @@ static void set_signals(GtkBuilder *builder)
 
 static void set_pointers(GtkBuilder *builder)
 {
+	calculator_data_t cdata = {
+			.ans = 0.0,
+			.errFlag = E_NONE,
+			.index = 1,
+			.list = NULL
+	};
+
 //	app.builder    = builder;
 	app.window     = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	app.text_in    = GTK_ENTRY(gtk_builder_get_object(builder, "text_in"));
@@ -100,8 +107,7 @@ static void set_pointers(GtkBuilder *builder)
 	app.buffer_in  = GTK_ENTRY_BUFFER(gtk_builder_get_object(builder, "buffer_in"));
 	app.buffer_out = GTK_TEXT_BUFFER(gtk_builder_get_object(builder, "buffer_out"));
 	app.statusbar  = GTK_STATUSBAR(gtk_builder_get_object(builder, "statusbar"));
-	memset(&app.calc_data, 0, sizeof(struct calculator_data));
-	app.calc_data.index = 1;
+	app.calc_data  = cdata;
 }
 
 void set_input(const gchar *str)

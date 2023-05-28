@@ -17,7 +17,7 @@ typedef enum symbol_t {
 	FACTORIAL, MINUS, PLUS,
 
 	/* unary functions */
-	SQRT, LOG, LN, SIN, COS, TAN, /*todo: ABS*/
+	SQRT, LOG, LN, SIN, COS, TAN, ABS,
 
 	/* parenthesis */
 	PARENTHESIS_OPEN, PARENTHESIS_CLOSE

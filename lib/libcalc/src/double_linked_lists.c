@@ -65,7 +65,7 @@ int list_prepend_node(dl_list_t *node, dl_list_t **_list)
 
 void list_destroy(dl_list_t **_list)
 {
-	if (_list == NULL) return;
+	if (!_list || !(*_list)) return;
 
 	dl_list_t *node = *_list;
 

@@ -38,6 +38,11 @@ double atof(const char *s)
 		else if ((s[i] == '.' || s[i] == ',') && pos_coma < 0) {
 			pos_coma = i;
 		}
+		// exponente (por ejemplo 2E3 = 2000)
+		else if ((s[i] & 0xDF) == 'E') {
+			num *= pow(10.0, atof(&s[i+1]));
+			break;
+		}
 		// si hay otra cosa en el string, termino ahi
 		else
 			break;

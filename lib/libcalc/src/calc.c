@@ -26,7 +26,7 @@ void consoleCalc()
 	char input[MAX_EXPR_LEN];
 	calculator_data_t cdata = {0};
 
-	puts("Scientific Calc v1.0");
+	puts("Scientific Calc" CONSOLE_CALC_VERSION);
 	while( getLine("> ", input, sizeof input) != INPUT_OK);
 	// see the readline() and getline() functions
 
@@ -37,7 +37,7 @@ void consoleCalc()
 
 		while( getLine("> ", input, sizeof input) != INPUT_OK);
 	}
-	// TODO: Add support for arrow keys history
+	// TODO: Add support for history with arrow keys (ncurses)
 }
 
 void calculate(const char *expression, calculator_data_t *cdata)
@@ -193,7 +193,8 @@ void calc_clearData(calculator_data_t *cdata)
 	}
 }
 
-// fixme: 2e3 = 8.1548 ¿?¿? 2E3 doesn't work either
+// FIXME: 2E-(3) = 6
+// FIXME: 2E(-3) = SYNTAX ERROR
 void calc_solveExpression(const char* expression, calculator_data_t *cdata)
 {
 	if(!expression || !cdata) return;

@@ -85,7 +85,7 @@ target_link_options        (sscalc PRIVATE -rdynamic)
 
 #add_dependencies(SSCalc sscalc.ui.c)
 
-install(TARGETS sscalc-gui
+install(TARGETS sscalc-gui sscalc
         CONFIGURATIONS Release
         DESTINATION ~/.local/bin)
 
